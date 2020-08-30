@@ -51,6 +51,7 @@ Zabbix        | 監控相關
 - immutable : 不可變的
 - in favor of : 有利於, 取而代之
 - intelliSense : 提示
+- IOW : in other words
 - IP Masquerade: IP掩蔽
 - linter : code 語法 check
 - malformed : 異常
@@ -58,6 +59,7 @@ Zabbix        | 監控相關
 - masquerade : 偽裝
 - more or less : 或多或少
 - on the fly : 動態產生
+- opaque : 含糊的, 不透明的」
 - oval : 橢圓形
 - overlap : 交疊
 - persist : 堅持, 持續
