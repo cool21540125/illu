@@ -34,7 +34,7 @@ appServer             -- WSGI 協議  --- webApp[Web Framework]
 
 1. 初始化
 2. Start Loop, 等候 request
-3. 等到請求後, 呼叫 `WSGI Application`, 開始一系列處理, 並 send request
+3. 等到請求後, 呼叫 `WSGI Application`, 開始一系列處理, 並 send response
 4. back to Loop
 5. repeat 2-4 ~~到死為止~~
 
