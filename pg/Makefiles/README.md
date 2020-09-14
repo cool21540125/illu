@@ -17,14 +17,13 @@ target ... : prerequest ...
 ```
 
 
-
 ## Example
 
 ### [Examle-CleanCodeInPython](https://github.com/PacktPublishing/Clean-Code-in-Python/blob/master/Makefile)
 
 
 ```bash
-### 使用 Makefile 裡頭的第一個部分
+### 使用 Makefile 裡頭的第一個 target
 $# make
 
 ### 
