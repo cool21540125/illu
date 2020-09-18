@@ -20,7 +20,7 @@ $# ssh -vT git@GIT_SERVER_DOMAIN -p PORT
 # 永遠使用 git user 來測
 
 # 首次設定 PKI
-ssh-keygen -t rsa -b 4096 -C "tony@tonynb"
+ssh-keygen -t rsa -b 4096 -C "tony@tonynb" -f "key_name"
 
 ### ed25519 (比 rsa 更有效率 && 安全)
 # https://docs.gitlab.com/ee/ssh/README.html#ed25519-ssh-keys

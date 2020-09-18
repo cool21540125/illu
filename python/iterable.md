@@ -18,7 +18,7 @@
 
 ## 1. Iterable (可被迭代的東西)
 
-- 所有的 Sequense(序列) 都是 Iterable
+- Sequence 實作了 `__len__()` && `__getitem__()`, 所以它是個 Iterable
   - List, Set, Dictionary, ...
 - 當你建立了一個 list, 你可以 '一個接一個' 讀取它內部的物件.
 - '一個接一個' 讀取的過程, 稱之為 iteration(迭代).
@@ -107,7 +107,9 @@ next(e)  # 3
 next(e)  # Exception StopIteration
 ```
 
-`for a in b` 的原理, 其實就是先調用 `iter(b)`, 取得 Iterator. 如此便可使用 next 方法, 一個一個叫出來處理, 直到 StopIteration.
+`for a in b` 的原理, 其實就是先調用 `iter(b)`, 取得 Iterator. 如此便可使用 next 方法, 一個一個叫出來處理, 直到 StopIteration. 另一種理解方式是, Python 會在 高層次上面去檢查 2 件事情:
+- object 有無 `__next__()` or `__iter__()` 其中一種方法
+- object 是不是 sequence && 同時擁有 `__len__()` and `__getitem__()`
 
 
 

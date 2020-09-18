@@ -462,6 +462,9 @@ $ brctl show
 bridge name     bridge id               STP enabled     interfaces
 docker0         8000.02423eebdec1       no
 virbr0          8000.52540048e681       yes             virbr0-nic
-
+# Show 出 Linux 上頭的 網路橋接器
+# 安裝 Docker 會自動建立 docker0
+#   IP 預設為 172.17.0.1
+#   IP 網段範圍 172.17.0.0/24
 
 ```

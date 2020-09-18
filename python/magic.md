@@ -176,8 +176,10 @@ uu.append(888) # ..... AttributeError: append
 ```
 
 
-## `__getietm__(self, key)`
+## `__getitem__(self, key)`
 - 此為 Container 功能(非必備)
+- 若使用 `obj['name']`, 就會使用到 `__getitem__()`
+- 迭代 sequence 時, 若 sequence object 沒定義 `__iter__()`, 就會來找 `__getitem__()`, 如果又沒找到, `raise TypeError()`
 
 
 ## `__hash__`

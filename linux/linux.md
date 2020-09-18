@@ -579,7 +579,13 @@ $ sudo systemctl enable sshd(這個還不是非常確定是否可行)
 
 > 然而每次 Client ssh 到 Server 都得打密碼太麻煩了, 所以乾脆直接讓 Server 認識 Client 就好了啊!! 因此 Client 可以使用 `ssh-copy-id <remote user id>@<remote host>` 把自己的 `public key` 都給 Server(預設會 Copy `~/.ssh/id_rsa.pub`), 日後 ssh 到 Server 後, Server 會主動將該 Client 的 public key 從 Server 的 `~/.ssh/authorized_keys` 取出來, 去要求 Client 作 公私鑰比對認證,
 
-> `private key : 600` ; `public key : 644`
+
+### 權限部分
+- *private key*                    : 600
+- *public key*                     : 644
+- *~/.ssh(Client)*                 : 700
+- *~/.ssh/authorized_keys(Server)* : 600
+
 
 
 ## ※安全觀點 : sshd 組態 /etc/ssh/sshd_config
