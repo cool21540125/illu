@@ -13,4 +13,4 @@ pip install pydevd-pycharm
 
 ## pycharm 使用 pytest
 
-![pytest](/img/pycharm_pytest.png)
+![pytest](../../img/pycharm_pytest.png)

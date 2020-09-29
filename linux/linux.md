@@ -1211,6 +1211,10 @@ NAME=Tony
 $# echo $(env | grep '^NAME' | awk '{split($0,kk,"="); print kk[2]}')
 Tony
 # split 可將 awk 整行字串, 分割成 kk array, 使用 "=" 分割, 後續在印出第二個位置
+
+
+### 抓出最後一個欄位
+$# ll | awk '{print $NF}'
 ```
 
 ### mail
