@@ -13,12 +13,22 @@
 
 
 ```bash
-### ~/.bash_profile
+### 從 Catalina 不知道哪版開始, default login shell 改為 zsh
+### ~/.bash_profile -> ~/.zshrc
 alias ls='ls -G'
 alias ll='ls -lG'
 alias lla='ll -a'
 
+alias dpsa='docker ps -a'
+alias dc='docker-compose'
+
+# 下面這個是 bash 寫法
 PS1='[\u@\h \W]\$ '
+
+# zsh 寫法如下
+PS1='[%n@%m %1~]$ '
+# 更多 zsh 的教學可參考這邊: https://wiki.gentoo.org/wiki/Zsh/Guide 
+# 或者直接參考 /etc/zshrc 裡面的寫法
 ```
 
 
