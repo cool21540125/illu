@@ -76,6 +76,13 @@ fiddler2     | 網路流量監控軟體
 log4j2       | 讓你方便作 Logging 的軟體
 
 
+
+## Concepts
+
+- **side effect** : 例如 使用了某個 function, 會造成外部的某個變數變動(**外部狀態被改變**), 稱之為 side effect
+
+
+
 ## Interesting URLs
 
 - [隨機用戶產生器](https://randomuser.me/api/)
