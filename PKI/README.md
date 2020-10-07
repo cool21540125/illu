@@ -139,8 +139,9 @@ Accept-Ranges: bytes
 
 - TODO: 2020/04/28 研究 ↓
 - https://www.postgresql.org/docs/11/ssl-tcp.html
-- [](https://hackmd.io/Gbub0_EJS9eaeghyvuBj0g#PFX%E3%80%81P12)
+- [Https雜七雜八](https://hackmd.io/Gbub0_EJS9eaeghyvuBj0g#PFX%E3%80%81P12)
 - [Navicat-SSL 設定](https://www2.navicat.com/manual/online_manual/en/navicat/mac_manual/SSLSettings.html)
+- [永久試用(破解啦)](https://github.com/cool21540125/navicat-keygen-tools)
 - [建立安全SSL连接PostgreSQL数据库服务器](https://blog.csdn.net/zhu4674548/article/details/71248365)
 
 
