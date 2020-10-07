@@ -1,3 +1,6 @@
 [submodule "DesignPattern"]
 	path = DesignPattern
 	url = git@gitlab.com:cool21540125/designpattern.git
+[submodule "RxJS"]
+	path = RxJS
+	url = git@github.com:cool21540125/drmo_rxjs.git
