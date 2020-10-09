@@ -6,6 +6,8 @@
 ```sh
 ### 註冊登入
 $ aws configure
+# id && secret key 去註冊 IAM 最後就看得到了
+# Default Region: 
 # 分別輸入 ID, token, region, format 之後
 # 便會把身份資訊寫入到 ~/.aws/credentials
 # 之後便可開始使用 aws cli
