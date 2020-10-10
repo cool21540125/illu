@@ -1,4 +1,3 @@
-
 # Install drone-agent
 
 - 2020/04/02
@@ -26,4 +25,5 @@ DRONE_SERVER_PROTO=https
 DRONE_RPC_SECRET=  # 用來和 Drone Agent 溝通用
 DRONE_GITLAB_CLIENT_ID=gb478bfr76egh5345hi129q30osahgbeamzbvjashrfbvyqg1btyuhgiugthujuu
 DRONE_GITLAB_CLIENT_SECRET=bwug5n8sbn5hnarqaqpa28tg7hbsonbvzdfrg5bngkvhbkrgb8zr8765568arg42
-```
+# 上面的 id, secret 都是假的, 請不要白癡到拿這個去用....
+```                        

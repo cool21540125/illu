@@ -17,6 +17,6 @@ services:
     #     reservations:
     #       cpus: '0.10'
     #       memory: 50M
-    command: redis-server --requirepass ${REDIS_PASS}
+    command: redis-server
 volumes:
   redis_data: {}

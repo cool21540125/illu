@@ -3,15 +3,15 @@
 version: "3"
 
 services:
-  mydrone.com:
+  drone-server:
     image: drone/drone:1
     container_name: drone-server
+    restart: always
     ports:
-      - 8082:80
+      - 8081:80
       - 8443:443
     volumes:
-      - drone-server:/data
-    restart: always
+      - drone_data:/data
     environment:
       - DRONE_SERVER_HOST=${DRONE_SERVER_HOST}
       - DRONE_SERVER_PROTO=${DRONE_SERVER_PROTO}
@@ -29,13 +29,13 @@ services:
 #     container_name: mydrone_agent
 #     restart: always
 #     depends_on:
-#       - mydrone.com
+#       - drone-server
 #     volumes:
 #       - /var/run/docker.sock:/var/run/docker.sock
 #     environment:
-#       - DRONE_RPC_SERVER=http://mydrone.com:8082
+#       - DRONE_RPC_SERVER=http://drone-server:8082
 #       - DRONE_RPC_SECRET=${DRONE_RPC_SECRET}
 #       - DRONE_RUNNER_CAPACITY=3
 
 volumes:
-  drone-server: {}
+  drone_data: {}
