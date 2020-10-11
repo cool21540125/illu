@@ -1,19 +1,13 @@
 # Tips for Mac
 
-### 安裝 tab-completion
 ```bash
-$# brew install bash-completion
-$# [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
-```
-
 ### 修改畫面截圖路徑
-```bash
-$# mkdir ~/Desktop/screenshots/
-$# defaults write com.apple.screencapture location ~/Desktop/screenshots/
-```
+$# defaults write com.apple.screencapture location ~/Desktop
+
+### 修改 finder 顯示的 標題名稱 -> 完整路徑檔名
+$# defaults write com.apple.finder _FXShowPosixPathInTitle -bool true; killall Finder
 
 ### jq
-```bash
 $# brew install jq
 $# curl https://randomuser.me/api/ | jq  # 交由 jq 做解析(會做 beauty)
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -48,4 +42,4 @@ $# $ curl https://randomuser.me/api/ | jq '.results[0].name'  # 可作 filter
 
 
 ### 自簽憑證位置
-/Users/tony/Library/Application Support/Certificate Authority
+- `/Users/tony/Library/Application Support/Certificate Authority`
