@@ -84,3 +84,6 @@ q();
                             <h1>             HI                </h1>
     jquery:     before          prepend             append          after
 ```
+
+陣列操作
+![js_array_operate](../../img/js_array_operate.jpg)
