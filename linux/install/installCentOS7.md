@@ -1119,6 +1119,7 @@ $ unrar t <file.rar>    # 測試壓縮檔是否完整
 ```sh
 $ wget https://nodejs.org/dist/v10.7.0/node-v10.7.0-linux-x64.tar.xz        # 10.7
 $ wget https://nodejs.org/dist/v8.11.3/node-v8.11.3-linux-x64.tar.xz        # 8.11
+$ wget https://nodejs.org/dist/v12.18.4/node-v12.18.4-linux-x64.tar.xz      # 12.18
 
 $ tar xJf node-v10.7.0-linux-x64.tar.xz     # 解壓縮xz 10.7
 $ tar xJf node-v8.11.3-linux-x64.tar.xz     # 解壓縮xz 8.11

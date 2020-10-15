@@ -33,3 +33,14 @@ Or, if you don\'t want/need a background service you can just run:
 🍺  /usr/local/Cellar/postgresql@11/11.6: 3,191 files, 36MB
 
 ```
+
+
+## psycopg2 on macbook
+
+- 2020/10/15
+
+總之到目前為止我也不知道為什麼, 
+
+我已經先做好了 `brew install brew install postgresql@11`
+
+改用 `pip install psycopg2-binary`
