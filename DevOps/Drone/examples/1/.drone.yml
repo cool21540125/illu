@@ -24,3 +24,5 @@ steps:
         - /var/app/static_web
 
 # drone exec --secret-file=secrets.txt
+# 執行 pipeline 的時候需要一些 secrets
+# 建構過程, runner 只能訪問 repository(不適合存放secrets) 的內容

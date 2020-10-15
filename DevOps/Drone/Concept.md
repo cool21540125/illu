@@ -1,5 +1,9 @@
 # DroneCI
 
+## 重要
+
+runner 執行 pipeline 的時候, `~` 指的是 workspace root, 而非 user home
+
 ## 架構
 
 - [pipeline的環境變數](https://exec-runner.docs.drone.io/configuration/variables/)

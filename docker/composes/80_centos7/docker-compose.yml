@@ -1,0 +1,19 @@
+
+version: "3"
+
+services:
+  os7:
+    image: centos:7
+    container_name: os7
+    restart: always
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
+    tmpfs:
+      - /run
+      - /run/lock
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - $PWD:/app

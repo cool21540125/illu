@@ -1,6 +1,8 @@
 # DevOps
 
 - 2020/01/23
+- [DockerHub-DockerRunner](https://hub.docker.com/r/drone/drone-runner-docker)
+- [DockerRunner配置](https://docker-runner.docs.drone.io/installation/reference/)
 
 ## GitLab
 
@@ -72,15 +74,16 @@ Email: cool21540125@gmail.com
 ```bash
 ### 非 root 的 exec runner 配置檔
 # https://docs.drone.io/runner/exec/configuration/reference/
+# https://exec-runner.docs.drone.io/installation/reference/
 $# vim ~/.drone-runner-exec/config
 ### ------- 如下 -------
 # 呼叫遠端 Drone Server 的協定
 DRONE_RPC_PROTO=https
 
-# Drone Server (Drone Agent 要 follow 的 Drone Server)
+# (必備)Drone Server (Drone Agent 要 follow 的 Drone Server)
 DRONE_RPC_HOST=drone.company.com
 
-# Drone Server 用來驗證 http request 的 共享密鑰(Shared Secret)
+# (必備)Drone Server 用來驗證 http request 的 共享密鑰(Shared Secret)
 DRONE_RPC_SECRET=super-duper-secret
 
 # 能找到 drone 指令工具的位置
@@ -98,11 +101,51 @@ exec runner 會在 host 端寫 log,
 
 ## pipeline
 
-- [pipeline的環境變數](https://exec-runner.docs.drone.io/configuration/variables/)
+- pipeline 裡面可能會含有 build, deploy, 由多種行為(step)共同組成一個 pipeline
+- pipeline 裡面的每個操作稱作 step, 一到多個 step 組成一個 pipeline(任務)
+- trigger 決定目前的 pipeline 是否要被觸發. 可根據 branch, event, repository, runner, status, ...
+- condition 決定目前的 step 是否要被觸發. 可根據 branch, event, repository, runner, status, ...
+- runner 只是 pipeline 的執行者, 不管是怎樣的 pipeline 都可在任何的 runner 上面運作
+  - ex: 一個 docker pipeline, 如果在 exec runner 上面就會在 host 上啟動 docker 來執行
+
+不同種類的 Runner Environment Variables
+- [DockerRunner](https://docker-runner.docs.drone.io/configuration/environment/variables/)
+- [ExecRunner](https://exec-runner.docs.drone.io/configuration/variables/)
+- [SshRunner](https://ssh-runner.docs.drone.io/configuration/variables/)
 
 drone 提供了底下幾種 runner
 - docker runner: 全部在 Container 內, 保證跨平台
-- exec runner:在 runner 所在的主機上執行, 一般用在某些不方便在 container 內執行的工作
+- exec runner: 在 runner 所在的主機上執行, 一般用在某些不方便在 container 內執行的工作
 - ssh runner: 通常透過 ssh 執行遠端命令來做建置
 - kubernetes runner: (不鳥他)
 - digital ocean runner: (不鳥他)
+
+```yml
+### v1.x 寫法
+---
+kind: pipeline  # 會去找 agent
+name: default
+
+steps:
+  - name: backend
+    image: python:3
+    commands:
+    - pytest
+  - name: frontend
+    image: node
+    commands:
+    - xxx
+    - yyy
+  - name: build
+    image: plugins/slack
+    settings:
+      channel: general
+    depends_on:
+    - backend
+    - frontend
+
+# 底下是另一個任務
+---
+kind: pipeline
+name: zzz
+```
