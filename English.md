@@ -10,6 +10,7 @@
 - backlog : 積壓
 - back slash : 反斜線
 - behind the scenes : 幕後
+- boilerplate: 樣板
 - bootstrap configuration file : 引導程序配置文件
 - cascade: 串連
 - congestion : 擁塞
