@@ -146,3 +146,37 @@ awaitable asyncio.gather(*aws, loop=None, return_exceptions=False)
 # False -> 第一個錯誤發生時, 立即傳播到 gather() 所等候的 task, 但其餘 aws 不會被中斷
 # True  -> 發生例外的任務, 將與正常的任務視為一樣並且回傳.
 ```
+
+
+## 比較 coroutine function 與 generator function
+
+- `coro fn` yield `coro obj`
+- `g fn` yield `g obj`
+
+v3.5 以後, 改用 
+- `async def` 來建立 `coro`
+- `async with` 來建立 `async context manager`
+- `async for`(用來迭代 非同步的Iterable) 來建立 `async iteration`
+
+```py
+# 下面兩者相同
+### v3.4前
+@asyncio.coroutine
+def delayed_result(delay, result):
+    """
+    call this will get a coro object (sleep delay second, then return 23)
+    asyncio.iscoroutinefunction(delayed_result)  # True
+    asyncio.iscoroutine(delayed_result)  # True
+    """
+    yield from asyncio.sleep(delay)
+    return result
+
+### v3.5後
+async def delayed_result(delay, result):
+    """
+    也可以在此 coro fn 上頭一樣加上 @asyncio.coroutine, 但真的沒必要也不建議
+    async def 實作的 coro fn, 裡面不可以有 yield
+    """
+    await asyncio.sleep(delay)
+    return result
+```

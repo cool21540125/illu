@@ -7,6 +7,7 @@ hugo new site quickstart
 cd quickstart
 git init
 git submodule add https://github.com/budparr/gohugo-theme-ananke.git themes/ananke
+# 這邊記得要使用 https, 切勿使用 ssh 協定
 echo 'theme = "ananke"' >> config.toml
 hugo new posts/my-first-post.md
 hugo server -D
