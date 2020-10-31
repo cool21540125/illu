@@ -170,6 +170,9 @@ server {
 
     location / {
         try_files $uri $uri/ /index.html;
+        # try_files 用處就像是, 在 SPA, 網址若有其他的 uri, 重新整理後會跳出 404
+        # 設定這樣會嘗試去抓取本地的 index.html, 並且進入該 uri
+        # 白話文就是, 讓重新整理變得正常
     }
 }
 ```
