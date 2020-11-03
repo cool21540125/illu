@@ -4,22 +4,15 @@
 ```bash
 docker rm --force -v os7
 
-docker run -d \
-    -p 30080:80 \
-    -p 30443:443 \
-    -p 34200:4200 \
-    -p 35000:5000 \
-    -p 38000:8000 \
-    -p 38888:8888 \
-    -e "container=docker" \
+docker run -itd \
     --name=os7 \
     --restart=always \
-    --cap-add=SYS_ADMIN \
     --privileged=true \
-    centos:7 /usr/sbin/init
+    centos:7
 docker exec -it os7 bash
 
 yum install -y epel-release
+yum install -y iproute
 yum install -y vim
 yum install -y nginx
 systemctl start nginx

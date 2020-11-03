@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  mysql57_data:
+    image: mysql:5.7
+    container_name: mysql57_data
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql57_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=abc123ORZ!@#
+  
+volumes:
+  mysql57_data:
