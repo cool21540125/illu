@@ -28,7 +28,7 @@ bin:x:1:1:bin:/bin:/sbin/nologin
 daemon:x:2:2:daemon:/sbin:/sbin/nologin     # daemon 這系統帳號, 使用的是 /sbin/nologin來作操作
 ```
 
-# 快速命令
+## 快速命令
 
 ```sh
 # 為指令設定別名 (只作用於目前 session)
@@ -50,133 +50,17 @@ alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-ti
 $ unalias lm
 ```
 
-# 不知道怎麼分類的零碎範例...
-```sh
-# 查詢指令是否為 bash shell 的內建命令
-$ type ls
-ls is aliased to `ls --color=auto`
 
-$ type -a ls
-ls is aliased to `ls --color=auto`  # 顯示全部(別名, builtin bash, $PATH)
-ls is /usr/bin/ls
+## 變數相關
 
-$ type cd
-cd is a shell builtin
-```
-
-```sh
-# bash 指令換行, 使用「 \」
-$# ls /home/tony \
->   /var \
->   /etc
-# (熱鍵)若使用換行後, 發現後續的行數輸入一堆錯誤的東西, 從指標處
-# Ctrl + u : 刪除此行指標前的所有字
-# Ctrl + k : 刪除此行指標後的所有字
-```
-
-```sh
-$ echo $USER
-tony
-
-$ mail              # 使用 mail 來收信
-No mail for tony
-
-$ ls /var/spool/mail    # 依照不同使用者, 指向不同檔案
-root  rpc  tony  tony2
-
-$ echo $MAIL        # 收信的檔案路徑變數
-/var/spool/mail/tony
-```
-
-# 變數
-- export:  自訂變數 -> 環境變數
+- export:  自訂變數 -> 環境變數 (子程序就能用到了)
 - declare: 環境變數 -> 自訂變數
 - 自訂變數 = 區域變數
 - 環境變數 = 全域變數
 
-呼叫變數
-```sh
-# 取用變數, 底下兩者效果相同 ${varialbe}, $variable, 但是建議用 ${variable}
-$ echo $PATH
-$ echo ${PATH}  # 較佳!!
-
-$ var=foo
-$ echo $varbar
-                # 沒東西
-$ echo ${var}bar
-foobar
-```
-
-引號
-```sh
-# 設定變數前後, 不能加「 」, 如果要用的畫, 得用 "" 或 '' 框起來
-$ var="lang is ${LANG}"       # 雙引號內, 可使用變數
-$ echo ${var}
-lang is zh_TW.UTF-8
-
-$ var='lang is ${LANG}'       # 單引號內, 把變數是為純字串
-$ echo ${var}
-lang is ${LANG}
-
-$ var="lang is ""$LANG"       # 這寫法很爛, 超難讀懂
-$ echo ${var}
-lang is zh_TW.UTF-8
-```
-
-跳脫字元 \
-```sh
-$ var=tony\ chou            # 如果硬是不要用引號, 然後硬要用「 」
-$ echo ${var}
-tony chou
-```
-
-反單引號 `
-```sh
-# 下面兩者相同  $(xxx) = `xxx`
-$ v1=$(uname -r)
-$ echo ${v1}
-3.10.0-693.21.1.el7.x86_64
-
-$ v2=`uname -r`
-$ echo ${v2}
-3.10.0-693.21.1.el7.x86_64
-```
-
-系統變數
-```sh
-# 通常大寫字元 為 系統變數~ ex:
-$ echo $HOME
-$ echo $PATH
-```
-
-export: 讓 自訂變數 -> 環境變數 (子程序就能用到了~~)
-```sh
-$ vv=87
-$ echo ${vv}
-87
-$ bash          # 近入子程序
-$ echo ${vv}
-
-$ exit          # 離開子程序
-exit
-$ export vv
-$ bash          # 近入子程序
-$ echo ${vv}
-87
-```
-
-取消變數
-```sh
-$ echo ${v2}
-3.10.0-693.21.1.el7.x86_64
-$ unset v2
-$ echo ${v2}
-                            # 沒東西了~
-```
-
 查看 環境變數
 ```sh
-### 可看到所有的 環境變數
+### A. 可看到所有的 環境變數
 $ env
 HOSTNAME=desktop22                  # 主機名稱
 SHELL=/bin/bash
@@ -196,13 +80,12 @@ SUDO_GID=1000
 _=/bin/env
 # 節錄大部分
 
-### 看到所有 環境變數、bash相關變數、使用者自定義變數
+### B. 可看到所有的 環境變數 && bash 相關變數 && 使用者自定義變數
 $ set
-
 # 總共有2500多筆@@...
 
-
-$ export                # 可看到所有的 環境變數 (還有額外功能)
+### C. 可看到所有的 環境變數 (還有額外功能)
+$ export
 declare -x HISTCONTROL="ignoredups"
 declare -x HISTSIZE="1000"
 declare -x HOME="/home/tony"
@@ -212,15 +95,7 @@ declare -x LANG="zh_TW.UTF-8"
 ```
 
 
-隨機亂數
-```sh
-# 產生 [0, 32767] 之間的亂數
-$ echo ${RANDOM}
-14852
-```
-
-## 查看 && 宣告 變數 declare (同 typeset?)
-
+### 查看 && 宣告 變數 declare (同 typeset?)
 bash 環境預設變數都是 `字串`, 如果要計算的話, 頂多只能做 `整數運算`
 
 ```sh
@@ -244,8 +119,7 @@ $ echo "${name[1]}'s sister is ${name[2]}"
 ```
 
 
-## 變數替換
-
+### 變數替換
 ```sh
 $ pp=${PATH}
 $ echo ${pp}
@@ -276,8 +150,8 @@ $ echo ${HOME%/*}       # 取出前面路徑
 /home
 ```
 
-## 變數取代
 
+### 變數取代
 ```sh
 $ echo ${HOME/student/smartStudent} # 如果是用 ${HOME//student/smartStudent} , 則會套用所有的 match
 /home/smartStudent
@@ -291,8 +165,7 @@ NOTExist
 ```
 
 
-
-陣列變數
+### 陣列變數
 ```sh
 $ var[1]=Tony
 $ var[2]=Chou
@@ -301,17 +174,7 @@ Tony, Chou
 ```
 
 
-## 限制 bash 資源 - ulimit (配額)
-
-Linux為多人多工, 可能同時有 100 個人登入, 分別開啟 1G 的影片在那邊傳來傳去... 所以可以針對 各個登入者, 作資源管控/資源限制
-
-
-
-
-# [PS1 變數 (非環境變數, 僅只是 bash 的操作環境)](http://linux.vbird.org/linux_basic/0320bash.php)
-
-改變 tty 前置字元
-
+### 更改 tty (前置字元)
 ```sh
 [tony@tonynb dev]$ set | grep PS1
 PS1='[\u@\h \W]\$ '
@@ -329,30 +192,32 @@ PS1='[\u@\h \W]\$ '
 
 [tony@tonynb dev]$ echo ${PS2}
 >
+
+# 因為有太多太多了... 可去 `man bash` 搜尋 `PS1` 或 `看鳥哥`
+# http://linux.vbird.org/linux_basic/0320bash.php
 ```
 
-因為有太多太多了... 可去 `man bash` 搜尋 `PS1` 或 `看鳥哥`
 
-節錄部分...
-
+##### tty 的相關變數參考
 symbolic | Description
--- | -------------------
-\h | 第一個小數點前的`主機名稱`
-\@ | 顯示時間, 格式為 am/pm
-\u | 使用者帳號
-\w | 完整工作名稱
-\W | 最相近的目錄名稱 (用 basename 函數算出來的)
-\t | 24小時格式的時間 HH:MM:SS
-\\$ | root為 # ; 否則為 $
+-------- | -------------------
+\h       | 第一個小數點前的`主機名稱`
+\@       | 顯示時間, 格式為 am/pm
+\u       | 使用者帳號
+\w       | 完整工作名稱
+\W       | 最相近的目錄名稱 (用 basename 函數算出來的)
+\t       | 24小時格式的時間 HH:MM:SS
+\\$      | root為 # ; 否則為 $
 
-自己玩 PS1
 ```sh
+# 自己玩 PS1
 # 如果想要看起來是這樣 「<<(使用者帳號)@我最強 (時間)>>$ 」
 [tony@tonynb home]$  PS1='[@@ \u最強 \t \W]$ : '
 [@@ tony最強 22:17:38 ~]$ :               # 之後就會變成這樣了@@
 ```
 
-## 查看目前的程序 「$」變數
+
+### 查看目前的程序 「$」變數
 ```sh
 $ ps
   PID TTY          TIME CMD
@@ -364,11 +229,11 @@ $ echo ${$}
 24031               # 此即為 程序識別碼 或稱為 PID (Process ID)
 ```
 
-## 「?」 變數
 
-「?」 代表上次執行完後回傳的值, 若上次指令結束時`沒有出錯`, 則 `?` 為 0 ; 否則會是 > 0 的值
-
+### 「?」 變數
 ```sh
+# 「?」 代表上次執行完後回傳的值, 若上次指令結束時`沒有出錯`, 則 `?` 為 0 ; 否則會是 > 0 的值
+
 $ echo ${HOME}
 $ echo ${?}
 0               # 上次指令語法無誤
@@ -378,8 +243,8 @@ $ echo ${?}
 127             # 上次指令有錯
 ```
 
-# read (就是 inputBox(vb), prompt(js) 啦)
 
+### read (就是 inputBox(vb), prompt(js) 啦)
 ```sh
 $ read [-pt] variable
 # -p : 提示字元
@@ -397,7 +262,7 @@ $ echo ${name}
 Tony
 ```
 
-# history
+### history, CLI: `!<history id>`
 
 快速執行歷史指令
 ```sh
@@ -410,7 +275,7 @@ $ history
   789  declare -p anaconda_HOME
 ...
 
-# 快速執行歷史指令
+### 快速執行歷史指令
 $ !785
 echo ${PATH}
 /opt/anaconda3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
@@ -422,6 +287,7 @@ $ !hi       # 執行最近一次執行過「hi」開頭的指令
   810  echo ${PATH}
   811  history
 ```
+
 
 # login shell 與 non-login shell
 
@@ -480,4 +346,51 @@ echo 'hi'
 # 列出所有 環境變數 + 與bash操作介面有關的變數 + 使用者自定義的變數
 $ set
 (會跑出超多超多超多~~~變數)
+```
+
+
+##### CLI: `tr`, CLI: `unix2dos`, CLI: `dos2unix`
+```sh
+# 常常 Linux 開啟 Windows 編輯後的檔案會有 `^M` 這東西
+
+$ sudo yum install -y unix2dos dos2unix
+$ cp /etc/passwd ~/.
+$ file /etc/passwd ~/passwd 
+/etc/passwd:       ASCII text
+/home/tony/passwd: ASCII text, with CRLF line terminators  # <- 就是 ^M
+
+### 解法1
+$ cat ~/passwd | tr -d '\r' > ~/passwd.linux
+$ ll /etc/passwd ~/passwd*
+-rw-r--r--. 1 root root 1075 Nov  3 01:41 /etc/passwd              # 兩個變一樣了
+-rw-r--r--. 1 tony tony 1097 Nov 13 23:47 /home/tony/passwd
+-rw-rw-r--. 1 tony tony 1075 Nov 13 23:55 /home/tony/passwd.linux  # 兩個變一樣了
+
+### 解法2
+$ dos2unix ~/passwd
+dos2unix: converting file /home/tony/passwd to Unix format...
+# 上面這步驟, 會把原始檔案蓋過去...
+```
+
+
+##### CLI: `${RANDOM}`
+```sh
+# 產生 [0, 32767] 之間的亂數
+$ echo ${RANDOM}
+14852
+```
+
+
+#### CLI: `type`
+```sh
+# 查詢指令是否為 bash shell 的內建命令
+$ type ls
+ls is aliased to `ls --color=auto`
+
+$ type -a ls
+ls is aliased to `ls --color=auto`  # 顯示全部(別名, builtin bash, $PATH)
+ls is /usr/bin/ls
+
+$ type cd
+cd is a shell builtin
 ```
