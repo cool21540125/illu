@@ -17,3 +17,4 @@ packages/*
 *.crt
 *.key
 pass_*
+*.sqlite
