@@ -1352,6 +1352,17 @@ Kubernetes v1.18.2
 ```
 
 
+# ip CLI
+
+- 2020/11/02
+
+```bash
+### bash: ip: command not found
+$# yum install -y epel-release
+$# yum install -y iproute
+```
+
+
 
 # htpasswd
 

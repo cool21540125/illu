@@ -39,8 +39,24 @@ Or, if you don\'t want/need a background service you can just run:
 
 - 2020/10/15
 
-總之到目前為止我也不知道為什麼, 
+#### 法1
 
 我已經先做好了 `brew install brew install postgresql@11`
 
 改用 `pip install psycopg2-binary`
+
+
+#### 法2
+
+- 2020/11/05
+- [Can't install psycopg2 with pip in virtualenv on Mac OS X 10.7](https://stackoverflow.com/questions/9678408/cant-install-psycopg2-with-pip-in-virtualenv-on-mac-os-x-10-7)
+- [OSX ld: library not found for -lssl](https://stackoverflow.com/questions/49025594/osx-ld-library-not-found-for-lssl?noredirect=1&lq=1)
+
+用底下這樣可成功, 似乎是需要 postgresql 的某個 C Library 的東西
+
+```bash
+brew install postgresql
+
+env LDFLAGS='-L/usr/local/lib -L/usr/local/opt/openssl/lib
+-L/usr/local/opt/readline/lib' pip install psycopg2
+```

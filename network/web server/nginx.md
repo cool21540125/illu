@@ -2,6 +2,12 @@
 
 - [官方 Beginner’s Guide](http://nginx.org/en/docs/beginners_guide.html)
 
+```bash
+# -g: 讓 Nginx 前台執行
+$ nginx -g daemon off
+# nginx Container 預設的啟動方式
+```
+
 ```sh
 $# uname -r
 3.10.0-693.21.1 el7.x86_64
