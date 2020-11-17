@@ -655,6 +655,7 @@ $# echo $PATH
 /usr/local/sbin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin
 
 $# ln -s /usr/local/bin/git /usr/local/sbin/git
+#         ^^^^^ 可以連到這裡        ^^^^^ 藉由這裡
 
 $# which git
 /usr/local/sbin/git
@@ -1129,6 +1130,7 @@ $ cd node-v8.11.3-linux-x64/
 
 $ mkdir ~/bin
 $ ln -s /home/tony/Downloads/node-v8.11.3-linux-x64/bin/node ~/bin/node # v8.11
+#         ^^^^^ 可以連到這裡                                      ^^^^^ 藉由這裡
 
 $ node --version
 v8.11.3
@@ -1153,6 +1155,7 @@ $ rm phantomjs-1.9.8-linux-x86_64.tar.bz2
 $ sudo mv phantomjs-1.9.8-linux-x86_64/* /opt/phantomjs/
 $ rmdir phantomjs-1.9.8-linux-x86_64/
 $ ln -s /opt/phantomjs/bin/phantomjs ~/bin/phantomjs
+#         ^^^^^ 可以連到這裡             ^^^^^ 藉由這裡
 ```
 
 
@@ -1304,6 +1307,7 @@ $# yum install -y snapd
 $# systemctl start snapd
 
 $# ln -s /var/lib/snapd/snap /snap
+#         ^^^^^ 可以連到這裡   ^^^^^ 藉由這裡
 
 $# snap install redis-desktop-manager
 

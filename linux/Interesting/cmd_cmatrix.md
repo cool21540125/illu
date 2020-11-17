@@ -19,6 +19,7 @@ $# ls -l /usr/local/bin/cmatrix
 -rwxr-xr-x. 1 root root 39192 Mar 18 06:57 /usr/local/bin/cmatrix
 
 $# ln -s /usr/local/bin/cmatrix /usr/local/bin/hack
+#         ^^^^^ 可以連到這裡             ^^^^^ 藉由這裡
 
 ### Usage
 $# hack

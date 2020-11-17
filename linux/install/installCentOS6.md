@@ -75,29 +75,6 @@ $# system-config-network-tui
 
 
 
-# 安裝Oracle-Java 1.8
-
-下載及安裝jdk1.8
-
-```sh
-$ wget http://ftp.wsisiz.edu.pl/pub/pc/pozyteczne%20oprogramowanie/java/jdk-8u131-linux-x64.rpm
-$ sudo rpm -ivh jdk-8u131-linux-x64.rpm
-
-$ sudo ln -s /usr/java/jdk1.8.0_131/ /usr/java/java
-
-# 加入連結目標
-$ sudo vim /etc/profile
-export JAVA_HOME=/usr/java/java
-export JRE_HOME=$JAVA_HOME/jre
-export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib/rt.jar
-export PATH=$PATH:$JAVA_HOME/bin
-
-$ java -version
-```
-
-
-
-
 安裝selenium
 http://seleniumhq.github.io/selenium/docs/api/py/index.html
 https://github.com/mozilla/geckodriver/releases
