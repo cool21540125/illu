@@ -191,13 +191,24 @@ Source: https://www.distributednetworks.com/dhcp-tcp-ip/module3/images/protocol_
 - for Linux,   default TTL = 255
 
 
-## Address Resolution Protocol (ARP)
+## Address Resolution Protocol (ARP) 與 Reverse ARP(RARP)
 
-- 解析 `IP Address` 對應的 `Mac Address`(使用 `Broadcast` 取得)
+- 在 OSI L2, 幫助解析 `IP Address` 對應的 `Mac Address`(使用 Broadcast 取得)
 - 分為 **動態快取** 及 **靜態快取**
     - 動態快取 - 透過 ARP協定 運作而自動加入
     - 靜態快取 - 使用者自行手動新增, 語法: `arp -s <ip address> <mac address>`
 - IPv4 才有這東西; IPv6沒有
+
+```bash
+$ arp -n
+Address                  HWtype  HWaddress           Flags Mask            Iface
+192.168.0.103            ether   70:85:c2:09:95:c6   C                     eth0 
+192.168.0.1              ether   ec:ad:e0:b0:fb:b8   C                     eth0 
+
+# example
+$ arp -s 192.168.1.100 01:00:2D:23:A1:0E
+# 建立靜態 ARP, 把該 IP 對應的 Mac, 加入 ARP Table
+```
 
 ```powershell
 > arp -d <ip address>               # 移除快取

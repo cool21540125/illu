@@ -153,15 +153,11 @@ Code                       | Description
 405 Method Not Allowed     | Request Line 不支援此方法
 415 Unsupported Media Type | 要給 `Content-Type`
 
-> `401 Invalid username/password.` 帳號密碼 不對
-
-> `401 Authentication credentials were not provided.` 沒提供 帳號密碼
-
-> `403 Authentication credentials were not provided.` 認證方式不被允許, `Basic`, `Digest`, ...
-
-> `403 You do not have permission to perform this action.` 使用者權限不足
-
-> `405 Method "POST" not allowed.` 後端不接受 POST api
+- `401 Invalid username/password.` 帳號密碼 不對
+- `401 Authentication credentials were not provided.` 沒提供 帳號密碼
+- `403 Authentication credentials were not provided.` 認證方式不被允許, `Basic`, `Digest`, ...
+- `403 You do not have permission to perform this action.` 使用者權限不足
+- `405 Method "POST" not allowed.` 後端不接受 POST api
 
 
 ### * 14.47 response header - WWW-Authenticate
@@ -170,11 +166,10 @@ Code                       | Description
 
     WWW-Authenticate  = "WWW-Authenticate" ":" 1#challenge
 
+
 # [rfc7540](https://www.ietf.org/rfc/rfc7540.txt)
 
 ## Hypertext Transfer Protocol Version 2 (HTTP/2)
-
->
 
 - `HTTP/2` 為 `HTTP/1.1` 的 替代方案
 - `HTTP/2` 藉由引入 「header field compression(表頭壓縮)」 及 「allow multiple concurrent exchange on the same(允許共時)」來提升網路傳輸效能, 減少前端網路延遲的知覺.

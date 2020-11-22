@@ -20,22 +20,6 @@
 > Fully Qualified Domain Name(FQDN):
 在 DNS NameSpace中, 節點的完整名稱. 轉換規則: 由下往上, 每層加「.」區隔
 
-## DNS Namespace
-
-```
-Internet DNS Namespace(部分)
-|- com 
-|- org 
-|- gov 
-|- mil 
-|- edu 
-|- net 
-|- arpa 
-|- tw 
-|- jp 
-|- us 
-|- ...
-```
 
 ## Resource Record
 

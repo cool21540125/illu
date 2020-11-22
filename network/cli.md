@@ -16,21 +16,35 @@
 ```
 
 
-# 網路工具
-
-## Linux - nslookup
-
-某書說已不建議再使用
+# 網路相關 CLI
 
 
-## Linux - traceroute
+## 觀察主機路由: `route`
 
-列出 ICMP 封包從 本機 -> 目的主機 中間經過的路徑(路由器), 但中繼路由器可能因為安全性考量, 而關閉這功能(導致無法回應)
+```bash
+$ route  # route -n: 主機名稱 以 IP 顯示
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0
+172.18.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker_gwbridge
+172.21.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-d27f48aadef3
+192.168.0.0     0.0.0.0         255.255.255.0   U     100    0        0 eth0
 
 
-## traceroute
+# Destination     Gateway    Genmask      Flags              Metric     Ref    Use Iface
+# 目的 Network    0.0.0.0      mask         ↓                    ?       ?      Interface
+#                   或                    U: 路由可用
+#                   *                     G: 該 Network 須經由 gw 幫忙轉遞
+#                 直接藉由 Iface 發送      H: 該路由為 Host, 而非 Network
 
-路由路徑追蹤工具, 找出 icmp封包到目的主機的路徑(中途節點, 可能因為安全性考量, 而無法回應)
+
+```
+
+
+
+## `traceroute`
+
+路由路徑追蹤工具, 找出 icmp 封包到 目的主機 的路徑(中途節點, 可能因為安全性考量, 而無法回應)
 
 ```sh
 # traceroute -[IT]
@@ -57,7 +71,7 @@ traceroute to www.yahoo.com (98.137.246.8), 30 hops max, 60 byte packets
 ```
 
 
-## Linux - dnsdomainname
+## `dnsdomainname`
 
 ```sh
 $# dnsdomainname
@@ -71,7 +85,8 @@ tony.com
 $# hostnamectl set-hostname os7
 ```
 
-## Linux - hostname
+
+## `hostname`
 
 ```sh
 # 可查 Domain
@@ -83,7 +98,8 @@ $# hostname -f
 os7.tony.com
 ```
 
-## Linux - mail
+
+## `mail`
 
 ```sh
 $# mail -s "README" tony@tony.com
@@ -91,12 +107,10 @@ $# mail -s "README" tony@tony.com
 .           # ← 表示結束 or 按「Ctrl + D」
 
 EOT
-
-$#
 ```
 
 
-## Linux - dig
+## `dig`
 
 名稱查詢命令
 
@@ -135,5 +149,4 @@ www.pchome.com.tw.      300     IN      A       210.59.230.39   # 查詢到的�
 ;; SERVER: 192.168.2.115#53(192.168.2.115)                      # 本地使用的 DNS
 ;; WHEN: Mon Dec 24 14:06:44 CST 2018
 ;; MSG SIZE  rcvd: 62
-
 ```
