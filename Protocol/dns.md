@@ -1,10 +1,11 @@
 # DNS
+
 - 2018/06/12
+
 
 ## 名詞
 
 > Recursive (遞迴式) : DNS用戶端向DNS Server的查詢模式，這種方式是將要查詢的封包送出去問，就等待正確名稱的正確回應，這種方式只處理回應回來的封包是否是正確回應或是說是找不到該名稱的錯誤訊息。問的方式是用Iterative的方式。
-
 
 > Iterative（交談式）: DNS Server間的查詢模式，由Client端或是DNS Server上所發出去問，這種方式送封包出去問，所回應回來的資料不一定是最後正確的名稱位置，但也不是如上所說的回應回來是錯誤訊息，也許是另外一台DNS的位址(當該台DNS沒有答案時，會傳回一台 "權威授權者"DNS的位址)。再由Client或DNS自己向" 權威授權者"DNS詢問。 一般說來，name resolver對local DNS server都是recursive query，而DNS server之間的 query多是iterative。大部份的DNS server都可以接受recursive和iterative兩種query方式，但是考量負載問題，root name server只接受iterative query。
 
@@ -19,6 +20,7 @@
 
 > Fully Qualified Domain Name(FQDN):
 在 DNS NameSpace中, 節點的完整名稱. 轉換規則: 由下往上, 每層加「.」區隔
+
 
 ## DNS Namespace
 
@@ -37,13 +39,13 @@ Internet DNS Namespace(部分)
 |- ...
 ```
 
+
 ## Resource Record
 
 Zone Type            | Each Zone | Full content | Permission | Application
 -------------------- | --------- | ------------ | ---------- | --------------------
 paimary(Master file) | 1         | Y            | R/W        | 讓管理者管理 Zone 中的 Resource Record 提供 client 或其他 DNS Server 查詢
 secondary            | N         | Y            | Readonly   | 會分擔 Primary Zone 的 DNS Server(Master Server) 的負擔, 或在 Primary Zone 的 DNS Server 故障時仍能提供查詢
-
 
 
 # 名稱解析流程
@@ -67,8 +69,6 @@ secondary            | N         | Y            | Readonly   | 會分擔 Primary
 Ping 520-GG0006-1.tony.com [fe80::477:6844:2b45:5912%5] (使用 32 位元組的資料):
 回覆自 fe80::477:6844:2b45:5912%5: 時間<1ms
 ...
-
->
 ```
 
 2. [從 Resolver Cache 尋找](https://www.tenforums.com/tutorials/69648-display-dns-resolver-cache-windows.html) (動態快取(之前從 DNS 問到的))
@@ -110,8 +110,6 @@ Windows IP 設定
 Ping 140.137.200.141 (使用 32 位元組的資料):
 回覆自 140.137.200.141: 位元組=32 時間=119ms TTL=111
 ...
-
->
 ```
 
 3. 查詢 HOSTS (靜態快取(使用者自行增加))
@@ -121,8 +119,6 @@ Ping 140.137.200.141 (使用 32 位元組的資料):
 #
 127.0.0.1 localhost
 ::1 localhost
-
->
 ```
 
 4. 詢問 DNS Servrer
@@ -135,7 +131,6 @@ Ping 140.137.200.141 (使用 32 位元組的資料):
 
 
 ## Linux
-
 
 # GitLab page, DNS, SSL/TLS
 
@@ -152,4 +147,17 @@ Ping 140.137.200.141 (使用 32 位元組的資料):
 > 若使用 A 紀錄, 則直接把 TXT 紀錄 放在 domain 下. (Domain 還有其他用途)
 > 若使用 CNAME 紀錄, 則把 TXT 紀錄 放在 subdomain 下. (Domain 專門給 GitLab page)
 
-![](/img/A與CNAME.png)
+![AvsCNAME](../img/A與CNAME.png)
+
+
+## CNAME
+
+NAME               |  TYPE  | VALUE
+------------------ | ------ | --------------------
+bar.example.com.   | CNAME  | foo.example.com.
+foo.example.com.   | A      | 192.0.2.23
+
+上表的正確解讀應該是: `bar.example.com` 指向了 `foo.example.com`. 而且 `foo.example.com` 是 `bar.example.com` 的 CNAME!!  經常會被誤會成 bar 是 foo 的 CNAME!  CNAME 的意思是 真實名稱, 所以 `foo.example.com` 才是.
+
+- 左側標籤是右側真實名稱的一個同名
+- CNAME Record 總是指向另一則 domain
