@@ -112,16 +112,6 @@ EOT
 
 ## `dig`
 
-名稱查詢命令
-
-Type  | Description
------ | ----------------
-A     | IP
-MX    | 郵件伺服器
-NS    | 名稱伺服器
-PTR   | IP 反查名稱
-CNAME | 別名
-
 ```sh
 # dig 指令工具所屬的套件
 $# yum install -y bind-utils

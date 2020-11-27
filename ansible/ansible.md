@@ -30,7 +30,7 @@
 /etc
     /ansible/       # ansible 組態目錄
         /ansible.cfg    # ansible 設定主檔
-        /hosts          # ansible 自己管理的 主機清單
+        /hosts          # ansible 自己管理的 主機清單(Host Inventory)
         /roles/
 /usr/
     /share/             # 模組位置
