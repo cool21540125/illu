@@ -9,9 +9,6 @@
 
 Overview: 如何增加 Zabbix user
 
-- user: Admin (`Zabbix administrators`)
-- password: zabbix
-
 Zabbix administrators 群組的 Users, 可以在最上頭的 Tabs 看到 `Configuration` 及 `Administration`
 
 ## 新增使用者
@@ -23,18 +20,28 @@ Administration > Users > Create user > (輸入使用者資訊)
 - User: 個人基本資訊(密碼, 所屬群組, Theme(暗黑風格唷), 語系...)
 - Media: 報警方式(Email, SMS, ...) 及 Log-Level
 - Permissions: 可選擇目前 User 的 *User type* (預設: 使用者建立後, has no permissions to access hosts)
-    - 須前往 Users 裏頭, 點選 Groups 欄位裡的值(會跳到 User groups). 點選 Permissions Tab > Select (接著, 挑選這個使用者可以監控(Read-only) 的 Host groups)
+    - 須前往 User tab, 點選 Groups 欄位裡的值(會跳到 User groups). 點選 Permissions Tab > Select (接著, 挑選這個使用者可以監控(Read-only) 的 Host groups)
 
 後續就可以用這個使用者來做登入 && 監控
 
 
 # 2. New host
 
-Overview: 如何增加 被監控端. 任何的 physical server, network switch, VM, app 都可以是 被監控端.
+Overview: 如何增加 被監控端. 任何的資源, 都是可以被監控的
 
-Configuration > Hosts
+- physical server
+- network switch
+- VM
+- app
 
-這頁可以定義 被監控端 有哪些, 預設會有一個 **Zabbix server**(也就是 監控端本身, 預設定義了監控自己). 它的 Availability 出現 `紅色的 ZBX`(無法監控). 我這遇到的解法是, 把 SELinux 問題解決掉就沒問題了
+
+### Configuration > Hosts
+
+- 這頁可以定義 被監控端 有哪些, 預設會有一個 **Zabbix server**(預設監控自己)
+  - 若 Availability 出現 `紅色的 ZBX`(無法監控), 可能的問題是:
+    - SELinux
+    - 無法連到被監控端, port能通? (10050)
+
 
 Configuration > Hosts > Create host > (輸入被監控端)
 
