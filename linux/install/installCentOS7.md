@@ -1209,6 +1209,102 @@ sudo cp chromedriver /usr/local/bin
 $# yum install -y psmisc
 ```
 
+# Zabbix-Server
+
+- 2020/12/05
+- [官網](https://www.zabbix.com/download?zabbix=4.0&os_distribution=centos&os_version=7&db=mysql&ws=apache)
+
+所謂的 Zabbix, 只是個統稱, 它包含了底下三個元件:
+- zabbix-server
+- database
+- front-end
+
+
+Part 1. 安裝
+
+```bash
+### 安裝
+rpm -Uvh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-2.el7.noarch.rpm
+yum clean all
+
+yum install zabbix-get zabbix-agent zabbix-server-mysql zabbix-web-mysql mariadb-server
+# zabbix-get : 多半用來做 debug
+# zabbix-agent : 要被監控的一端要裝這個, 如果跟 zabbix-server 裝在同一台, 可以順便監控自己
+# zabbix-server-mysql : 算是安裝了 mysql driver for zabbix, 可同時用在 mysql && mariadb
+# zabbix-web-mysql : 前端
+```
+
+
+Part2. DB 部分
+
+```bash
+systemctl start mariadb
+mysql
+# Mariadb 預設可無密碼登入 root
+```
+
+```sql
+CREATE DATABASE zabbix CHARACTER SET UTF8 COLLATE utf8_bin;
+GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost IDENTIFIED BY 'zabbix';
+```
+
+```bash
+zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql zabbix
+# 建立 zabbix server 存資料的地方 && 倒 schema 進去
+```
+
+
+Part 3. 組態
+
+```bash
+cat /etc/zabbix/zabbix_server.conf
+sed -i 's/# DBPassword=/DBPassword=zabbix/' /etc/zabbix/zabbix_server.conf
+# ↑ 設定密碼
+```
+
+Part 4. 前端
+
+```bash
+cat /etc/httpd/conf.d/zabbix.conf
+sed -i 's/# php_value date.timezone Europe\/Riga/php_value date.timezone Asia\/Taipei/' /etc/httpd/conf.d/zabbix.conf
+# 修改預設時區
+
+```
+
+Part 5. 啟動
+
+```bash
+systemctl start httpd
+systemctl start zabbix-server
+
+```
+
+GO~
+- http://localhost/zabbix
+
+
+
+# zabbix-proxy
+
+前置步驟幾乎同 zabbix-server, 略
+
+```bash
+yum install -y zabbix-proxy-mysql
+```
+
+```sql
+create database zabbix_proxy character set utf8 collate utf8_bin;
+GRANT ALL PRIVILEGES on zabbix_proxy.* to zabbix@localhost IDENTIFIED BY 'zabbix';
+```
+
+```bash
+zcat /usr/share/doc/zabbix-proxy-mysql-*/schema.sql.gz | mysql zabbix_proxy
+### ↑ 初始化 DB
+
+sed -i 's/# DBPassword=/DBPassword=zabbix/' /etc/zabbix/zabbix_proxy.conf
+# 修改組態
+```
+
 
 # zabbix-agent
 
@@ -1234,6 +1330,7 @@ $# systemctl start zabbix-agent
 
 ### 防火牆, SELinux...
 ```
+
 
 # zabbix-server
 
