@@ -440,15 +440,14 @@ $# vim /etc/filebeat/filebeat.yml
 
 ```sh
 # 1. 編寫 yum repo 檔
-$ sudo vim /etc/yum.repos.d/mysql-community.repo
-###### 內容如下 ######
+cat <<"EOT" > /etc/yum.repos.d/mysql-community.repo
 [mysql57-community]
 name=MySQL 5.7 Community Server
 baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/7/$basearch/
 enabled=1
 gpgcheck=1
 gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql
-###### 內容如上 ######
+EOT
 
 # 2. Check Repo && Install
 $# yum repolist | grep mysql
@@ -1263,17 +1262,17 @@ $# systemctl start mysqld
 
 ```bash
 ### mysql 部分 (安裝完後)
-mysql> CREATE DATABASE zabbixdb CHARACTER SET UTF8;
-mysql> GRANT ALL PRIVILEGES on zabbixdb.* to zabbix@localhost IDENTIFIED BY 'password';
+mysql> CREATE DATABASE zabbix CHARACTER SET UTF8;
+mysql> GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost IDENTIFIED BY 'password';
 mysql> FLUSH PRIVILEGES;
-$# zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uroot -p zabbixdb
-$# zcat /usr/share/doc/zabbix-proxy-mysql*/schema.sql.gz | mysql -uroot -p zabbixdb
+$# zcat /usr/share/doc/zabbix-server-mysql*/create.sql.gz | mysql -uroot -p zabbix
+$# zcat /usr/share/doc/zabbix-proxy-mysql*/schema.sql.gz | mysql -uroot -p zabbix
 # 建立 zabbix server 存資料的地方 && 倒 schema 進去
 
 $# vim /etc/zabbix/zabbix_server.conf
 # ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
   DBHost=localhost
-  DBName=zabbixdb
+  DBName=zabbix
   DBUser=zabbix
   DBPassword=password
 # ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
