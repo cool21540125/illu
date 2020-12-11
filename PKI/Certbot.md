@@ -22,6 +22,8 @@ $# certbot certonly --manual --agree-tos \
 --server https://acme-v02.api.letsencrypt.org/directory
 # 接著不要急著按 Enter, 先到 DNS 加一筆 TXT record
 
+$# certbot certonly -d "$DOMAIN" -d *."$DOMAIN"
+
 $# certbot -h all
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 usage:
@@ -33,7 +35,7 @@ certificate. The most common SUBCOMMANDS and flags are:
 
 obtain, install, and renew certificates:
     (default) run   Obtain & install a certificate in your current webserver
-    certonly        Obtain or renew a certificate, but do not install it             # 只作申請憑證. 不要讓 certbot 主動幫忙安裝憑證到 Web Server(ex: 幫作 nginx.conf 相關配置)
+    certonly        Obtain or renew a certificate, but do not install it             # 只作申請憑證. 不要安裝憑證到 Web Server(ex: 幫作 nginx.conf 相關配置)
     renew           Renew all previously obtained certificates that are near expiry  # 重新更換先前 「已申請 && 即將到期」 的憑證
     enhance         Add security enhancements to your existing configuration
    -d DOMAINS       Comma-separated list of domains to obtain a certificate for
@@ -79,7 +81,7 @@ optional arguments:
                         Setting this flag to 0 disables log rotation entirely,
                         causing Certbot to always append to the same log file.
                         (default: 1000)
-  -n, --non-interactive, --noninteractive
+  -n, --non-interactive, --noninteractive  # 若要搭配 crontab, 就用這個來避免互動式詢問, 但若欠缺必要資訊, 仍會詢問
                         Run without ever asking for user input. This may
                         require additional command line flags; the client will
                         try to explain which ones are required if it finds one
@@ -311,7 +313,7 @@ certonly:
                         PEM format. Currently --csr only works with the
                         'certonly' subcommand. (default: None)
 
-renew:
+renew:  # renew 過程中, 分為 5 個時間點, 分別對應到 5 個 hook, 而這 5 個 hook, 可以分為 2 組
   The 'renew' subcommand will attempt to renew all certificates (or more
   precisely, certificate lineages) you have previously obtained if they are
   close to expiry, and print a summary of the results. By default, 'renew'
@@ -321,8 +323,9 @@ renew:
   `certonly` subcommand. Hooks are available to run commands before and
   after renewal; see https://certbot.eff.org/docs/using.html#renewal for
   more information on these.
-
-  --pre-hook PRE_HOOK   Command to be run in a shell before obtaining any
+  # renew 流程的第一組 hook 為 renew hook, 分別為底下接續的 3 個
+  --pre-hook PRE_HOOK   # 初始化 renew 前執行一次
+                        Command to be run in a shell before obtaining any
                         certificates. Intended primarily for renewal, where it
                         can be used to temporarily shut down a webserver that
                         might conflict with the standalone plugin. This will
@@ -330,7 +333,7 @@ renew:
                         obtained/renewed. When renewing several certificates
                         that have identical pre-hooks, only the first will be
                         executed. (default: None)
-  --post-hook POST_HOOK
+  --post-hook POST_HOOK  # 完成 renew 後執行一次
                         Command to be run in a shell after attempting to
                         obtain/renew certificates. Can be used to deploy
                         renewed certificates, or to restart any servers that
@@ -338,7 +341,7 @@ renew:
                         attempt was made to obtain/renew a certificate. If
                         multiple renewed certificates have identical post-
                         hooks, only one will be run. (default: None)
-  --deploy-hook DEPLOY_HOOK
+  --deploy-hook DEPLOY_HOOK  # 每取得一個憑證, 就執行一次
                         Command to be run in a shell once for each
                         successfully issued certificate. For this command, the
                         shell variable $RENEWED_LINEAGE will point to the
@@ -500,7 +503,7 @@ plugins:
   --dns-sakuracloud     Obtain certificates using a DNS TXT record (if you are
                         using Sakura Cloud for DNS). (default: False)
 
-manual:
+manual:  # renew 流程的第二組 hook 會搭配 manual 使用
   Authenticate through manual configuration or custom shell scripts. When
   using shell scripts, an authenticator script must be provided. The
   environment variables available to this script depend on the type of
@@ -511,11 +514,11 @@ manual:
   script can also be provided and can use the additional variable
   $CERTBOT_AUTH_OUTPUT which contains the stdout output from the auth
   script.
-
-  --manual-auth-hook MANUAL_AUTH_HOOK
-                        Path or command to execute for the authentication  # 指定幫忙處理 ACME channenge (認證) 的腳本
+  
+  --manual-auth-hook MANUAL_AUTH_HOOK  # 驗證測試前
+                        Path or command to execute for the authentication  # 指定幫忙處理 ACME channenge (認證) 的腳本 (ex: 增加 TXT record)
                         script (default: None)
-  --manual-cleanup-hook MANUAL_CLEANUP_HOOK
+  --manual-cleanup-hook MANUAL_CLEANUP_HOOK  # 驗證測試後 (此與 --manual-auth-hook 搭配使用, ex: 清除 TXT record)
                         Path or command to execute for the cleanup script
                         (default: None)
   --manual-public-ip-logging-ok  # (避免 REPL 詢問)
