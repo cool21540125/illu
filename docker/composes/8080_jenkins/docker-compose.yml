@@ -1,0 +1,14 @@
+version: "3"
+services:
+  jenkins:
+    image: jenkins/jenkins:2.263.1-lts-centos7
+    container_name: my_jenkins
+    restart: always
+    ports:
+      - "8089:8080"
+      - "50000:50000"
+    volumes:
+    - jenkins_data:/var/jenkins_home
+volumes:
+  jenkins_data:
+    name: jenkins_data
