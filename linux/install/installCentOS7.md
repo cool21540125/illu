@@ -576,8 +576,7 @@ Python 3.6.3 :: Anaconda, Inc.
 - [Official Redis](https://redis.io/download)
 - [cc not found 解法1](https://stackoverflow.com/questions/35634795/no-acceptable-c-compiler-found-in-path-while-installing-the-c-compiler)
 - [cc not found 解法2](https://unix.stackexchange.com/questions/287913/cc-command-not-found-when-compiling-a-pam-module-on-centos?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
-- [jemalloc not found 的解說1](https://blog.csdn.net/bugall/article/details/45914867)
-- [jemalloc not found 的解說2](http://www.ywnds.com/?p=6957)
+- [jemalloc not found 的解法](https://www.cnblogs.com/oxspirt/p/11392437.html)
 - [Linode - Install and Configure Redis on CentOS 7](https://www.linode.com/docs/databases/redis/install-and-configure-redis-on-centos-7/)
 
 
@@ -1308,12 +1307,11 @@ sed -i 's/# DBPassword=/DBPassword=zabbix/' /etc/zabbix/zabbix_proxy.conf
 
 # zabbix-agent
 
-- 2019/07/24
-- [How to Install Zabbix Agent on CentOS/RHEL 7/6](https://tecadmin.net/install-zabbix-agent-on-centos-rhel/)
+- 2020/12/25
+- [ZabbixOfficial-zabbix-packages](https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/)
 
 ```bash
-### 安裝 (2019/07 選擇 4.0 LTS)
-$# rpm -Uvh http://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-agent-4.0.10-1.el7.x86_64.rpm
+$# rpm -Uvh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-agent-4.0.27-1.el7.x86_64.rpm
 $# yum install zabbix-agent
 
 ### Config
