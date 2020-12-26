@@ -51,3 +51,27 @@ cat ~/.ssh/id_rsa.pub
 mkdir proj
 mkdir -p composes/drone composes/redis
 ```
+
+
+### AMI spec
+
+- i系列: (資源昂貴又有限)支援 `NVMe`, IOPS 超巨大. 但是開機之後 data 就不見了(被AWS回收了)
+- v系列: Memory優化
+
+
+### EBS spec
+
+- io: 優化磁碟 IO 操作, 可達 64000 iOPS, 但 $ 分成 `容量` && `IO數` 來計費
+    - io1
+    - io2
+- gp: IOPS 隨著 `容量` 增加(無法彈性選擇), 且 IOPS 最高也只有到 16000
+    -gp1 這種的好像已經沒了(2020/12)
+    -gp2
+    -gp3
+
+
+# Other
+
+額外補充(不知道該不該寫在這)
+
+AWS 似乎有支援 `ceph`(檔案系統), 可支援 `Object Storage` && `Block Storage`
