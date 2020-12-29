@@ -1,5 +1,17 @@
-# MYSQL user privileges(使用者權限 )
-- 2018/01/23
+# MYSQL user privileges(使用者權限)
+
+- 2020/12/26
+- [SHOW GRANTS Statement](https://dev.mysql.com/doc/refman/8.0/en/show-grants.html)
+
+
+
+```sql
+--;# 查詢使用者
+select user, host from mysql.user;
+
+--;# 查詢使用者權限
+show grants for 'root'@'localhost';
+```
 
 
 
