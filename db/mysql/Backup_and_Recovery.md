@@ -3,11 +3,13 @@
 - 2020/12/30
 
 MySQL 官方論壇, 參考 [MySQL Forums](https://forums.mysql.com/list.php?28)
+
 `mysqldump` 的指令使用, 參考 [mysqldump — A Database Backup Program](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)
     - 更多關於 SQL Statements, 參考 [Chapter 13 SQL Statements](https://dev.mysql.com/doc/refman/8.0/en/sql-statements.html)
 - 關於 InnoDB Backup, 參考 [InnoDB Backup](https://dev.mysql.com/doc/refman/8.0/en/innodb-backup.html)
 
-`MySQL InnoDB Cluster` 是一群 一同做事的 DB 們的集合, 可用來提供 HA solution. 一群 MySQL Servers 可透過 MySQL shell 來配置為同一個 cluster. cluster 內, 僅有唯一的 source, 也稱之為 primary, **acts as the read-write source**, 渠魚的 secondary servers are replicas of the source. 
+`MySQL InnoDB Cluster` 是一群 一同做事的 DB 們的集合, 可用來提供 HA solution. 一群 MySQL Servers 可透過 MySQL shell 來配置為同一個 cluster. 
+- cluster 內, 僅有唯一的 source, 也稱之為 primary, **acts as the read-write source**, 其餘的 secondary servers are replicas of the source. 
 - 若要創建 HA cluster, 最起碼需要 3 台.
 - Client application 透過 MySQL Router 連接到 primary. 如果 primary 掛了, secondary 會自動升級為 primary, MySQL Router 會將請求路由到 new primary.
 

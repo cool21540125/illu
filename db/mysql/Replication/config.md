@@ -34,7 +34,3 @@ SHOW VARIABLES LIKE 'server_id';
 CREATE USER 'repl'@'%.example.com' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%.example.com';
 ```
-
-
-
-TODO: 繼續閱讀 replica, 2020/12/30 - [Setting Up Replicas](https://dev.mysql.com/doc/refman/8.0/en/replication-setup-replicas.html#replication-howto-newservers)

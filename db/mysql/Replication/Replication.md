@@ -51,12 +51,9 @@ source 會針對 write updates 作為事件, 將此動作記錄到 binlog. Repli
     - Replicas 會收到 binlog 的副本. 預設上, 他的任務就是去執行 binlog 所有的 write update. 但可自行配置 僅限於特定DB or tables 作 replication. (但無法配置 那些事件要被記錄到 binlog)
     - 因為 replicas 有紀錄 source 上頭的 log file && position, 所以可以 disconnected, reconnect and then resume processing.
     - source && replica 必須配置 system variable: `server_id` (Unique)
-    - replicas 也需要透過 `CHANGE MASTER TO ...` 來聲明 source 位置. 
+    - replicas 也需要透過 `CHANGE MASTER TO` 來聲明 source 位置. 
     - Replication 詳細資訊, 會儲存在 replica 上的 metadata repository, 參考 [Relay Log and Replication Metadata Repositories](https://dev.mysql.com/doc/refman/8.0/en/replica-logs.html)
 
-[Setting the Source Configuration on the Replica](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-slaveinit.html)
-- 如果要在全新機器上設定 Replication, 參考 [Setting Up Replication with New Source and Replicas](https://dev.mysql.com/doc/refman/8.0/en/replication-setup-replicas.html#replication-howto-newservers)
-- 如果要在運行一陣子後的機器增加 replicas, 參考 [Adding Replicas to a Replication Environment](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-additionalslaves.html)
 
 binlog replication 過程中
 - All servers, 預設有 enable binary log. replicas 節點上, 沒必要啟用 binlog, 但若啟用, 可用來作 **data backups** && **crash recovery**
@@ -66,8 +63,26 @@ binlog replication 過程中
     - 關於 replica 的相關 SQL, 參考 [SQL Statements for Controlling Replica Servers](https://dev.mysql.com/doc/refman/8.0/en/replication-statements-replica.html)
 - 針對 replication 過程額外創建一個用戶, 參考 [Creating a User for Replication](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-repuser.html)
 - 開始前, source 需紀錄目前的 binlog position, 此用來讓 replicas 知道該從哪邊開始. 參考 [Obtaining the Replication Source Binary Log Coordinates](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-masterstatus.html)
-    - 如果已有data, 參考 [Choosing a Method for Data Snapshots](https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html)
+    - replica 的設定指令: `CHANGE MASTER TO`, 參考 [Setting the Source Configuration on the Replica](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-slaveinit.html)
+        - 關於 `CHANGE MASTER TO` 更細部的所有指令, 參考 [CHANGE MASTER TO Statement](https://dev.mysql.com/doc/refman/8.0/en/change-master-to.html)
+    - 已有 data 在 source 上面 && service running,
+        - 先執行 [FLUSH TABLES WITH READ LOCK](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 來停止 InnoDB 作 COMMIT
+        - 開始進行後續配置:
+            - 要在已有 data 的 source server, 增加 replica, 必須把 source 上的資料同步到其他 replica 上, 可參考下面作法:
+                - 使用 `mysqldump`, 特別是 InnoDB.
+                    - 在 source 上面, 使用 `mysqldump --all-databases --master-data > dbdump.db`
+                    - --all-databases, 把所有 database dump 出來
+                    - --master-data, 一併把 `CHANGE MASTER TO` 的資訊也倒出來, 參考 [--master-data](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_master-data)
+                    - 如果只要 dump 特定 DB, 把 `--all-databases` 取代為 [--databases](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_databases)
+                    - 若要排除特定 table, 則使用 [--ignore-table](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_ignore-table)
+                    - 前提是, 運行的 source server 已經 stop 或者 block 了
+                    - 關於使用 mysqldump 來作 DB backup, 參考 [mysqldump — A Database Backup Program](https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html)
+                    - 若資料為 binary, 不要使用 mysqldump. 將 raw data files 複製到 replica 上面(可以省去 overhead of updating indexes as the INSERT statements). Engine 非為 InnoDB, 也別用此方法
+                    - 若要把資料 dump 到 Raw Data File, 再進入該網頁, 搜尋 「Creating a Data Snapshot Using Raw Data Files」
+            - 若使用 GTIDs, 再進來裡面找 'GTIDs' 看說明, 參考 [Choosing a Method for Data Snapshots](https://dev.mysql.com/doc/refman/8.0/en/replication-snapshot-method.html)
     - 如果使用新DB, 參考 [Setting Up Replication with New Source and Replicas](https://dev.mysql.com/doc/refman/8.0/en/replication-setup-replicas.html#replication-howto-newservers)
+        - TODO: 他奶的... 這邊看不是很懂, 到底在寫三小....
+    - 如果要在運行一陣子後的機器增加 replicas, 參考 [Adding Replicas to a Replication Environment](https://dev.mysql.com/doc/refman/8.0/en/replication-howto-additionalslaves.html)
 - 不同的 Database Engine 之間的 replication 流程不進相同, 如下:
     - InnoDB, 參考 [InnoDB and MySQL Replication](https://dev.mysql.com/doc/refman/8.0/en/innodb-and-mysql-replication.html)
     - MyISAM, 遇到再說
