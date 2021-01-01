@@ -56,6 +56,7 @@
 - stub : 存根
 - throughput : 吞吐量
 - tilde : 波浪號
+- throttle : 節流控制器. 軟體方面, 可用來約束像是特定使用者, 一天只能請求一次
 - under the hood : 在引擎蓋底下(有點封裝的概念, 複雜的細節人家幫你包好了)
 - unmarshal: 解組
 - validate : 驗證

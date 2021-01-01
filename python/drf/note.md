@@ -1,11 +1,3 @@
-
-
-
-# noums
-
-- throttle : [限流](https://www.django-rest-framework.org/api-guide/throttling/)
-
-
 # Views
 
 - [Class-based Views](https://www.django-rest-framework.org/api-guide/views/#api-policy-instantiation-methods)
@@ -23,7 +15,7 @@ DRF 的 `class Based view` 處理了:
 - 任何的 APIException
 - 先做 verify, auth, identity, 再來處理 request
 
-`(DRF)APIView` 繼承自 `(Django)View`
+`drf APIView` extends `dj View`
 
 #### DRF View 屬性
 
@@ -36,9 +28,9 @@ from rest_framework import authentication, permissions
 #### API Policy 實例方法:
 
 ```py
-.get_permissions(self)  # @@
-.get_throttles(self)  # @@
-.get_content_negotiator(self)  # @@
+.get_permissions(self)  # @@1
+.get_throttles(self)  # @@2
+.get_content_negotiator(self)  # @@3
 .get_renderers(self)
 .get_parses(self)
 .get_authenticators(self)
@@ -50,9 +42,9 @@ from rest_framework import authentication, permissions
 驅動 handlers 之前, 會優先調用 (應該就是調用上面的 @@)
 
 ```py
-.check_permissions(self, request)
-.check_throttles(self, request)
-.perform_content_negotiation(self, request, force=False)
+.check_permissions(self, request)  # @@1
+.check_throttles(self, request)  # @@2
+.perform_content_negotiation(self, request, force=False)  # @@3
 ```
 
 
