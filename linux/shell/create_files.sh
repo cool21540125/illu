@@ -2,7 +2,7 @@
 # 2018/04/11
 # 
 
-echo -e "建立檔案~"
+echo "建立檔案~"
 read -p "Your name: " user
 
 # 為了避免隨意按 Enter, 利用變數功能分析檔名是否有設定

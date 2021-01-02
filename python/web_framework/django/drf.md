@@ -1,7 +1,6 @@
-# Django REST framework
-
 - 2018/08/12 v3.8.2
 - 2020/03/30 v3.11.0
+- 2020/12/20 v3.12.2
 
 
 ## Request && Response
@@ -129,3 +128,9 @@ RemoteUser     | Django User  | None
 反序列化
 
 > 透過 `strm = io.BytesIO(bu); data = JSONParser().parse(strm)` 可反序列化回 Python native datatypes(dict)
+
+
+
+# noums
+
+- throttle : [限流](https://www.django-rest-framework.org/api-guide/throttling/)
