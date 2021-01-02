@@ -661,3 +661,11 @@ postgres    25  0.0  0.8 330920 139896 ?       Ss   Mar24   1:27 postgres: check
 postgres    26  0.0  0.8 330620 138256 ?       Ss   Mar24   4:49 postgres: background writer
 # ...(超多)...f
 ```
+
+
+# Knowledgement
+
+- Container 網路專案 : libnetwork
+- Docker 的容器叢集管理平台 - Kubernetes
+- 服務探查(Service discovery) 的 鍵值儲存系統 Etcd
+- 容器監控平台: Cadvisor

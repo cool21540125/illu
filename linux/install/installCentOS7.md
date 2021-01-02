@@ -429,6 +429,24 @@ $# yum install filebeat
 $# vim /etc/filebeat/filebeat.yml
 ```
 
+# MySQL Community 8.0
+
+- 2020/12/31
+
+```sh
+rpm -ivh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+yum -y install mysql-community-server
+
+systemctl start mysqld
+grep 'password' /var/log/mysqld.log
+# 取得 root 密碼
+
+mysql -uroot -p
+# root 密碼
+
+# 因為最一開始有密碼政策, 所以底下的密碼需要設的比較複雜一點才能過~
+ALTER USER 'root'@'localhost' IDENTIFIED BY '<new password>';
+```
 
 
 # MySQL Community 5.7
@@ -481,7 +499,6 @@ GRANT ALL ON *.* TO 'tony'@'%';
 create user 'demo'@'localhost' identified by '00';
 grant all on *.* to 'demo'@'localhost';
 ```
-
 
 
 # MongoDB CE
@@ -1244,7 +1261,7 @@ mysql
 
 ```sql
 CREATE DATABASE zabbix CHARACTER SET UTF8 COLLATE utf8_bin;
-GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost IDENTIFIED BY 'zabbix';
+GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost;
 ```
 
 ```bash

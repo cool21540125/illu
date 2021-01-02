@@ -1,0 +1,14 @@
+# 2021/01/02 - 2.263
+version: "3"
+services:
+  jenkins:
+    image: docker pull jenkins/jenkins:2.263.1-lts-centos7
+    container_name: myjenkins
+    restart: always
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+    - jenkins_data:/var/jenkins_home
+volumes:
+  jenkins_data:

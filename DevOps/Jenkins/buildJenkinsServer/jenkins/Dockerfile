@@ -1,1 +1,0 @@
-FROM jenkins/jenkins:2.203-alpine

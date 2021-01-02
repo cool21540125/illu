@@ -7,7 +7,7 @@
 ## Ports
 
 - 80:    Web GUI
-- 10050: 資料傳遞(傳送) (Zabbix Agent 使用)
+- 10050: zabbix-server 會藉由此 port, 來到 zabbix-agent 抓資料
 - 10051: 藉由此 port 接收 監控數據
 
 
@@ -39,6 +39,7 @@ $# zabbix_get -h
 ### Usage
 $# zabbix_get -s 127.0.0.1 -p 10050 -k "system.cpu.load[all,avg15]"
 0.060000
+# NOTE: zabbix_get 無法使用 localhost, 必須使用 127.0.0.1 && 無法透過 /etc/hosts 來用名稱來解析 IP!!
 
 $# zabbix_get -s 127.0.0.1 -p 10050 -k "mysql.version"
 mysql  Ver 14.14 Distrib 5.7.27, for Linux (x86_64) using  EditLine wrapper
