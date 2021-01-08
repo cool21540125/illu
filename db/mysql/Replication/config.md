@@ -4,12 +4,13 @@
 ```sh
 ### /etc/my.cnf
 
+[mysqld]
 # For the greatest possible durability and consistency in a replication setup using InnoDB with transactions
 innodb_flush_log_at_trx_commit=1
 sync_binlog=1
 
 # 若設置為0, 也在合理範圍內, 但此不允許 replicas 來作 replication
-server-id=1
+server_id=1
 # 使用 server_id OR server-id, 有一樣的結果
 
 # 務必確保底下這個沒有被 ON 起來(default OFF)
@@ -21,16 +22,17 @@ server-id=1
 
 ```sh
 ### /etc/my.cnf
-server-id=2
+server_id=2
 ```
 
 
 ## 相關指令
 
 ```sql
-SET GLOBAL server_id = 21;
+SET GLOBAL server_id = 21;    --#; MySQL run time 改變server_id
 SHOW VARIABLES LIKE 'server_id';
 
+--#; 建立 專門用來做 Replication 的用戶
 CREATE USER 'repl'@'%.example.com' IDENTIFIED BY 'password';
 GRANT REPLICATION SLAVE ON *.* TO 'repl'@'%.example.com';
 ```

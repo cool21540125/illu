@@ -98,11 +98,14 @@ $ ip -s link show enp1s0
     23762562   261538   0       0       0       0
 
 # 查看 網路介面 路由資訊
-$ ip route
+$ ip route show   # 可省略 show
 default via 192.168.124.254 dev enp1s0 proto static metric 100
 192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1
 192.168.124.0/24 dev enp1s0 proto kernel scope link src 192.168.124.73 metric 100
-# 其餘流量, 藉由 enp1s0, 會送到 Default Router:192.168.124.254
+# proto: 此 route 的 route protocol, 有 redirect, kernel, boot, static, ra, ...
+#    - kernel, 直接由 核心(kernel) 判斷自動設定
+# scope: routing 的範圍. 主要為 link, 也就是與 本裝置 有關的 直接連線.
+# 藉由 enp1s0, 會送到 Default Router:192.168.124.254
 # 前往 192.168.122.0/24 的流量會藉由 virbr0
 # 前往 192.168.124.0/24 的流量會藉由 enp1s0
 ```

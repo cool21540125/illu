@@ -18,7 +18,6 @@
 
 # 網路相關 CLI
 
-
 ## 觀察主機路由: `route`
 
 ```bash
@@ -30,16 +29,13 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 172.21.0.0      0.0.0.0         255.255.0.0     U     0      0        0 br-d27f48aadef3
 192.168.0.0     0.0.0.0         255.255.255.0   U     100    0        0 eth0
 
-
 # Destination     Gateway    Genmask      Flags              Metric     Ref    Use Iface
 # 目的 Network    0.0.0.0      mask         ↓                    ?       ?      Interface
-#                   或                    U: 路由可用
-#                   *                     G: 該 Network 須經由 gw 幫忙轉遞
-#                 直接藉由 Iface 發送      H: 該路由為 Host, 而非 Network
-
-
+#                   或                    U: 路由是啟動的
+#                   *                     G: 需透過 外部主機(Gateway) 來 轉發封包
+#                 直接藉由 Iface 發送      H: 該路由為 Host, 而非 Network (目標為Host, 非Network)
+#                                         !: 此路由不會被接受(用來抵擋不安全的網域)
 ```
-
 
 
 ## `traceroute`
