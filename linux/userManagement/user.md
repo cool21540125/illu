@@ -174,7 +174,7 @@ drwxrws---. 2 root shared 15  7月 14 15:41 /home/shared/
 # 遞迴修改 dir 內所有權限
 $# chmod -R g+rwX <dir Name>
 # 裏頭的 「X」
-# 確保 x 權限指套用到 dir (資料夾都進得去)
+# 確保 x 權限只套用到 dir (資料夾都進得去)
 # 而不套用到 file (檔案不應該預設可執行)
 ```
 

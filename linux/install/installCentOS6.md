@@ -8,11 +8,10 @@
 # 讓使用者成為 pu
 
 ```sh
-$# chmod u+w /etc/sudoers
 $# vim /etc/sudoers
 # 於ALL=(ALL)   ALL下一行增加
 <user>=(ALL)   ALL
-# 存檔離開
+# 「:x!」強制存檔離開
 
 # 如果覺得每次都要打密碼很麻煩 把下列寫入即可
 tony ALL=(ALL) NOPASSWD: ALL
