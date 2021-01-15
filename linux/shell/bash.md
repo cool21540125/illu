@@ -295,8 +295,9 @@ Note: 載入 環境變數 設定檔的指令, `source ~/.bashrc` 與 `. ~/.bashr
 
 ## 1. login shell (取得登入資訊)
 
-登入後, 取得 bash 的讀取架構
-```
+登入後, 取得 bash 的讀取順序
+
+```sh
    # 1 系統設定檔
 |- /etc/profile
 |      |
@@ -304,8 +305,11 @@ Note: 載入 環境變數 設定檔的指令, `source ~/.bashrc` 與 `. ~/.bashr
 |      |- /etc/locale.conf                         : 由 /etc/profile.d/lang.sh 呼叫存取, 決定 LANG 採用的語系
 |      |- /usr/share/bash-completion/completions/* : 各種語法補齊檔, 由 /etc/profile.d/bash_completion.sh 呼叫
 |
-|  # 2 使用者偏好設定檔 (依序只讀取一個)
-|-「~/.bash_profile」 或 「~/.bash_login」 或 「~/.profile」
+|  # 2 使用者偏好設定檔 (依照順序, 只讀取一個, 若存在的話就先採用了)
+|- ${HOME}
+    |-   ~/.bash_profile
+    |-   ~/.bash_login
+    |-   ~/.profile
 ```
 
 ## 2. non-login shell
