@@ -1,10 +1,34 @@
 # 程序管理
 
-[觀察程序 ps](http://linux.vbird.org/linux_basic/0440processcontrol.php#ps)
+任何程式(放在 disk 上), 只要一被執行, 就會變成 程序(process) (放在 RAM 裡面)
 
-- `ps` 指令, 使用來 `listing current processes`
+而任何的程序, 都會有它專屬的 Process ID (PID)
+
+而所有的 PID, 都是由它的 `父程序 PPID` 來作觸發
+
+ex: 使用者登入後, 取得的就是個 bash 這個工作環境, 這也是個程序, 下任何指令的話, 這些指令的 PPID 都是 使用者當前存在的這個 bash
+
+↑ 這些都是在 Terminal 的前景處理
+
+- 任何程序, 都可在指令的最後面, 加上 `&`, 讓它在背景執行 (Running)
+- 前景程序, 可用 `Ctrl + z` 把它 `丟到背景 && 暫停作業` (Running → Stopped)
+- 已被暫停的背景程序, 可用 `bg %{JOB NUMBER}` 來讓它在 背景執行 (Stopped → Running)
+- 背景程序, 可用 `fg {JOB NUMBER}` 把它取回前景來處理
+- 可用 `jobs` 來列出 **背景工作的狀態**
+        - jobs -l : 除了列出 job number, 也會列出 PID
+        - jobs -r : 只列出 Running
+        - jobs -s : 只列出 Stopped
+- 可使用 `kill` 來移除 **背景工作**
+
+上面所說的 **bash 的背景**(會隨著 Terminal 關掉而結束(因為是他們的 PPID 阿)), 如果要把工作丟到 **系統背景**, 可使用 `nohup`
+
+系統背景, 就像是 `crontab` 與 `at`
+
+除了 `nohup` 以外, 也可參考 `screen` 的使用方式
+
 
 ## ps option format
+
 1. UNIX(POSIX) options : 「-」開頭
 2. BSD options         : 不可為「-」開頭
 3. GUN long options    : 「--」開頭
