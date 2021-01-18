@@ -35,7 +35,7 @@ ex: 使用者登入後, 取得的就是個 bash 這個工作環境, 這也是個
 
 ```sh
 $ ps aux        # u : 看到 user name
-$ ps alx        # l :
+$ ps alx        # l : 列出更詳細的 PID 資訊
 $ ps afx
 
 $ pstree -p
@@ -43,15 +43,60 @@ $ pstree -p
 
 $ ps au --sort=...      # 指定排序欄位
 
-# 只能查閱自己的 bash程序
-$ ps -l
+# 只能查閱自己的 bash程序 -----------------------------------------
+$# ps -l
+F S   UID   PID  PPID  C PRI  NI ADDR SZ WCHAN  TTY          TIME CMD
+4 S     0 26778 26743  0  80   0 - 60341 poll_s pts/1    00:00:00 sudo
+4 S     0 26780 26778  0  80   0 - 28984 do_wai pts/1    00:00:00 bash
+0 R     0 27948 26780  0  80   0 - 38331 -      pts/1    00:00:00 ps
+# F: pass
+# S:
+#    R: Running
+#    S: Sleep, idle 狀態, 可被喚醒
+#    D: 不可被喚醒的 idle 狀態, ex: 等候列印
+#    T: Stop. ex: 背景暫停, debug traced 狀態
+#    Z: Zombie, Process 已經掛了, 但依舊卡在 Memory
+# UID: Process 的擁有者
+# PID: Process ID
+# PPID: Process Parent ID
+# C: CPU 使用率(%)
+# PRI: Priority
+# NI: Nice
+# ADDR: 如果是 Running, 一般都是 「-」(Memory related)
+# SZ: 此 Process 用掉多少 memory (Memory related)
+# WCHAN: 若為運作中, 一般都是 「-」(Memory related)
+# TTY: 終端介面
+# TIME: 此 Process 用掉 system 多少時間
+# CMD: 
+
+$#
+# --------------------------------------------------------------
 
 # 查閱所有系統運作的程序
-$ ps aux
+$# ps aux
 # a: 所有 user
 # u: user name 欄位
 # l: UID 欄位
 # x: 背景程序(會有超多)
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         1  0.0  0.5 193524  5512 ?        Ss    1月13   0:06 /usr/lib/systemd/syst
+......
+# USER: Process owner
+# %MEM: Process 所佔用的實體記憶體%
+# VSZ: Process 使用掉的 虛擬記憶體
+# RSS: Process 佔用的 固定記憶體
+# TTY: Proce3ss 所在 Terminal. 若為 pts/0 等等, 則為網路連線來的
+# STAT: 程序的狀態, 有 R/S/T/Z
+
+$#
+```
+
+Zombie
+
+```sh
+$# ps aux
+xxx xxx  xxxxxx  ..... xxx <defunct>
+# 如果 ps 後看到了上面的 defunct, 表示此為 Zombie Process 
 ```
 
 
@@ -81,18 +126,6 @@ $ ps aux | grep mysqld
 USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 tony       919  0.0  0.0 112668   964 pts/0    S+   21:36   0:00 grep --color=auto mysqld
 mysql     2941  0.1  4.9 1248528 186788 ?      Sl    3月01   1:52 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
-#           重點
-# USER      Y       Process Owner
-# PID       Y       Process ID
-# %CPU              CUP usage %
-# %MEM              Memory usage %
-# VSZ               虛擬Memory usage (KB)
-# RSS               固定佔用的Memory (KB)
-# TTY               Process is from which Terminal(若為系統服務, 則為 ?)
-# STAT              Process目前狀態. S:休眠中; R:執行中
-# START             Process被啟動的日期
-# TIME              實際使用CPU時間
-# COMMAND   Y       Process的命令
 
 # 樹狀結構列出 System Procss
 $ pstree
