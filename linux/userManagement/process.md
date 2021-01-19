@@ -159,24 +159,24 @@ F   UID   PID  PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
 
 <img src="../../img/top.jpg" style="width:480px; height:320px;" />
 
-```
+```sh
 # 第一行
 top - 14:53:56                                  目前時間
 up 3:47                                         累積開機時間
 load average: 0.84, 0.82, 0.70                  系統每 1, 5, 15分鐘平均執行的行程數
 ```
 
-top後操作指令 | 說明 |
---- | --- |
-h | Help |
-P | 依據CPU使用時間排序 |
-M | 依據記憶體使用量排序 |
-T | 依據執行時間排序 |
-N | 依據PID大小排序 |
-u | 只列出該帳號的程序 |
-k | 刪除 |
-d | 更新秒數 |
-q | 離開 |
+top後操作指令 | 說明
+------------ | ------------------------
+h            | Help
+P            | 依據CPU使用時間排序
+M            | 依據記憶體使用量排序
+T            | 依據執行時間排序
+N            | 依據PID大小排序
+u            | 只列出該帳號的程序
+k            | 刪除
+d            | 更新秒數
+q            | 離開
 
 
 ## jobs 工作管理 && fg

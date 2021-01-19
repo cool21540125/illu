@@ -237,18 +237,6 @@ ONBOOT=no           # 開機是否啟用此網路卡
 ## nmcli - 查看 network information
 
 ```sh
-nmcli con show
-nmcli con add
-nmcli con modify
-nmcli con up
-nmcli con down     # 較不建議用此中斷連線
-nmcli con delete
-nmcli dev status
-nmcli dev show
-nmcli dev connect
-nmcli dev disconnect   # 建議用此中斷連線
-nmcli net off
-
 # 顯示網卡資訊
 $ nmcli dev status
 DEVICE           TYPE      STATE       CONNECTION
@@ -362,4 +350,24 @@ NEW_CONN=auto
 IFNAME=eth0
 nmcli con add con-name ${NEW_CONN} ifname ${IFNAME} type ethernet ipv4.method auto autoconnect yes
 nmcli con up ${NEW_CONN}
+```
+
+
+### 手動設定 IP
+
+```bash
+CONN=fixed
+IP4=172.17.91.94/28
+GW4=172.17.91.81
+
+
+nmcli con add con-name ${CONN} ifname eth0 type ethernet ipv4.method manual ipv4.addresses ${IP4} ipv4. autoconnect yes
+nmcli con up ${CONN}
+
+nmcli con mod ${CONN} ipv4.addresses 
+
+nmcli con mod eth0 autoconnect no
+
+nmcli con up ${CONN}
+
 ```

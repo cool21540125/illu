@@ -373,6 +373,7 @@ CentOS6 以前, 無法這麼做, 權限設定在 `/etc/sudoers`
 ### 不要這麼做!!
 vim /etc/sudoers
 # 改壞了的話, sudo 指令會出問題
+tony ALL=(ALL) NOPASSWD: ALL
 
 ### 改用這樣做!!
 visudo
