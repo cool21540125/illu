@@ -11,17 +11,17 @@ RUN 用在 Image 的 Build time (用來 Commit Intermediate Layer), 於 Containe
 
 RUN 有兩種格式: 
 
-- `RUN <command>` *shell form*
-    - 此命令會在一個 shell 中執行
-        - 預設的 shell 為 `/bin/sh -c`(Linux) 或 `cmd /S /C`(Win)
-        - 存取環境變數, 是由 docker 所處理
-- `RUN ["executable", "param1", "param2"]` *exec form*
+- *exec form*: `RUN ["executable", "param1", "param2"]`
     - 並沒有 shell 的環境, 所以不能直接讀取環境變數(只能手動實作)
         - 存取環境變數, 是由 shell 所處理
         - ex: `RUN ["/bin/sh", "-c", "echo $HOME"]`
     - 此會被轉譯成 JSON array, 因此必須使用 "", 而非 ''
         - 若轉譯失敗, 會被視為 *shell form*
         - 尤其是在 win, 關於路徑, 要留意路徑轉譯的問題
+- *shell form*: `RUN <command>`
+    - 此命令會在一個 shell 中執行
+        - 預設的 shell 為 `/bin/sh -c`(Linux) 或 `cmd /S /C`(Win)
+        - 存取環境變數, 是由 docker 所處理
 
 ------
 
@@ -48,19 +48,83 @@ CMD 用於 Container runtime 的預設動作, 於 Image Build time 並不會執�
 
 有 2 種玩法:
 
-- `CMD ["xxx", "xxx"]`, *exec form*, 又可分為兩種. 此外, 記得裡頭必須使用 "", 而非 '':
-    - `CMD ["executable","param1","param2"]`
-    - `CMD ["param1","param2"]` 
-        - 這種玩法會把 CMD 提供的 params, 作為 `ENTRYPOINT` 的預設參數
-- `CMD command param1 param2` *shell form*
+- *exec form*: `CMD ["xxx", "xxx"]`
+    - 建議用此格式, 可與 `ENTRYPOINT`(也須為 *exec form*) 搭配使用
+    - 不會以 `/bin/sh -c` ˋ執行. 因此無法直接讀取 環境變數. 只能自行實作:
+        - ex: `CMD ["/bin/sh", "-c", "echo $HOME"]`
+    - 又可分為 2 種用法:
+        - `CMD ["executable","param1","param2"]`
+        - `CMD ["param1","param2"]`
+            - 把 CMD 提供的 params, 作為 `ENTRYPOINT` 的預設參數
+            - 前提條件是, ENTRYPOINT 也是使用 *exec form*
+- *shell form*: `CMD command param1 param2`
+    - 預設以 `/bin/sh -c` 執行. docker 直接處理 shell, 因此可 直接取得環境變數 當作參數傳入
+    - 此形式將無法搭配 `ENTRYPOINT`
 
-- 若使用 *exec form*, 則 `CMD` 可與 `ENTRYPOINT` 階段合併使用
-    - (都要使用 *exec form*)合併後, 可產生 ENTRYPOINT + CMD 所描述的命令結合
+#### [ENTRYPOINT](https://docs.docker.com/engine/reference/builder/#entrypoint)
+
+- [Dockerfile中的ENTRYPOINT](https://medium.com/@xyz030206/dockerfile-%E4%B8%AD%E7%9A%84-entrypoint-9653c3b2d2f8)
+- [Running Custom Scripts In Docker With Arguments – ENTRYPOINT Vs CMD](https://devopscube.com/run-scripts-docker-arguments/)
+
+用來定義 Container 運行起來的時候, 用來 run 的 executable
+
+- 可使用 `docker run --entrypoint` 來覆寫 `ENTRYPOINT`
+- 若有多個 `ENTRYPOINT`, 僅最後一個有效
+
+有兩種玩法:
+- *exec form*: `ENTRYPOINT ["executable", "param1", "param2"]`
+    - 建議用此格式, 可與 `CMD`(也須為 *exec form*) 搭配使用
+    - 不會以 `/bin/sh -c` ˋ執行. 因此無法直接讀取 環境變數. 只能自行實作:
+        - ex: `ENTRYPOINT ["/bin/sh", "-c", "echo $HOME"]`
+    - `docker run <image> -d`, 來將後續做為參數, 此將採用 *exec form*, 用來覆寫 `CMD`
+- *shell form*: `ENTRYPOINT command param1 param2`  ((底下讀的不是很懂, 因此可能有錯))
+    - 預設以 `/bin/sh -c` 執行. docker 直接處理 shell, 因此可 直接取得環境變數 當作參數傳入
+    - 此形式將無法搭配 `CMD`, 且也無法藉由 `docker run` 的方式來傳遞參數.
+    - 缺點: `ENTRYPOINT` 將會作為 `/bin/sh -c` 的子命令來啟動, 且不會傳遞 Signals.
+        - 也就是說, 這個 executable 將不會是 Container 裡面的 **PID 1**, 且無法收到 Unix Signals.
+        - 因此, 無法藉由 `docker stop <container>` 來接收到 SIGTERM 的訊號
+
+```dockerfile
+FROM centos:7
+ENTRYPOINT ["curl"]
+CMD ["-I", "https://google.com"]
+```
+
+來試試看吧
+
+```sh
+docker build -t demo .
+
+docker run --rm demo
+# 預設向 google.com 發送請球, 擷取 header
+
+docker run --rm demo -v https://tw.yahoo.com/
+# 改變預設, 向 tw.yahoo.com 發送請求, 取得詳細資料
+```
 
 
 #### [ADD](https://docs.docker.com/engine/reference/builder/#add)
 
+src 可使用 URL, 參考下面用法:
 
+```dockerfile
+FROM scratch
+ADD https://github.com/CentOS/sig-cloud-instance-images/raw/b2d195220e1c5b181427c3172829c23ab9cd27eb/docker/centos-7-x86_64-docker.tar.xz /
+CMD ["/bin/bash"]
+```
+
+
+#### [COPY](https://docs.docker.com/engine/reference/builder/#copy)
+
+- 基本上許多地方與 `ADD` 差不多, 但無法使用 URL 作為 src
+- src 只能是相對於 context 底下的路徑
+- src 如果是個 dir, 則會連同底下的東西全部 copy 到 Container (包含 filesystem metadata)
+    - dir 不會被 copy, 只有內容會
+- 若 src 為 file, dest 結尾多了個 /, 則會被視為放到 `dest/file`
+- 若 src 指定了多個檔案, 則 dest 必須為 / 結尾
+- 若 src 為 file, dest 沒有 / 結尾, 則會被視為寫入到 `dest` (file)
+- 若 dest 路徑不存在, 則整個結構會被建立
+- 關於 COPY, 也有 cache 的問題, 遇到再說
 
 
 #### [FROM](https://docs.docker.com/engine/reference/builder/#from)
