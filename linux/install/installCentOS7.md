@@ -62,6 +62,137 @@ $# sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/d
 ```
 
 
+## Linux的軟體管理員 - yum
+
+> 解決 rpm安裝時, 套件相依性的問題
+
+```sh
+$ yum install <套件名稱>
+
+$ yum update <套件名稱>
+
+$ yum remove <套件名稱>
+
+$ yum searcn <套件名稱>
+# 搜尋 YUM Server上的特定套件
+
+$ yum list
+# 列出 YUM Server上的所有套件資訊, 套件名稱, 版本, 是否已經安裝...
+
+# 列出 系統可用的 yum套件庫
+$ yum repolist
+Loaded plugins: fastestmirror, langpacks
+Loading mirror speeds from cached hostfile
+ * base: ftp.isu.edu.tw
+ * elrepo: dfw.mirror.rackspace.com
+ * epel: ftp.cuhk.edu.hk
+ * extras: ftp.isu.edu.tw
+ * updates: ftp.isu.edu.tw
+repo id                         repo name                                        status
+base/7/x86_64                   CentOS-7 - Base                                   9,591
+code                            Visual Studio Code                                   29
+docker-ce-stable/x86_64         Docker CE Stable - x86_64                            13
+epel/x86_64                     Extra Packages for Enterprise Linux 7 - x86_64   12,382
+extras/7/x86_64                 CentOS-7 - Extras                                   392
+google-chrome                   google-chrome                                         3
+mysql-tools-community/x86_64    MySQL Tools Community                                59
+mysql57-community/x86_64        MySQL 5.7 Community Server                          247
+updates/7/x86_64                CentOS-7 - Updates                                1,962
+repolist: 24,950
+```
+
+
+## Linux安裝軟體方式 - 原始碼編譯 && 安裝
+
+1. 取得原始碼
+  - 大多為 `tar.gz`, 可用 `tar zxvf`解開
+2. 觀看 README 與 INSTALL
+  - README: 軟體的介紹
+  - INSTALL: 編譯與安裝的方法及步驟
+3. 設定組態
+  - 使用 `./configure`, 並給予必要參數及選項
+  - 產生 `Makefile`編譯腳本
+4. 編譯與安裝
+  - 使用 `make`進行編譯
+  - 無誤後, 使用 `sudo make install`開始安裝
+
+
+# EPEL(Extra Packages for Enterprise Linux)
+> Linux在安裝許多軟體的時候(ex: yum install ...), 會有軟體相依性的問題, 若發現相依軟體尚未被安裝, yum會自己去`本地 repository`裡頭找有記載的`遠端 repository`去下載相依套件. 而 EPEL就是專門 for CentOS的套件庫, 裡頭有許多CentOS的核心套件. <br>查看補充說明:
+[What is EPEL](https://www.tecmint.com/how-to-enable-epel-repository-for-rhel-centos-6-5/)
+```sh
+$ sudo yum install -y epel
+```
+
+
+
+# Linux的軟體管理員 - rpm
+
+### - rpm vs dpkg
+
+distribution 代表 | 軟體管理機制 | 使用指令 | 線上升級機制(指令)
+--- | --- | --- | ---
+Red Hat/Fedora | RPM | rpm, rpmbuild | YUM (yum)
+Debian/Ubuntu | DPKG | dpkg | APT (apt-get)
+
+
+### - rpm vs srpm
+
+檔案格式 | 檔名格式 | 直接安裝與否 | 內含程式類型 | 可否修改參數並編譯
+--- | --- | --- | --- | ---
+RPM | xxx.rpm | 可 | 已編譯 | 不可
+SRPM | xxx.src.rpm | 不可 | 未編譯之原始碼 | 可
+
+rpm套件管理的語法: `rpm -<options> <xxx.rpm>`
+
+
+### - options
+
+options     | description
+----------- | ------------
+-i          | 安裝套件
+-v          | 安裝時, 顯示細部的安裝資訊
+-h          | 安裝時, 顯示安裝進度
+-e          | 移除套件
+-U          | 更新套件
+-q          | 查詢套件資訊
+-qa         | - 已安裝套件清單
+-qi         | - 特定套件安裝資訊
+-ql         | - 套件安裝了哪些東西
+-qf         | - 某個東西是被哪個套件安裝的 (與 -ql相反)
+
+```sh
+# 可以反查某個檔案被哪個套件所安裝
+$ rpm -qf /etc/fstab
+setup-2.8.71-7.el7.noarch
+
+##### 底下是範例程式及說明 #####
+setup-2.8.71-4.el7.noarch   <---安裝包
+  套件名稱: setup
+  版本: 2.8.71
+  修訂: 4, 修正 bug錯誤第4版
+  適用發行版: el7, RedHat Enterprise Linux 7
+  適用平台: noarch
+```
+
+
+### - sub options
+sub options | description
+----------- | ------------
+--test      | 僅測試模擬安裝過程, 不會真正安裝`(移除時, 可嘗試用此搭配)`
+--nodeps    | 忽略安裝前的相依性檢查
+--force     | 強制安裝(若已安裝, 會覆蓋掉前次安裝)
+
+
+### 常用選項
+options     | description
+----------- | ------------
+-Uvh        | if 未安裝, then 直接安裝<br />if 安裝過舊版, then 版本升級
+-Fvh        | if 未安裝, then 不動作<br />if 安裝過舊版, then 版本升級
+-ivh        | 最常用的安裝方式, 安裝時, 顯示安裝資訊
+
+
+
 # Apache - kafka
 
 - [看這邊](../../other/kafka.md)

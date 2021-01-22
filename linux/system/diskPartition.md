@@ -183,6 +183,9 @@ $ du ~ -h --max-depth=1 | head -3
 21M	/home/tony/.mozilla
 662M	/home/tony/.cache
 536M	/home/tony/.config
+
+$ du -h --max-depth=0 /usr/share/man
+55M     /usr/share/man
 ```
 
 
