@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql8:
+    image: mysql:8.0.22
+    container_name: mysql8
+    hostname: mysql8
+    restart: always
+    ports:
+      - "8022:3306"
+    volumes:
+      - mysql8_data:/var/lib/mysql
+      - mysql8_conf:/etc/mysql
+      - mysql8_sock:/var/run/mysqld
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    labels:
+      - macbook.data.path=/da
+
+volumes:
+  mysql8_data:
+    name: mysql8_data
+  mysql8_conf:
+    name: mysql8_conf
+  mysql8_sock:
+    name: mysql8_sock

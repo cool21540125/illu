@@ -174,7 +174,7 @@ drwxrws---. 2 root shared 15  7月 14 15:41 /home/shared/
 # 遞迴修改 dir 內所有權限
 $# chmod -R g+rwX <dir Name>
 # 裏頭的 「X」
-# 確保 x 權限指套用到 dir (資料夾都進得去)
+# 確保 x 權限只套用到 dir (資料夾都進得去)
 # 而不套用到 file (檔案不應該預設可執行)
 ```
 
@@ -363,14 +363,22 @@ $ $ authconfig --test | grep hashing
 ```
 
 
-
 # wheel
 
 CentOS7 開始, 任何具備 `wheel` 群組的使用者, 都可以使用 `sudo` 來執行任何指令.
 
 CentOS6 以前, 無法這麼做, 權限設定在 `/etc/sudoers`
 
-上述的檔案, 建議使用 `visudo`(修改 /etc/sudoers 的 API) 來作修改
+```sh
+### 不要這麼做!!
+vim /etc/sudoers
+# 改壞了的話, sudo 指令會出問題
+tony ALL=(ALL) NOPASSWD: ALL
+
+### 改用這樣做!!
+visudo
+# 會存檔離開時, 會做語法檢查
+```
 
 
 

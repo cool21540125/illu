@@ -7,11 +7,11 @@
 
 ```bash
 ###!! 快速打包本地資料夾所有檔案
-$# tar -czf all.tar.gz *
+$# tar czf all.tar.gz *
 # 若檔案很大, 為加速傳輸效率, 上述 z 改 j(bz2) 或 J(xz)
 
 ### 解壓縮 tar ball 到本地資料夾
-$# tar -xzf all.tar.gz
+$# tar xzf all.tar.gz
 ```
 
 
@@ -19,6 +19,12 @@ $# tar -xzf all.tar.gz
     c   z              .gz
 tar xv  jf  tarName.tar.bz2
     t   J              .xz
+# 打包 c, 壓縮任選 z / j / J
+# 解包 x, 解壓縮依附檔名選擇
+# 壓縮解壓縮對應:
+#  z  -> .gz
+#  j  -> .bz2
+#  J  -> .xz
 
 # tar [-zjJ] ctxvf <檔名> [-C 目錄]
 # -c : 建立 tar

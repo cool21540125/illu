@@ -53,6 +53,8 @@ source 會針對 write updates 作為事件, 將此動作記錄到 binlog. Repli
     - 因為 replicas 有紀錄 source 上頭的 log file && position, 所以可以 disconnected, reconnect and then resume processing.
     - source && replica 必須配置 system variable: `server_id` (Unique)
     - replicas 也需要透過 `CHANGE MASTER TO` 來聲明 source 位置. 
+        - v8.0.23 (含)以後, 使用 `CHANGE REPLICATION SOURCE TO`
+        - v8.0.23 以前,     使用 `CHANGE MASTER TO`
     - Replication 詳細資訊, 會儲存在 replica 上的 metadata repository, 參考 [Relay Log and Replication Metadata Repositories](https://dev.mysql.com/doc/refman/8.0/en/replica-logs.html)
 
 

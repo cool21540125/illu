@@ -123,7 +123,7 @@ variable | /var/mail <br> /var/spool/news | /var/run <br> /var/lock
         /sshd_config                    # SSH Server 組態
     /sssd/                          # 集中驗證相關
         /sssd.conf                      # System Security Services Daemon; 網路不通時, 從 cache 作 Login 驗證
-    /sudoers                        # 定義 sudo, wheel... 相關事項(建議使用 visudo 來修改, 別直接編輯此檔案)
+    /sudoers                        # 定義 sudo, wheel... 相關事項(使用 "visudo" 來取代 "vim /etc/sudoers" 的愚蠢操作!)
     /sudoers.tmp                    # 使用 visudo 指令來更改 /etc/sudoers 的安全中介檔
     /supervisord.conf               # supervisord 設定主檔 (USE supervisorctl)
     /supervisord.d/                 # supervisord 設定副檔
@@ -200,6 +200,8 @@ variable | /var/mail <br> /var/spool/news | /var/run <br> /var/lock
     /libexec/                       # 大部分的 X window 的操作指令都放這. (不被使用這慣用的執行檔or腳本)
     /local/                         # sys admin 在本機自行安裝的軟體, 建議放這邊(早期)
           /sbin/                        # 本機自行安裝的軟體所產生的系統執行檔(system binary), ex: fdisk, fsck, ifconfig, mkfs 等
+          /PACKAGE/                 # (泛指任何使用者自行安裝的套件)
+            /man                        # 假如使用的是 tarball 來作安裝, 要把此路徑加入到 PATH, 才能使用此套建的 man page
     /sbin/                          # 系統專用的 工具/指令/執行檔, ex: 某些伺服器軟體程式的東西
         /mysqld                         # mysqld (server)
         /sendmail                       # 老舊的寄信程式(指向 /etc/alternatives/mta, 再指向 /usr/sbin/sendmail.postfix)

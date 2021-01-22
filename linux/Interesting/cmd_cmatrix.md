@@ -10,7 +10,7 @@
 
 ```bash
 $# wget https://jaist.dl.sourceforge.net/project/cmatrix/cmatrix/1.2a/cmatrix-1.2a.tar.gz
-$# tar xvf cmatrix-1.2a.tar.gz
+$# tar xf cmatrix-1.2a.tar.gz
 $# cd cmatrix-1.2a
 $# yum install -y ncurses-deve  # 這個好像沒用...
 $# ./configure && make && make install
