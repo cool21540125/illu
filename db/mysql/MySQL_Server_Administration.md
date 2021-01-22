@@ -1,6 +1,13 @@
 # [Chapter 5 MySQL Server Administration](https://dev.mysql.com/doc/refman/8.0/en/server-administration.html)
 
-
+MySQL Admin 相關作業議題:
+- server config
+- mysql 這個 Database 的 schema
+- server log
+- multiple servers
+- security
+- backup & recovery
+- replication
 
 關於 MySQL connection:
 - 所有平台:
