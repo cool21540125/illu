@@ -1,5 +1,7 @@
-# [Configure logging drivers](https://docs.docker.com/config/containers/logging/configure/)
+# Docker Logging
 
+- [Configure logging drivers](https://docs.docker.com/config/containers/logging/configure/)
+- [How to clear the logs properly for a Docker container?](https://stackoverflow.com/questions/42510002/how-to-clear-the-logs-properly-for-a-docker-container)
 - 2021/01/25
 
 關於 docker logging, 預設為 `json-file` **logging driver** (若後續要接其他像是 logstash 等等需要用到 log parse 的軟體的話, 這是推薦的方式)
