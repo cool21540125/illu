@@ -184,6 +184,55 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y ...
 ```
 
 
+#### [STOPSIGNAL](https://docs.docker.com/engine/reference/builder/#stopsignal)
+
+```dockerfile
+STOPSIGNAL signal
+```
+
+用來設定 Container 離開時的 system call signal
+
+範圍可以是 valid unsigned number. 但需要對照 kernel 的 syscall table. (就像 kill 發送的訊號那樣), ex:
+
+- 9: SIGKILL
+
+
+#### [Healthcheck](https://docs.docker.com/engine/reference/builder/#healthcheck)
+
+用來檢測 Container 是否還 working. 啟用後, 會多了個 status 為 `starting`. 後續看狀況會變成 `healthy` or `unhealthy`
+
+一份 dockerfile 若出現多個 HEALTHCHECK, 只有最後一個有效
+
+有 2 種格式:
+- `HEALTHCHECK NONE`: 禁用任何從 base image 繼承而來的檢查
+- `HEALTHCHECK [OPTIONS] CMD command`: 藉由在 Container 內執行 check container health 的指令
+    - OPTIONS 可以是:
+        - `--interval=DURATION`, 預設 30s : 每隔多久做一次檢測
+        - `timeout=DURATION`, 預設 30s : 若單一次檢測超過此時間, 則被視為 failed
+        - `--retries=N`, 預設 3 : 若經檢測後 timeout, 會嘗試 N 次, 依舊失敗則判定為 `unhealthy`
+        - `--start-period=DURATION`, 預設 0s
+    - `CMD` 後面的 command 可以是:
+        - *shell command*, ex: `HEALTHCHECK CMD /bin/check-running`
+        - *exec array*(其他的 dockerfile commands), ex: `ENTRYPOINT`
+            - 乾... 這邊看不懂, 遇到再說
+    - command 的 exit status 表示 Container 的健康狀態:
+        - 0: success
+        - 1: unhealthy
+        - 2: reserved: 並沒有使用 exit code (蝦小啦)
+
+```dockerfile
+# 5m 檢測1次, 3s timeout
+HEALTHCHECK 
+    --interval=5m \
+    --timeout=3s \
+    CMD curl -f http://localhost/ || exit 1
+```
+
+
+#### [Shell](https://docs.docker.com/engine/reference/builder/#shell)
+
+似乎是用來給 win 用的, 遇到再說
+
 
 #### [Environment replacement](https://docs.docker.com/engine/reference/builder/#environment-replacement)
 
@@ -191,12 +240,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y ...
 
 `${variable:-word}`, if variable, 
     - then: $variable
-    - else: $word
+    - else: word
 
 ------
 
 `${variable:+word}`, if variable, 
-    - then: $word
+    - then: word
     - else: ""
 
 ------
