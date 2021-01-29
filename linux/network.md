@@ -243,7 +243,13 @@ ifcfg-andy.lee  ifcfg-enp1s0    ifcfg-lo        ifcfg-wha  # (還有很多很多
 # 網路卡的設定檔
 $ cat ifcfg-enp1s0
 TYPE=Ethernet
-BOOTPROTO=dhcp      # [dhcp, static, none], 若設定其他者, 還要有 'IPADDR=<ip>', 'NETMASK=<sub-net mask>', 'GATEWAY=<gateway>'
+BOOTPROTO=dhcp
+# [dhcp, static, none]
+# 若 BOOTPROTO=none, 則需要額外設定底下 4 個:
+# IPADDR=<IP address of the appliance>
+# PREFIX=<CIDR prefix>   (不確定是 PREFIX 還是 NETMASK)
+# GATEWAY=<gateway IP address>
+# DNS1=<DNS server IP address>
 DEFROUTE=yes
 PEERDNS=yes
 PEERROUTES=yes
@@ -264,6 +270,8 @@ ONBOOT=no           # 開機是否啟用此網路卡
 
 ### 以上都可以直接編輯後, 重新啟動 network.service即可作用 ###
 ```
+
+↑ 改完後重啟 `systemctl restart network `
 
 
 ## nmcli - 查看 network information

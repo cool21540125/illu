@@ -46,6 +46,17 @@ alias ll='ls -l --color=auto'
 alias lm='ls -al | less'
 alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 
+# docker 常用
+alias d='docker'
+alias dis='docker images'
+alias di='docker inspect'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dc='docker-compose'
+alias dn='docker network'
+alias dv='docker volume'
+alias dex='docker exec'
+
 # 取消 已經設定過的別名
 $ unalias lm
 ```

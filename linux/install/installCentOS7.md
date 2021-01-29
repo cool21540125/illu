@@ -238,79 +238,37 @@ sudo yum -y install google-chrome-stable
 
 # Install Docker CE
 
-- 2020/04/01
+- 2021/01/29
 - [Official Docker](https://docs.docker.com/engine/installation/linux/docker-ce/centos/#install-using-the-//repository)
 
 
 ```sh
 ### root
 # 安裝
-$# yum install -y yum-utils device-mapper-persistent-data lvm2
-$# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-$# yum install -y docker-ce
+yum install -y yum-utils device-mapper-persistent-data lvm2
+yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+yum install -y docker-ce
+sudo systemctl start docker
+sudo systemctl enable docker
 
-### Normal User
-# 確認權限
-$ cat /etc/group | grep docker
-docker:x:983:
-
-$ sudo usermod -aG docker ${USER}
-
-$ cat /etc/group | grep docker
-docker:x:983:tonynb
-
-# 服務
-$ sudo systemctl start docker           <-立刻啟用
-$ sudo systemctl enable docker          <-重新後啟用
-$ systemctl status docker
+# user
+USER=tony
+usermod -aG docker ${USER}
 
 # 完成
-$ docker version
-Client: Docker Engine - Community
- Version:           19.03.8
- API version:       1.40
- Go version:        go1.12.17
- Git commit:        afacb8b
- Built:             Wed Mar 11 01:27:04 2020
- OS/Arch:           linux/amd64
- Experimental:      false
-
-Server: Docker Engine - Community
- Engine:
-  Version:          19.03.8
-  API version:      1.40 (minimum version 1.12)
-  Go version:       go1.12.17
-  Git commit:       afacb8b
-  Built:            Wed Mar 11 01:25:42 2020
-  OS/Arch:          linux/amd64
-  Experimental:     false
- containerd:
-  Version:          1.2.13
-  GitCommit:        7ad184331fa3e55e52b890ea95e65ba581ae3429
- runc:
-  Version:          1.0.0-rc10
-  GitCommit:        dc9208a3303feef5b3839f4323d9beb36df0a9dd
- docker-init:
-  Version:          0.18.0
-  GitCommit:        fec3683
-
-
-# 無法執行的話, 重新登入就可以了
-$ docker run hello-world
-Hello, World.
+docker version
 ```
 
 
 ## Docker-compose
 
-- 2020/04/01
+- 2021/01/30
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
 ```sh
-$# curl -L "https://github.com/docker/compose/releases/download/1.25.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-$# chmod +x /usr/local/bin/docker-compose
-$# docker-compose --version
-docker-compose version 1.25.4, build 8d51620a
+curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+docker-compose --version
 ```
 
 

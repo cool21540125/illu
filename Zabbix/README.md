@@ -44,15 +44,3 @@ $# zabbix_get -s 127.0.0.1 -p 10050 -k "system.cpu.load[all,avg15]"
 $# zabbix_get -s 127.0.0.1 -p 10050 -k "mysql.version"
 mysql  Ver 14.14 Distrib 5.7.27, for Linux (x86_64) using  EditLine wrapper
 ```
-
-
-# other
-
-```bash
-### 讓 CPU 飆高
-for i in `seq 1 $(cat /proc/cpuinfo |grep "physical id" |wc -l)`; do dd if=/dev/zero of=/dev/null & done
-
-### 讓 CPU 飆高
-dd if=/dev/zero of=/dev/null
-
-```
