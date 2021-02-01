@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  mariadb10:
+    image: mariadb:10.3
+    container_name: mariadb
+    hostname: mariadb
+    restart: on-failure
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    ports: 
+      - "3310:3306"
+    volumes:
+      - mariadb10_data:/var/lib/mysql
+      - mariadb10_log:/var/log/mysql
+      - ./conf:/etc/mysql/
+    networks:
+      - mariadb10_net
+    environment:
+      ### necessary
+      - MYSQL_ROOT_PASSWORD=mypass
+      ### optional
+      - MYSQL_ROOT_HOST=%
+
+volumes:
+  mariadb10_data:
+    name: mariadb10_data
+  mariadb10_log:
+    name: mariadb10_log
+
+networks:
+  mariadb10_net:
+    name: mariadb10_net

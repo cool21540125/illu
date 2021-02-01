@@ -43,3 +43,6 @@ $# chmod +x bin/curl
 # 將來使用 curl 就可以省略掉 application/json 那一包了~
 ```
 
+```sh
+curl --unix-socket /path-to-docker/docker.sock http://localhost/version
+```
