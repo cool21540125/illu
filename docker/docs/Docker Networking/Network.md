@@ -46,7 +46,7 @@ Docker version 18.03.0-ce, build 0520e24
 > Note: `Class B 的私有IP位址區間 : 172.16.0.1 ~ 172.31.255.254`
 
 ```sh
-$ ip addr show
+$ ip a
 docker0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN
     link/ether 02:42:8d:79:3e:79 brd ff:ff:ff:ff:ff:ff
     inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0
@@ -136,12 +136,15 @@ NETWORK ID      NAME      DRIVER    SCOPE
 
 ```sh
 # 1. 在 `OS Level` 設定 routing
-$ sysctl net.ipv4.conf.all.forwarding=1
+$# sysctl net.ipv4.conf.all.forwarding=1
 # ex: 讓 Linux kernel 允許 IP routing
 
-# 2. 設定「iptables FORWARD policy」為 ACCEPT(原為 DROP)
-$ sudo iptables -P FORWARD ACCEPT
+# 2. 設定「iptables FORWARD policy」為 ACCEPT (原為 DROP)
+$# iptables -P FORWARD ACCEPT
 ```
+
+NOTE: 上述 2 個動作, 僅目前採用, 重啟後套用則須額外處理
+
 
 ### 法二: 
 改用 `overlay network` 

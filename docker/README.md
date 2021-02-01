@@ -663,6 +663,18 @@ postgres    26  0.0  0.8 330620 138256 ?       Ss   Mar24   4:49 postgres: backg
 ```
 
 
+## Restart
+
+服務重啟政策
+
+目前已知有 4 種方式:
+
+- no: (default)
+- on-failure: 當 Container 伴隨著 non-zero exit code, 則適用
+- unless-stopped: 除非 Container 手動停止 or Docker daemon 被停止, 否則適用
+- always: 除非 Container 手動停止, 否則適用
+
+
 # Knowledgement
 
 - Container 網路專案 : libnetwork
