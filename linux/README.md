@@ -37,6 +37,14 @@ CentOS Linux release 7.3.1611 (Core)
 $ rpm --query centos-release
 centos-release-7-3.1611.el7.centos.x86_64
 
+# 這東西需要額外安裝 yum install redhat-lsb
+$ lsb_release -a
+LSB Version:    :core-4.1-amd64:core-4.1-noarch
+Distributor ID: CentOS
+Description:    CentOS Linux release 7.4.1708 (Core)
+Release:        7.4.1708
+Codename:       Core
+
 # Type Chinese
 $ yum install kde-l10n-Chinese
 ```

@@ -35,6 +35,7 @@ DROP USER '<帳號>'@'<HOST>';
 ```sql
 > ALTER USER '<使用者帳號>' IDENTIFIED BY '<新密碼>';
 ALTER USER 'demo'@'localhost' IDENTIFIED BY 'password123';
+ALTER USER 'root'@'127.0.0.1' IDENTIFIED BY 'myadmin';
 ```
 
 

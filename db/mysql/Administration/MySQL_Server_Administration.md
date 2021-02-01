@@ -22,7 +22,14 @@ mysql> SHOW STATUS;
 - 更詳盡的 監控資訊, 參考 [MySQL Performance Schema](https://dev.mysql.com/doc/refman/8.0/en/performance-schema.html)
     - 也可透過 sys schema, 來查看 Performance Schema 的統計資訊, 參考 [MySQL sys Schema](https://dev.mysql.com/doc/refman/8.0/en/sys-schema.html)
 
-
+MySQL Admin 相關作業議題:
+- server config
+- mysql 這個 Database 的 schema
+- server log
+- multiple servers
+- security
+- backup & recovery
+- replication
 
 # Connections
 
@@ -34,3 +41,12 @@ mysql> SHOW STATUS;
 - Win: 
     - 1 manager thread 處理 shared-memory conn req
     - 1 thread 處理 named-pipe conn req
+
+
+```sql
+SELECT @@character_set_database, @@collation_database;
+
+SHOW variables LIKE 'character%';
+
+SHOW ENGINE INNODB STATUS \G
+```

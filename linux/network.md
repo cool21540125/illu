@@ -1,3 +1,9 @@
+- 相關指令
+- 知識概念備註
+- [Ubuntu16.04的pdf](http://arbas.assam.gov.in/resources/pdf/ubuntu_16.04.pdf)
+- [還蠻初階的語法教學](https://www.puritys.me/docs-blog/article-357-Linux-%E5%9F%BA%E6%9C%AC%E6%8C%87%E4%BB%A4%E6%95%99%E5%AD%B8.html)
+
+
 # 快速設定固定 IP
 
 ```bash
@@ -36,12 +42,15 @@ $ netstat -tulnp | grep XXX
 ```
 
 
-
 # Naming
 
 `wlp2s0`, `enp1s0`, `eth0`, ... 到底是啥挖歌
 
-CentOS6 以前(包含目前的虛擬機), 都是按照 **eth0**, **eth1**, **eth2** 的方式來對網卡作命名, 而命名依據則是 `網卡插在電腦上的哪個 port(硬體上的那個洞啦!!), 就會給予 該 port 的編號. 簡單的說, 插在第一個洞=eth0, 插在第二個洞=eth1, ...`; 而虛擬機裏頭, 因為是 `虛擬作業系統`, 透過 #@)*^!#... 的機制, 抓取實體作業系統的網卡, 所以一樣會看到 `eth0` 這東西
+CentOS6 以前(包含目前的虛擬機), 都是按照 **eth0**, **eth1**, **eth2** 的方式來對網卡作命名, 而命名依據則是 `網卡插在電腦上的哪個 port(硬體上的那個洞啦!!), 就會給予 該 port 的編號. 簡單的說, 插在第一個洞=eth0, 插在第二個洞=eth1, ...`; 而虛擬機裏頭, 因為是 `虛擬作業系統`, 透過 **開機時核心偵測的時機**, 抓取實體作業系統的網卡, 所以一樣會看到 `eth0` 這東西
+
+CentOS7: 裝置名稱改為 `p1p1, p2p1, p3p1`等 BIOS名稱, 目的是為了維持設備名稱的一致性, 並以 **名稱得知網路卡在主機板上插槽的位置**.
+
+可能因為更換硬體設備而異動. 網卡名稱變動可能造成防火牆錯誤
 
 ex: `wlp2s0`, `enp1s0`
 
@@ -78,6 +87,8 @@ eno1   : 第一張內建網路介面卡
 
 ## ip
 
+`ip`指令可以拿來作 **變更網路組態**, **增刪改特定設備的 ip位址**.... 遇到再 google
+
 ```sh
 # 查看 網路介面 相關細節
 $ ip addr show enp1s0
@@ -110,6 +121,7 @@ default via 192.168.124.254 dev enp1s0 proto static metric 100
 # 前往 192.168.124.0/24 的流量會藉由 enp1s0
 ```
 
+
 ## ping - 請求主機回應
 
 送出 `icmp protocal 的 ECHO_REQUEST 封包` 至 特定主機, 主機在同樣以 `icmp回傳封包`
@@ -126,9 +138,6 @@ PING 168.95.1.1 (168.95.1.1) 56(84) bytes of data.
 rtt min/avg/max/mdev = 2.721/2.806/2.891/0.085 ms
 # time=2.72 ms : 伺服器 與 主機 之間的連線回應狀況
 ```
-
-
-
 
 
 ## ss - socket 統計
@@ -154,8 +163,31 @@ LISTEN   0      128                 :::ssh                  :::*        # 監聽
 ```
 
 
+##  ifconfig
 
-# NetworkManager服務 與 network服務(比較傳統的方式)
+```sh
+$ ifconfig enp1s0
+enp1s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.124.73  netmask 255.255.255.0  broadcast 192.168.124.255
+        inet6 fe80::be4e:db5a:2ead:fc61  prefixlen 64  scopeid 0x20<link>
+        ether c8:5b:76:7e:4d:8e  txqueuelen 1000  (Ethernet)
+        RX packets 84842  bytes 6617933 (6.3 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 3073  bytes 507757 (495.8 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+$ ifconfig enp1s0 up          # 開啟 enp1s0網路卡
+$ ifconfig enp1s0 down        # 關閉 enp1s0網路卡 (別白痴到在 ssh時使用阿XD )
+
+# 重新手動指定 ip
+$ ifconfig enp1s0 <new IP>
+
+# 重新手動指定 ip及 mask
+$ ifconfig enp1s0 <new IP> netmask <new Mask>
+```
+
+
+# NetworkManager 服務 與 network 服務(比較傳統的方式)
 
 NetworkManager服務(NM) 專門設計用來給 `移動設備(ex: NB)` 使用, 可以在各種場合切換連線方式. 所以像是 Server或是一般桌電, 大都不使用 NM, 而是使用 network服務. **兩者則一啟用即可**.
 
@@ -211,7 +243,13 @@ ifcfg-andy.lee  ifcfg-enp1s0    ifcfg-lo        ifcfg-wha  # (還有很多很多
 # 網路卡的設定檔
 $ cat ifcfg-enp1s0
 TYPE=Ethernet
-BOOTPROTO=dhcp      # [dhcp, static, none], 若設定其他者, 還要有 'IPADDR=<ip>', 'NETMASK=<sub-net mask>', 'GATEWAY=<gateway>'
+BOOTPROTO=dhcp
+# [dhcp, static, none]
+# 若 BOOTPROTO=none, 則需要額外設定底下 4 個:
+# IPADDR=<IP address of the appliance>
+# PREFIX=<CIDR prefix>   (不確定是 PREFIX 還是 NETMASK)
+# GATEWAY=<gateway IP address>
+# DNS1=<DNS server IP address>
 DEFROUTE=yes
 PEERDNS=yes
 PEERROUTES=yes
@@ -232,6 +270,8 @@ ONBOOT=no           # 開機是否啟用此網路卡
 
 ### 以上都可以直接編輯後, 重新啟動 network.service即可作用 ###
 ```
+
+↑ 改完後重啟 `systemctl restart network `
 
 
 ## nmcli - 查看 network information
@@ -339,9 +379,8 @@ lo enp0s3
 $# ifup enp0s3
 $# ifdown enp0s3
 # 啟動/關閉 /etc/sysconfig/network-scripts/ifcfg-enp0s3
-
-
 ```
+
 
 ### 設定自動取得 ip 的 connection
 

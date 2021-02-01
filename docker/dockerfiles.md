@@ -103,9 +103,40 @@ docker run --rm demo -v https://tw.yahoo.com/
 ```
 
 
+#### [VOLUME](https://docs.docker.com/engine/reference/builder/#volume)
+
+用來提供 Container 運行起來以後, Container 內部的掛載點
+
+- 底下的範例, 藉由 `docker run` 來建立 Container 內部 mountpoint
+    - 為了保持 Image 的可遷移性, 此 VOLUME 創建的 mountpoint, 僅限於 Container 運行以後才會產生.
+    - 因此, 無法在 dockerfile 內, 直接定義像是 對應到 Docker Host 的哪個目錄路徑
+
+```dockerfile
+FROM ubuntu
+RUN mkdir /myvol
+RUN echo "hello world" > /myvol/greeting
+VOLUME /myvol
+```
+
+
 #### [ADD](https://docs.docker.com/engine/reference/builder/#add)
 
-src 可使用 URL, 參考下面用法:
+有兩種格式:
+- `ADD [--chown=<user>:<group>] <src>... <dest>`
+- `ADD [--chown=<user>:<group>] ["<src>", ..., "<dest>"]`
+    - path 如果包含 " ", 則需要使用這種方式
+
+- src 可使用 pattern, pattern 須符合 Golang rule
+    - 因此, 像是遇到 "[" 這類的名稱, 需要 escape
+- dest 的相對路徑是相對於 `WORKDIR`
+- 關於 `--chown` 只適用於 Linux Container
+- 更多關於 `--chown`, 遇到再說
+- 更多關於 src file permission, 遇到再說
+- 若使用 STDIN 來建 Image:
+    - `docker build - < dockerfile` , 則不存在 context!
+        - 這種情況下, `ADD` 只能使用 URL, 無法使用本地檔案
+    - `docker build - < dockerfile.tar.gz`, 遇到再說
+- 可使用 URL 作為 src參考下面用法:
 
 ```dockerfile
 FROM scratch

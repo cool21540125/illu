@@ -66,7 +66,7 @@ variable | /var/mail <br> /var/spool/news | /var/run <br> /var/lock
     /krb5.conf.d/                   # kerberos 集中驗證 設定副檔目錄
     /letsencrypt/                   # 安裝 Certbot 後, 儲存 CSR, Certificate, PrivKey, ... 的地方
     /locale.conf                    # 系統預設語系定義檔 (一開始安裝就決定了!)
-    /localtime/                     # 系統時間
+    /localtime                      # 系統時間, 可從 /usr/share/zoneinfo/Asia/Taipei 複製過來
     /login.defs                     # 建立使用者時, 該使用者的 系統愈設初始值
     /my.cnf                         # MySQL 組態 主要設定檔
     /nginx/                         # Nginx 組態檔目錄
@@ -130,6 +130,7 @@ variable | /var/mail <br> /var/spool/news | /var/run <br> /var/lock
         /*.ini                          # supervisor 自定義
     /sysconfig/                     # CentOS6 舊時代的組態設定
         /network-scripts/               # 網路設定資料
+            /ifcfg-*                        # 網卡連線設定命名規則為 "ifcfg-$CONN_NAME"
         /selinux                        # SELinux 組態設定檔 (連結至 /etc/selinux/config)
     /systemd/                       # 軟體的啟動腳本
         /journald.conf                  # journalctl 的 組態設定
