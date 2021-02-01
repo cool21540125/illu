@@ -3,12 +3,19 @@
 - 2019/07/23
 - 監控用的
 
+- items: 收集數據
+- triggers: fire problems
+- alert: 用來觸發 notify
+- action: 用來傳遞 notification
+
 
 ## Ports
 
 - 80:    Web GUI
-- 10050: zabbix-server 會藉由此 port, 來到 zabbix-agent 抓資料
-- 10051: 藉由此 port 接收 監控數據
+- 10050: **Passive Agent** 使用. Server 藉由 10050 Port 訪問 Agent, Agent 回報監控數據
+- 10051: **Active Agent** 使用. Agent 自動向 Server 10051 Port 提交監控數據
+
+
 
 
 # 結構

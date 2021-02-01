@@ -1,14 +1,28 @@
 version: "3.8"
 
 services:
+  zabbix-server:
+    image: zabbix/zabbix-server-mysql:centos-4.0.27
+    container_name: zabbix
+    hostname: zabbix
+    restart: always
+    environment:
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      DB_SERVER_PORT: ${DB_SERVER_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./zabbix/conf:/etc/zabbix
+    networks:
+      - zabbix_net
   zabbix-web:
     image: zabbix/zabbix-web-nginx-mysql:centos-4.0.27
     container_name: zabbix_web
     hostname: zabbix_web
     restart: always
     environment:
-      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
-      ZBX_SERVER_PORT: ${ZBX_SERVER_PORT}
       DB_SERVER_HOST: ${DB_SERVER_HOST}
       DB_SERVER_PORT: ${DB_SERVER_PORT}
       MYSQL_USER: ${MYSQL_USER}
@@ -21,9 +35,11 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
     networks:
-      - zabbix_service
+      - zabbix_net
+    depends_on:
+      - zabbix-server
 
 networks:
-  zabbix_service:
-    name: zabbix_service
+  zabbix_net:
+    name: zabbix_net
     driver: bridge

@@ -1579,6 +1579,15 @@ $# yum install -y httpd-tools
 ```
 
 
+# nmap
+
+- 2021/01/30
+
+```bash
+yum install -y nmap
+```
+
+
 
 # 備註
 

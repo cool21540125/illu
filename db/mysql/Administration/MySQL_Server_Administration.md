@@ -41,3 +41,12 @@ MySQL Admin 相關作業議題:
 - Win: 
     - 1 manager thread 處理 shared-memory conn req
     - 1 thread 處理 named-pipe conn req
+
+
+```sql
+SELECT @@character_set_database, @@collation_database;
+
+SHOW variables LIKE 'character%';
+
+SHOW ENGINE INNODB STATUS \G
+```

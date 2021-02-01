@@ -35,6 +35,7 @@
 - marshal : 整頓
 - masquerade : 偽裝
 - more or less : 或多或少
+- one-off : 一次性
 - on the fly : 動態產生
 - opaque : 含糊的, 不透明的
 - Operation not permitted : 不具有此指另作用的檔案 的權限
@@ -46,6 +47,7 @@
 - permission : 許可
 - Permission denied : 無權使用此指令
 - persist : 堅持, 持續
+- poller : 輪循器
 - portal : 門戶
 - replica : 即時備援 (即時複製一份到其他節點的概念, HA), 資料備份的另一種可行性作法
 - sharding : 分片(把東西拆成幾分的概念吧??)

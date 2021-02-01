@@ -13,19 +13,18 @@ SELECT USER(), CURRENT_USER();
 
 SHOW GRANTS for root@localhost;
 
---#; 建立 zabbix 用戶
 CREATE USER 'zabbix'@'*' IDENTIFIED BY 'myadmin';
 GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost;
 
---#; 修改密碼
-
+--#; 建立 zabbix 用戶
 UPDATE mysql.user SET authentication_string = PASSWORD('zabbix') WHERE User = 'zabbix' AND Host = 'localhost';
---#; ↑ 不知道為什麼, 沒出錯, 但失敗
-
-SET PASSWORD FOR 'zabbix'@'localhost' = PASSWORD('zabbix');
---#; ↑ 這個可以, 但好像會有某些問題??
-
+--#; ↑ 不知道為什麼, 這個失敗
 FLUSH PRIVILEGES;
 SHOW GRANTS for zabbix@localhost;
 
+
+--#; 修改密碼
+SET PASSWORD FOR 'zabbix'@'localhost' = PASSWORD('zabbix');
+FLUSH PRIVILEGES;
+SHOW GRANTS for zabbix@localhost;
 ```
