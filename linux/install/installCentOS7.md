@@ -262,12 +262,17 @@ docker version
 
 ## Docker-compose
 
-- 2021/01/30
+- 2021/02/04
 - [Install Docker Compose](https://docs.docker.com/compose/install/)
 
 ```sh
 curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
 chmod +x /usr/local/bin/docker-compose
+cat <<"EOT" > /etc/profile.d/usr_local_bin.sh
+export PATH=/usr/local/bin:${PATH}
+EOT
+
 docker-compose --version
 ```
 
@@ -557,15 +562,15 @@ gpgkey=http://repo.mysql.com/RPM-GPG-KEY-mysql
 EOT
 
 # 2. Check Repo && Install
-$# yum repolist | grep mysql
+yum repolist | grep mysql
 mysql57-community/x86_64     MySQL 5.7 Community Server      287
 
-$# yum install -y mysql-community-server
+yum install -y mysql-community-server
 
 # 3. 啟動 && 設定 root 密碼~
-$# systemctl start mysqld.service
+systemctl start mysqld.service
 
-$# grep 'temporary password' /var/log/mysqld.log
+grep 'temporary password' /var/log/mysqld.log
 
 $ mysql -uroot -p
 # 前面取得的密碼登入
@@ -875,33 +880,33 @@ $ 7za x <fileName>
 
 ```sh
 # 1. 匯入 GPG-Key
-$# curl http://nginx.org/keys/nginx_signing.key > nginx_signing.key
-$# rpm --import nginx_signing.key
+curl http://nginx.org/keys/nginx_signing.key > nginx_signing.key
+rpm --import nginx_signing.key
 
 # 2. 建立 Yum Repo
-$# vim /etc/yum.repos.d/nginx.repo
-###### 內容如下 ######
+cat <<"EOT" > /etc/yum.repos.d/nginx.repo
 [nginx]
 name=Nginx Repo
 baseurl=http://nginx.org/packages/centos/7/$basearch/
 gpgcheck=1
 enabled=1
+EOT
+
 ###### 內容如上 ######
 
 ### 3. Repolist && Install
-$ yum repolist | grep nginx
-nginx/x86_64      Nginx Repo         108
+yum repolist | grep nginx
+# nginx/x86_64      Nginx Repo         108
 
-$# yum install -y nginx
+yum install -y nginx
 
-$ nginx -v
-nginx version: nginx/1.14.0
+nginx -v
+# nginx version: nginx/1.18.0
 
-$# nginx -t
-$# nginx -s reload
-$# systemctl start nginx
+nginx -t
+systemctl start nginx
+systemctl enable nginx
 ```
-
 
 
 # Install tcping
@@ -1320,8 +1325,8 @@ $# yum install -y psmisc
 - [官網](https://www.zabbix.com/download?zabbix=4.0&os_distribution=centos&os_version=7&db=mysql&ws=apache)
 
 所謂的 Zabbix, 只是個統稱, 它包含了底下三個元件:
-- zabbix-server
 - database
+- zabbix-server
 - front-end
 
 
@@ -1363,7 +1368,7 @@ Part 3. 組態
 
 ```bash
 cat /etc/zabbix/zabbix_server.conf
-sed -i 's/# DBPassword=/DBPassword=zabbix/' /etc/zabbix/zabbix_server.conf
+sed -i 's/# DBPassword=/DBPassword=UGf!i_Jg%ao29&7J/' /etc/zabbix/zabbix_server.conf
 # ↑ 設定密碼
 ```
 

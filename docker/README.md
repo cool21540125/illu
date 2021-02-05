@@ -650,6 +650,13 @@ $ sudo yum install zlib-devel
 > `docker inspect -f`: 可使用 Golang 的範本來提取資訊
 
 ```bash
+$# docker system df
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          8         0         2.488GB   2.488GB (100%)
+Containers      0         0         0B        0B
+Local Volumes   0         0         0B        0B
+Build Cache     0         0         0B        0B
+
 $# docker inspect -f '{{.NetworkSettings.IPAddress}}' myredis
 172.17.0.2
 
@@ -661,6 +668,9 @@ postgres    25  0.0  0.8 330920 139896 ?       Ss   Mar24   1:27 postgres: check
 postgres    26  0.0  0.8 330620 138256 ?       Ss   Mar24   4:49 postgres: background writer
 # ...(超多)...f
 ```
+
+
+
 
 
 ## Restart

@@ -78,23 +78,3 @@ select * from ee;
 | GRANT PROXY ON ''@'' TO 'root'@'localhost' WITH GRANT OPTION        |
 +---------------------------------------------------------------------+
 ```
-
-
-
-```sql
--- MySQL 內
-CREATE USER 'qq'@'localhost' IDENTIFIED BY '1234';
-GRANT ALL ON `test`.`*` TO 'qq'@'localhost';
-USE mysql;
-SELECT `USER`, `HOST` FROM `user`;
-```
-
-```sql
-mysql> show grants for 'qq'@'localhost';
-+------------------------------------------------------+
-| Grants for qq@localhost                              |
-+------------------------------------------------------+
-| GRANT USAGE ON *.* TO 'qq'@'localhost'               |
-| GRANT ALL PRIVILEGES ON `test`.* TO 'qq'@'localhost' |
-+------------------------------------------------------+
-```

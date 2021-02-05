@@ -21,7 +21,7 @@ NOTE: 172.18.0.3
 # 2. Zabbix Server
 
 ```sh
-CREATE DATABASE zabbix CHARACTER SET utf8mb4;
+CREATE DATABASE zabbix CHARACTER SET utf8;
 
 CREATE USER 'zabbix'@'%' IDENTIFIED BY '5tgb^YHN';
 GRANT ALL ON zabbix.* TO 'zabbix'@'%';
