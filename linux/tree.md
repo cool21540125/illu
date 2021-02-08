@@ -152,7 +152,8 @@ variable | /var/mail <br> /var/spool/news | /var/run <br> /var/lock
 /opt/                           # 非 Linux預設安裝的外來軟體 (第三方協作軟體(非原本distribution所提供的)), 早期都習慣放在 /usr/local
 /proc/                          # 虛擬檔案系統(virtual filesystem), 東西都存在於 memory, 不占用 disk; 行程資訊目錄
     /1/                             # 開機時所執行的第一支程式 systemd 的 PID=1
-    /<某個PID>/                     # 某個開機後被執行的程式(or服務)
+    /<XX PID>/                     # 某個開機後被執行的程式(or服務)
+        /cgroup                         # 可得知, 
         /cmdline                        # 啟動這個程序的指令, ex: python manage.py runserver
         /cwd                            # 很特別! 指向「完全獨立的 /」, 進程運行目錄 (獨立的運行空間, 裡面有/bin, /boot, /dev, /etc, ...) (chroot 的概念?)
         /exe                            # 指向上面 /cmdline 所指的 python (可執行程式) (binary)

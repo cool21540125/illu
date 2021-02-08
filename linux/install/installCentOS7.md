@@ -1354,8 +1354,9 @@ mysql
 ```
 
 ```sql
-CREATE DATABASE zabbix CHARACTER SET UTF8 COLLATE utf8_bin;
-GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost;
+--#; 編碼必須是 utf8 && 定序必為 utf8_bin
+CREATE DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin;
+GRANT ALL PRIVILEGES on zabbix.* to zabbix@localhost IDENTIFIED BY 'zabbix';
 ```
 
 ```bash
@@ -1456,14 +1457,14 @@ Zabbix-Server 是一整包的東西... 它包含了:
 
 ```bash
 ### 安裝
-$# rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm
-$# yum-config-manager --enable rhel-7-server-optional-rpms
-$# yum -y install zabbix-server-mysql zabbix-web-mysql
+rpm -ivh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm
+yum-config-manager --enable rhel-7-server-optional-rpms
+yum -y install zabbix-server-mysql zabbix-web-mysql
 
 ### 若要使用 zabbix-proxy...
-$# yum install zabbix-proxy-mysql
+yum install zabbix-proxy-mysql
 
-$# systemctl start mysqld
+systemctl start mysqld
 ```
 
 ```bash
