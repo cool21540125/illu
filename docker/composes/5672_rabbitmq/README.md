@@ -6,7 +6,8 @@
 
 
 ```bash
-### 2020/03/26 的今天, 底下 image 為 rabbitmq 3.8.3 版
+### 2020/03/26, latest management 為 rabbitmq:3.8.3-management
+### 2021/02/04, latest management 為 rabbitmq:3.8.11-management
 $# docker pull rabbitmq:management
 
 MQ_USER=demo

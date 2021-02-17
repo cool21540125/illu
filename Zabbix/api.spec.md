@@ -1,5 +1,17 @@
 
 
+```bash
+### Send Request
+ZBX=
+curl -X POST http://${ZBX}/api_jsonrpc.php \
+  -H 'Content-Type: application/json-rpc' \
+  -d '{"jsonrpc":"2.0","method":"apiinfo.version","id":1,"auth":null,"params":{}}'
+
+### Returned Response:
+{"jsonrpc":"2.0","result":"4.0.28","id":1}
+```
+
+
 # 怪異問題 Q&A
 
 - 明確指定 output 欄位, 卻只拿到 "itemid"
@@ -35,32 +47,6 @@ history_unit | Integer
   ]
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-- https://www.zabbix.com/documentation/4.0/manual/api/reference/history/object
-
-
-
-
-
-
-
-
-
 
 
 

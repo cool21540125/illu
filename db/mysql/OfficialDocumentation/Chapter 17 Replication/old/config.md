@@ -55,3 +55,20 @@ mysqldump --all-databases --master-data > dbdump.db
 #     Ref: https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html#option_mysqldump_ignore-table
 ```
 
+```sql
+CHANGE MASTER TO
+    MASTER_HOST='10.1.244.21',
+    MASTER_PORT=7980,
+    MASTER_USER='replusr',
+    MASTER_PASSWORD='aaadfsfd125473f872',
+    MASTER_LOG_FILE='mysql-bin.000007',
+    MASTER_LOG_POS=13834;
+
+CHANGE MASTER TO
+    MASTER_HOST='10.1.244.21',
+    MASTER_PORT=7980,
+    MASTER_USER='root',
+    MASTER_PASSWORD='1qaz@WSX',
+    MASTER_LOG_FILE='recorded_log_file_name',
+    MASTER_LOG_POS=recorded_log_position;
+```

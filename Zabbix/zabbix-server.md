@@ -1,18 +1,60 @@
 # server
 
 
-## Server 修改完 Agent IP 相關組態 要做快取重啟
-
-若 zabbix-server 更改了網頁上面, Host 的配置(ex: IP 更改為 15.88.66.32). 則 zabbix-server 需要重新 reload 才能套用新的配置: 
-
 ```sh
-zabbix_server -R config_cache_reload
-```
+### Zabbix Server 指令
+$# zabbix_server --help
+usage:
+  zabbix_server [-c config-file]
+  zabbix_server [-c config-file] -R runtime-option
+  zabbix_server -h
+  zabbix_server -V
 
+The core daemon of Zabbix software.
 
-## Server 運行監控腳本有 Timeout 限制
+Options:
+  -c --config config-file        Path to the configuration file
+                                 (default: "/etc/zabbix/zabbix_server.conf")
+  -f --foreground                Run Zabbix server in foreground
+  -R --runtime-control runtime-option   Perform administrative functions
 
-```sh
-### 預設為 3 秒 Timeout (就不收資料了)
-/etc/zabbix/zabbix_server.conf
+    Runtime control options:
+      config_cache_reload        Reload configuration cache
+      housekeeper_execute        Execute the housekeeper
+      log_level_increase=target  Increase log level, affects all processes if
+                                 target is not specified
+      log_level_decrease=target  Decrease log level, affects all processes if
+                                 target is not specified
+
+      Log level control targets:
+        process-type             All processes of specified type
+                                 (alerter, alert manager, configuration syncer,
+                                 discoverer, escalator, history syncer,
+                                 housekeeper, http poller, icmp pinger,
+                                 ipmi manager, ipmi poller, java poller,
+                                 poller, preprocessing manager,
+                                 preprocessing worker, proxy poller,
+                                 self-monitoring, snmp trapper, task manager,
+                                 timer, trapper, unreachable poller,
+                                 vmware collector)
+        process-type,N           Process type and number (e.g., poller,3)
+        pid                      Process identifier, up to 65535. For larger
+                                 values specify target as "process-type,N"
+
+  -h --help                      Display this help message
+  -V --version                   Display version number
+
+Some configuration parameter default locations:
+  AlertScriptsPath               "/usr/share/zabbix/alertscripts"
+  ExternalScripts                "/usr/share/zabbix/externalscripts"
+  SSLCertLocation                "/usr/share/zabbix/ssl/certs"
+  SSLKeyLocation                 "/usr/share/zabbix/ssl/keys"
+  LoadModulePath                 "/usr/lib64/zabbix/modules"
+
+Report bugs to: <https://support.zabbix.com>
+Zabbix home page: <http://www.zabbix.com>
+Documentation: <https://www.zabbix.com/documentation>
+
+###
+$# zabbix_server -R config_cache_reload
 ```

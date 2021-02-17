@@ -30,30 +30,64 @@ Set of operations to act on the relations   | Data Operations
 Data integrity for accuracy and consistancy | DB Constraints
 
 
-## 連線相關 (建議 timeout 的保護措施)
+## 連線相關
 
-- 2018/06/27
+- 2021/02/15
 - [Waiting for table metadata lock問題](http://ctripmysqldba.iteye.com/blog/1938150)
 - [MySQL出现Waiting for table metadata lock的原因以及解决方法](http://blog.51cto.com/11286233/2048000)
-- [How do I find which transaction is causing a “Waiting for table metadata lock” state?
-](https://stackoverflow.com/questions/13148630/how-do-i-find-which-transaction-is-causing-a-waiting-for-table-metadata-lock-s)
+- [MySQL show status - active or total connections?](https://stackoverflow.com/questions/7432241/mysql-show-status-active-or-total-connections)
+- [How do I find which transaction is causing a “Waiting for table metadata lock” state?](https://stackoverflow.com/questions/13148630/how-do-i-find-which-transaction-is-causing-a-waiting-for-table-metadata-lock-s)
 - [資料庫連線占用](https://blog.csdn.net/sinat_30397435/article/details/62932057)
 
-```sh
-> show processlist;
-+---------+---------------------------------+------------------------------------------+
-| Command | State                           | Info                                     |
-+---------+---------------------------------+------------------------------------------+
-| Sleep   |                                 | NULL                                     |
-| Query   | Waiting for table metadata lock | ALTER TABLE `test_emc`.`data_alarm` ...  |
-| Query   | starting                        | show processlist                         |
-+---------+---------------------------------+------------------------------------------+
-# 僅節錄部分欄位...
-```
+
+#### 建議 timeout 的保護措施
 
 因為下了一個有問題的 Alter table 指令, 導致 Table 變成 `Waiting for table metadata lock`... (獨佔鎖啥鬼的)
 
 建議設定 `lock_wait_timeout` 設定超時時間, 避免長時間的 metadata鎖.
+
+
+#### 指令
+
+```sh
+# ↓ 其實是 SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST;
+> SHOW PROCESSLIST;
++-------+-------------+-----------------+-------+-------------+--------+-------+------+
+| Id    | User        | Host            | db    | Command     | Time   | State | Info |
++-------+-------------+-----------------+-------+-------------+--------+-------+------+
+|    13 | repl        | 10.40.0.7:29892 | NULL  | Binlog Dump | 368436 | @@1   | NULL |
+|    13 | repl        | 10.40.0.7:29892 | NULL  | Binlog Dump |    384 | init  | NULL |
+|    13 | system user | connecting host | NULL  | Connect     | 360800 | @@2   | NULL |
+|    14 | system user |                 | NULL  | Query       |      1 | @@3   | NULL |
+|  9061 | tony        | 10.40.0.5:60220 | appdb | Sleep       |     24 |       | NULL |
++-------+-------------+-----------------+-------+-------------+--------+-------+------+
+# @@1: Master has sent all binlog to slave; waiting for more updates  ← Replication Master
+# @@2: Waiting for master to send event                               ← Replication Slave
+# @@3: Slave has read all relay log; waiting for more updates         ← Replication Slave
+# 上述表格都是拼湊出來的, 改用底下:
+# SELECT user, host, db, command, info FROM INFORMATION_SCHEMA.PROCESSLIST;
+# SELECT user, host, db, command, state, info FROM INFORMATION_SCHEMA.PROCESSLIST;
+# SELECT user, host, db, command, state, info FROM INFORMATION_SCHEMA.PROCESSLIST WHERE command != 'Sleep';
+
+
+> SHOW STATUS WHERE `variable_name` = 'Threads_connected' OR `variable_name` = 'Max_used_connections';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| Max_used_connections | 13    |  # 可得知, 歷史以來(自從此次 Service 開始), 最多的一次連線數
+| Threads_connected    | 8     |  # 目前只有 Value 條連線
++----------------------+-------+
+2 rows in set (0.00 sec)
+
+
+> SHOW VARIABLES LIKE "max_connections";
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| max_connections | 9190  |  # Server 允許的同時最多連線數
++-----------------+-------+
+1 row in set (0.00 sec)
+```
 
 
 ## Key
@@ -108,4 +142,55 @@ MySQL內, 以下種種, 都有它們所要表達的意思, [看官網說明](htt
 # ">
 # `>
 # /*>
+```
+
+
+# 指令問題
+
+```sql
+--#; MySQL 曾經是 5.6, 升級成 5.7, 執行指令發生問題... 可藉由這樣來處理
+> SHOW STATUS WHERE `variable_name` = 'Threads_connected' OR `variable_name` = 'Max_used_connections';
+ERROR 1682 (HY000): Native table 'performance_schema'.'session_status' has the wrong structure
+
+
+> SELECT @@global.show_compatibility_56;
++--------------------------------+
+| @@global.show_compatibility_56 |
++--------------------------------+
+|                              0 |
++--------------------------------+
+1 row in set (0.00 sec)
+
+
+> SET @@global.show_compatibility_56=ON;
+```
+
+
+```sql
+--#; 
+> \s
+--------------
+/usr/local/mysql/bin/mysql  Ver 14.14 Distrib 5.7.26, for linux-glibc2.12 (x86_64) using  EditLine wrapper
+
+Connection id:		5
+Current database:
+Current user:		root@localhost
+SSL:			Not in use
+Current pager:		stdout
+Using outfile:		''
+Using delimiter:	;
+Server version:		5.7.26-log MySQL Community Server (GPL)
+Protocol version:	10
+Connection:		Localhost via UNIX socket
+Server characterset:	utf8
+Db     characterset:	utf8
+Client characterset:	utf8
+Conn.  characterset:	utf8
+UNIX socket:		/data/db/mysql/mysql.sock
+Uptime:			13 days 22 hours 56 min 59 sec
+--#; ↑ 服務時間
+
+Threads: 2  Questions: 28  Slow queries: 0  Opens: 109  Flush tables: 1  Open tables: 102  Queries per second avg: 0.000
+--------------
+
 ```

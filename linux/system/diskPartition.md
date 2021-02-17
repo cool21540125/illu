@@ -189,7 +189,6 @@ $ du -h --max-depth=0 /usr/share/man
 ```
 
 
-
 # 磁碟分割
 
 - 2018/06/26

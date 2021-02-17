@@ -19,4 +19,9 @@ password="123"  # 任何用戶的預設密碼, 可免輸入(這樣好嗎...?)
 
 
 [mysqldump]  # 
+
+
+[mysqld_safe]  # 若未用 systemd 來管控 mysqld, 則建議用此方式來啟動 mysqld
+
+[server]
 ```

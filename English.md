@@ -16,6 +16,7 @@
 - cascade: 串連
 - confined : 受限
 - congestion : 擁塞
+- contention : 爭奪, 爭用
 - credential : 憑證
 - cryptographically : 加密
 - elevate : 提升(通常指使用 具有權限 的 使用者)
@@ -92,6 +93,7 @@ OCSP   | Online Certificate Status Protocol          | 在線憑證狀態協定 
 PERT   | Program Evaluation and Review Technique     | 專案管理        | [PERT 網路分析法](https://wiki.mbalib.com/zh-tw/PERT%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90%E6%B3%95)
 POC    | Proof of Concept                            | DevOps          |
 SEO    | Search Engine Optimization                  | FrontEnd        |
+SLA    | Service Level Agreement                     | 服務層級協定     | 
 SPOF   | Single Point Of Failure                     | 單點失效         |
 SSG    | Static Site Generator                       | FrontEnd        | 前端框架產生器, ex: Hugo, Hexo, MkDocs
 SSL   | Secure Sockets Layer                         | 資安            |

@@ -195,6 +195,8 @@ F   UID   PID  PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
 ```
 
 
+
+
 ## - top(類似Windows的工作管理員)
 [使用 top](http://linux.vbird.org/linux_basic/0440processcontrol/0440processcontrol-fc4.php#top)
 
@@ -202,12 +204,9 @@ F   UID   PID  PPID PRI  NI    VSZ   RSS WCHAN  STAT TTY        TIME COMMAND
 
 <img src="../../img/top.jpg" style="width:480px; height:320px;" />
 
-```sh
-# 第一行
-top - 14:53:56                                  目前時間
-up 3:47                                         累積開機時間
-load average: 0.84, 0.82, 0.70                  系統每 1, 5, 15分鐘平均執行的行程數
-```
+- *top - 14:53:56*                 : 目前時間
+- *up 3:47*                        : 累積開機時間
+- *load average: 0.84, 0.82, 0.70* : 系統每 1, 5, 15分鐘平均執行的行程數
 
 top後操作指令 | 說明
 ------------ | ------------------------
@@ -221,8 +220,15 @@ k            | 刪除
 d            | 更新秒數
 q            | 離開
 
+```sh
+### 除了 top, 可使用 uptime, 來擷取片段
+$# uptime
+ 02:16:05 up 3 days,  7:41,  1 user,  load average: 0.00, 0.01, 0.05
+```
+
 
 ## jobs 工作管理 && fg
+
 > jobs參數, `l: 顯示 PID`, `r: running process`, `s: stopped process`
 > 預設, Ctrl+z後, 都會暫停此 process
 ```sh
@@ -278,14 +284,12 @@ root  3547   0.4   1.7 1012544  67576  pts/1  SLl+ 20:16  0:04 mongod --dbpath /
 
 ## fuser
 
-- 2019/07/19
+- 給 file/dir/fs/dev, 查 使用中的 Process
+- file/dir/fs/dev 用了哪些 Process
 
-`程序` 在啟動過程中 `開啟了多少檔案`.
-
-如果卸載時, 看到 「device is busy」, 表示某個 PID 正在使用這個檔案系統, 可用 fuser 來追查
+NOTE: 如果卸載時, 看到 「device is busy」, 表示某個 Process 正在使用這個檔案系統, 可用 fuser 來追查
 
 ```bash
-###
 $# fuser [-umv] [-k [i] [-signal]] file/dir
 # -u: 列出 PID owner
 # -v: 列出 file 與 PID 及 指令的相關性
@@ -293,17 +297,16 @@ $# fuser [-umv] [-k [i] [-signal]] file/dir
 # -k: 列出使用這個 file/dir 的 PID, 並試圖以 SIGKILL 訊號給這個 PID (kill -9 啦)
 # -signal: 例如「-2」, 「-15」. 預設是「-9」
 
-# 因為鳥哥舉的範例, 看了沒啥感覺... 就不列範例了orz
+fuser -uv -k zbx_env
 ```
 
 ## lsof
 
-- 2019/07/19
+- 用來查 Process 使用的 file/dir
+- Process 用了哪些 file/dir/fs/dev
 
-`某個程序開啟 or 使用中` 的 `檔案`
 
 ```bash
-###
 $# lsof [-aUu] [+d]
 # -a: 多項資料需要同時成立才列出
 # -U: 僅列出 Unix-like socket

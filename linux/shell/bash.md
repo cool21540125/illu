@@ -1,31 +1,10 @@
 # bash
 
 
-## Win10 GitBash 問題
-
-- 2020/04/16
-
-最近不知道怎麼了, win10 開啟 GitBash, 偶爾會看到這個
-
-![GitBashError](../../img/GitBashError.png)
-
 ```bash
-### 打開 cmd
-$# taskkill /F /IM ssh.exe
-# 下場, 已經正常 work 中的 terminal 可能會無法動作
-# 要把 (所有) GitBash 關掉!?
-# 重新開啟 GitBash 即可恢復正常
-```
-
-
----------------
-
-```sh
-# 看前3行
-$ cat /etc/passwd | head -3
-root:x:0:0:root:/root:/bin/bash             # 使用 root 登入後, 是使用 /bin/bash
-bin:x:1:1:bin:/bin:/sbin/nologin
-daemon:x:2:2:daemon:/sbin:/sbin/nologin     # daemon 這系統帳號, 使用的是 /sbin/nologin來作操作
+$ echo $$
+1631
+# 可看到目前 shell 的 PID
 ```
 
 ## 快速命令
@@ -55,7 +34,8 @@ alias dpsa='docker ps -a'
 alias dc='docker-compose'
 alias dn='docker network'
 alias dv='docker volume'
-alias dex='docker exec'
+alias dex='docker exec -it'
+alias dip4='di --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
 
 # 取消 已經設定過的別名
 $ unalias lm
@@ -318,9 +298,11 @@ Note: 載入 環境變數 設定檔的指令, `source ~/.bashrc` 與 `. ~/.bashr
 |
 |  # 2 使用者偏好設定檔 (依照順序, 只讀取一個, 若存在的話就先採用了)
 |- ${HOME}
-    |-   ~/.bash_profile
+    |-   ~/.bash_profile   # 用戶登入的時候被讀取
+    |-   ~/.bashrc         # 啟用新的 Shell 被讀取 (由 ~/.bash_profile 來驅動 或 non-login shell)
     |-   ~/.bash_login
     |-   ~/.profile
+    |-   ~/.bash_logout    # Shell 登入退出時執行
 ```
 
 ## 2. non-login shell
@@ -408,4 +390,21 @@ ls is /usr/bin/ls
 
 $ type cd
 cd is a shell builtin
+```
+
+
+## Win10 GitBash 問題
+
+- 2020/04/16
+
+最近不知道怎麼了, win10 開啟 GitBash, 偶爾會看到這個
+
+![GitBashError](../../img/GitBashError.png)
+
+```bash
+### 打開 cmd
+$# taskkill /F /IM ssh.exe
+# 下場, 已經正常 work 中的 terminal 可能會無法動作
+# 要把 (所有) GitBash 關掉!?
+# 重新開啟 GitBash 即可恢復正常
 ```

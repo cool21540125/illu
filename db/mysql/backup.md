@@ -32,6 +32,17 @@ mysqlbackup                        | mysqldump
 會有 Engine問題                     | 可跨 Engine
 可能需要關服務, backup比較不會有問題  | 可以暖備份
 
+```sql
+mysql> SELECT table_name, engine FROM information_schema.tables WHERE table_schema = 'dbname';
++--------------+--------+
+| TABLE_NAME   | ENGINE |
++--------------+--------+
+| table1       | InnoDB |
+| table2       | MyISAM |
+| table3       | MyISAM |
++--------------+--------+
+```
+
 
 ## 還原 restore
 

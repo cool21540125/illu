@@ -41,7 +41,7 @@ Threads: 1  Questions: 9  Slow queries: 0  Opens: 106  Flush tables: 1  Open tab
 ```sql
 mysql> CREATE DATABASE qq;
 mysql> USE qq
-mysql> show variables like 'character%';
+mysql> SHOW VARIABLES LIKE 'character%';
 +--------------------------+---------------------------------------------------------+
 | Variable_name            | Value                                                   |
 +--------------------------+---------------------------------------------------------+

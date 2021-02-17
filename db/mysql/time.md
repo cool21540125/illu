@@ -64,10 +64,6 @@ Taipei Standard Time
 +--------------------+
 ```
 
-官方底下這段不是很懂..
-
-> You can set the system time zone for MySQL Server at startup with the --timezone=timezone_name option to mysqld_safe(在 [mysql_safe] 下方使用 `timezone = timezone_name` 吧!?). You can also set it by setting the TZ environment variable before you start mysqld. The permissible values for --timezone or TZ are system dependent. Consult your operating system documentation to see what values are acceptable.
-
 
 ## 2. Server's current timezone
 
