@@ -1,34 +1,17 @@
-version: "3"
+version: '3'
 
 services:
-  zabbix_db:
+  mysql57_data:
     image: mysql:5.7
-    container_name: zabbix_db
-    hostname: zabbix_db
+    container_name: mysql57_data
     restart: always
     ports:
-      - "3306:3306"
+      - "3310:3306"
     volumes:
-      - ./init_db:/docker-entrypoint-initdb.d
-      - ./conf.d/:/etc/mysql/conf.d:rw
-      - /etc/localtime:/etc/localtime:ro
-      - zabbix_db:/var/lib/mysql
-      - zabbix_db_log:/var/log/mysql
+      - mysql57_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    networks:
-      - zabbix_net
-
-networks:
-  zabbix_net:
-    name: zabbix_net
-    driver: bridge
-
+  
 volumes:
-  zabbix_db:
-    name: zabbix_db
-  zabbix_db_log:
-    name: zabbix_db_log
+  mysql57_data:
+    name: mysql57_data

@@ -25,20 +25,25 @@ alias ll='ls -l --color=auto'
 alias lm='ls -al | less'
 alias which='alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 
-# docker 常用
+# 取消 已經設定過的別名
+$ unalias lm
+```
+
+```bash
+cat <<EOF >> /root/.bashrc
+
+### Docker 懶人指令 ------------
 alias d='docker'
 alias dis='docker images'
 alias di='docker inspect'
 alias dps='docker ps'
 alias dpsa='docker ps -a'
-alias dc='docker-compose'
 alias dn='docker network'
 alias dv='docker volume'
 alias dex='docker exec -it'
-alias dip4='di --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
-
-# 取消 已經設定過的別名
-$ unalias lm
+alias dip4='docker inspect --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
+alias dc='docker-compose'
+EOF
 ```
 
 
