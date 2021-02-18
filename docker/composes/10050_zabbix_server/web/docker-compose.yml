@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  zabbix_web:
+    image: zabbix/zabbix-web-nginx-mysql:centos-4.0.27
+    container_name: zabbix_web
+    hostname: zabbix_web
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./init_db:/docker-entrypoint-initdb.d
+      - ./conf.d/:/etc/mysql/conf.d:rw
+      - /etc/localtime:/etc/localtime:ro
+      - zabbix_db:/var/lib/mysql
+      - zabbix_db_log:/var/log/mysql
+    environment:
+      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PHP_TZ: ${PHP_TZ}
+    networks:
+      - zabbix_net
+
+networks:
+  zabbix_net:
+    name: zabbix_net
+    driver: bridge
