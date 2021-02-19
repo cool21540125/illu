@@ -53,15 +53,17 @@ c.execute( ... )
 ## [MySQL DB API Drivers](https://docs.djangoproject.com/en/1.11/ref/databases/#mysql-db-api-drivers)
 
 1. MySQLdb
-
-    Python3以上不支援此 Native Driver
+- Python3以上不支援此 Native Driver
+- 此 Type 為 libmysqlclient
 
 2. mysqlclient
-
-    從 MySQLdb 抄過來的東西 (支援 Python3)
-    Django 1.11官網建議用這個 Driver.
+- 從 MySQLdb 抄過來的東西 (支援 Python3)
+- Django 1.11官網建議用這個 Driver.
 
 3. MySQL Connector/Python
+- 此 Type 為 Native Driver
+
+4. MySQL 官方
 
 - Oracle 發行的 Pure Python Driver ; 此 Driver **不依賴** `Python標準函式庫以外的模組` 及 `MySQL client library`
 - [MySQL 官網](https://dev.mysql.com/downloads/connector/python/) 強烈建議 MySQL 5.5, 5.6, 5.7, 8.0 搭配使用 `MySQL Connector/Python 8.0`
