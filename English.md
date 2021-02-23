@@ -7,6 +7,7 @@
 - alphanumeric : 標點符號
 - attributes (headers)
 - authentication : 認證
+- auto-positioning : 自動定位
 - authorization : 授權
 - backlog : 積壓
 - back slash : 反斜線
