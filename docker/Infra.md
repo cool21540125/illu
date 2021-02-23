@@ -6,6 +6,7 @@ Docker 依賴 Linux 作業系統的:
 - namespace: 命名空間(Namespace)
 - CGroups: 控制群組(Control Group)
 - UnionFS: 聯合檔案系統(Union File System)
+    - run Container 以後, Docker 將此 `read-only layer(image)` + `read-write layer` 的組合稱之為 `Union File System`
 - Linux網路虛擬化
 
 ---

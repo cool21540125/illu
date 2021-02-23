@@ -464,6 +464,23 @@ foobar
 ```
 
 
+### 用字遣詞:
+
+```bash
+#### Example
+docker run -it --name vol-test -h CONTAINER -v /data debian /bin/bash
+# Docker has mounted /data inside the container as a directory somewhere under /var/lib/docker
+
+#### Example
+docker volume create --name my-vol
+docker run -d -v my-vol:/data debian 
+# This example will mount the my-vol volume at /data inside the container.
+
+#### Example
+docker run -v /home/adrian/data:/data debian ls /data
+# Will mount the directory /home/adrian/data on the host as /data inside the container
+```
+
 
 ## 查看資訊
 ```sh

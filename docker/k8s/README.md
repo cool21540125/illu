@@ -5,6 +5,10 @@
 
 # 基本組成
 
+- service: 為 k8s 分散式叢集架構的核心
+  - 擁有唯一的指定名稱
+  - 擁有一組 IP:port, 提供遠端服務能力. 每個服務處理程序都有獨立的 Endpoint(IP+Port), 但 k8s 讓我們可透過 Service (Cluster IP+Service Port) 連接到 Service
+  - 被對應到提供這種服務能力的一組容器應用上
 - Pod : k8s 運作的最小單位, 一個 Pod 對應一個服務, ex: API Server
   - 每個 Pod 都有個專屬的定義, 也就是 `yml` 檔
   - 一個 Pod 可有 1~N 個 Container, 但有 [文章](https://medium.com/@C.W.Hu/kubernetes-basic-concept-tutorial-e033e3504ec0) 寫說最好只有一個

@@ -1036,6 +1036,7 @@ $ test -r file1 # readable
 $ echo $?
 0
 ```
+
 option         | description
 -------------- | -------------
 file           |
@@ -1048,13 +1049,18 @@ file           |
   -L           | 為連結
 string         |
 -n \<str>      | 長度 >0
--z \<str>      | 是否 =0 (是否為空的概念, 非 數值 or 字串 方面的 0)
+-z \<str>      | 字串長度為 0, 返回 true
 \<str>==\<str> | 字串相等
 \<str>!=\<str> | 字串不相等
 number         |
 n1 -eq n2      | n1 == n2
 -ne, -gt, ...  | (略)
 
+```bash
+#
+name=Tony; [-z $name ]; echo $?
+1
+```
 
 
 
