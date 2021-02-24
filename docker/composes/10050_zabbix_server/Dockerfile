@@ -9,8 +9,8 @@ LABEL org.opencontainers.image.title="Zabbix server (MySQL)" \
       org.opencontainers.image.documentation="https://www.zabbix.com/documentation/${MAJOR_VERSION}/manual/installation/containers" \
       org.opencontainers.image.version="${ZBX_VERSION}" \
       org.opencontainers.image.source="${ZBX_SOURCES}" \
-      cc.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/server-mysql/centos/Dockerfile" \
-      cc.author.email="cool21540125@gmail.com"
+      info.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/server-mysql/centos/Dockerfile" \
+      info.author.github="https://github.com/cool21540125/docker-zabbix-server"
 
 ENV TINI_VERSION=v0.19.0
 
@@ -31,9 +31,6 @@ RUN set -eux && \
     mkdir -p /var/lib/zabbix/ssl/certs && \
     mkdir -p /var/lib/zabbix/ssl/keys && \
     mkdir -p /var/lib/zabbix/ssl/ssl_ca && \
-#     mkdir -p /usr/lib/zabbix/alertscripts && \
-#     mkdir -p /usr/lib/zabbix/externalscripts && \
-#     mkdir -p /usr/share/doc/zabbix-server-mysql && \
     yum --quiet makecache && \
     yum -y install --setopt=tsflags=nodocs https://repo.zabbix.com/non-supported/rhel/7/x86_64/iksemel-1.4-2.el7.centos.x86_64.rpm && \
     yum -y install epel-release && \
@@ -127,11 +124,6 @@ RUN set -eux && \
     cp src/zabbix_get/zabbix_get /usr/bin/zabbix_get && \
     cp src/zabbix_sender/zabbix_sender /usr/bin/zabbix_sender && \
     cp conf/zabbix_server.conf /etc/zabbix/zabbix_server.conf && \
-#     cat database/mysql/schema.sql > database/mysql/create.sql && \
-#     cat database/mysql/images.sql >> database/mysql/create.sql && \
-#     cat database/mysql/data.sql >> database/mysql/create.sql && \
-#     gzip database/mysql/create.sql && \
-#     cp database/mysql/create.sql.gz /usr/share/doc/zabbix-server-mysql/ && \
     cd /tmp/ && \
     rm -rf /tmp/zabbix-${ZBX_VERSION}/ && \
     chown --quiet -R zabbix:root /etc/zabbix/ /var/lib/zabbix/ && \
@@ -151,17 +143,14 @@ RUN echo zabbix | passwd --stdin zabbix && \
     yum -y install vim which ping telnet sudo && \
     mkdir -p /etc/zabbix/scripts && \
     mkdir -p /etc/zabbix/conf.d && \
-    mkdir -p /var/log/zabbix && \
-    chown --quiet -R zabbix:root /var/log/zabbix && \
     chown --quiet -R zabbix:root /etc/zabbix && \
     setfacl -Rm u:zabbix:rwx /etc/zabbix/ && \
     setfacl -m d:u:zabbix:rwx /etc/zabbix/ && \
-    setfacl -Rm u:zabbix:rwx /var/log/zabbix && \
-    chmod -R 770 /var/log/zabbix && \
     chmod a+x /sbin/tini && \
     chmod a+x /usr/bin/docker-entrypoint.sh
 
-VOLUME ["/etc/zabbix", "/var/log/zabbix", "/var/lib/zabbix/snmptraps", "/var/lib/zabbix/export"]
+# VOLUME ["/etc/zabbix", "/var/lib/zabbix/snmptraps", "/var/lib/zabbix/export"]
+VOLUME ["/etc/zabbix"]
 
 STOPSIGNAL SIGTERM
 

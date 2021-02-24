@@ -3,7 +3,7 @@ version: "3.8"
 services:
   zabbix_db:
     image: mysql:5.7
-    container_name: zdb
+    container_name: zabbix_db
     hostname: db
     restart: always
     ports:
@@ -26,10 +26,10 @@ services:
 
   zabbix_server:
     image: zabbix_server:4.0.27
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
-    container_name: zserver
+    container_name: zabbix_server
     hostname: server
     restart: always
     ports:
@@ -63,36 +63,12 @@ services:
       com.docker.compose.version: "1.28.2"
       author.email: "cool21540125@gmail.com"
       author.team: "delta-ops Taipei"
-  zabbix_web:
-    # image: zabbix/zabbix-web-nginx-mysql:centos-4.0.27
-    image: web
-    # image: zabbix_web:4.0.27
-    build:
-      context: .
-      dockerfile: web/Dockerfile
-    container_name: zweb
-    hostname: web
-    restart: always
-    ports:
-      - "8080:8080"
-      - "80:80"
-    environment:
-      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
-      DB_SERVER_HOST: ${DB_SERVER_HOST}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      PHP_TZ: ${PHP_TZ}
-    networks:
-      - zabbix_net
-    depends_on: 
-      - zabbix_server
 
 networks:
   zabbix_net:
     name: zabbix_net
     driver: bridge
-    ipam:
+    ipam: 
       config:
         - subnet: 172.30.0.0/16
 
@@ -105,10 +81,10 @@ volumes:
     name: zabbix_db
   zabbix_db_log:
     name: zabbix_db_log
-  # zabbix_db_conf:
-  #   name: zabbix_db_conf
-  #   driver: local
-  #   driver_opts:
-  #     type: "none"
-  #     o: "bind"
-  #     device: "${PWD}/conf.d/"
+  zabbix_db_conf:
+    name: zabbix_db_conf
+    driver: local
+    driver_opts:
+      type: "none"
+      o: "bind"
+      device: "${PWD}/conf.d/"

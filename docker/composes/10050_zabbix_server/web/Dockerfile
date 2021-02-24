@@ -1,31 +1,25 @@
-# Ref:
-#    https://github.com/zabbix/zabbix-docker/blob/4.0.27/web-nginx-mysql/centos/Dockerfile
-FROM centos:7
+FROM centos:centos7
 
 LABEL org.opencontainers.image.title="Zabbix web-interface (Nginx, MySQL)" \
       org.opencontainers.image.authors="Alexey Pustovalov <alexey.pustovalov@zabbix.com>" \
       org.opencontainers.image.vendor="Zabbix LLC" \
       org.opencontainers.image.url="https://zabbix.com/" \
       org.opencontainers.image.description="Zabbix web-interface based on Nginx web server with MySQL database support" \
-      org.opencontainers.image.licenses="GPL v2.0"
-      org.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/web-nginx-mysql/centos/Dockerfile" \
-      com.author.email="tony.j@auxworld.net" \
-      com.author.team="Delta-OPS Taipei"
+      org.opencontainers.image.licenses="GPL v2.0" \
+      info.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/web-nginx-mysql/centos/Dockerfile" \
+      info.author.github="https://github.com/cool21540125/docker-zabbix-server"
 
 STOPSIGNAL SIGTERM
 
 RUN set -eux && \
     groupadd -g 1995 --system zabbix && \
     adduser -r --shell /usr/bin/bash \
-            -g zabbix -G wheel \
+            -g zabbix -G root \
             -d /var/lib/zabbix/ -u 1997 zabbix && \
     echo zabbix | passwd --stdin zabbix && \
     mkdir -p /etc/zabbix && \
     mkdir -p /etc/zabbix/web && \
     mkdir -p /var/lib/php/session && \
-    mkdir -p /var/log/nginx && \
-    chown --quiet nginx:root /var/log/nginx && \
-    chmod 770 /var/log/nginx && \
     yum --quiet makecache && \
     yum -y install epel-release && \
     yum -y install --setopt=tsflags=nodocs \
@@ -56,7 +50,7 @@ LABEL org.opencontainers.image.documentation="https://www.zabbix.com/documentati
       org.opencontainers.image.version="${ZBX_VERSION}" \
       org.opencontainers.image.source="${ZBX_SOURCES}"
 
-COPY ["conf/etc/", "/etc/"]
+COPY ["web/init/conf/", "/etc/"]
 
 RUN set -eux && \
     yum --quiet makecache && \
@@ -95,15 +89,19 @@ RUN set -eux && \
     rm -rf /var/cache/yum /var/lib/yum/yumdb/* /usr/lib/udev/hwdb.d/* && \
     rm -rf /etc/udev/hwdb.bin /root/.pki
 
-# VOLUME .. ..
+RUN yum -y install vim which ping telnet sudo net-tools
 
-COPY ["./web/init/docker-entrypoint.sh", "/usr/bin/"]
+# EXPOSE 8080/TCP 8443/TCP
+EXPOSE 80/TCP 8080/TCP
+
+# WORKDIR /usr/share/zabbix
+WORKDIR /usr/share/zabbix/conf
+
+COPY ["web/init/docker-entrypoint.sh", "/usr/bin/"]
+# COPY ["web/init/docker-entrypoint.sh", "/usr/bin/"]
 # ADD https://raw.githubusercontent.com/zabbix/zabbix-docker/4.0.27/web-nginx-mysql/centos/docker-entrypoint.sh /usr/bin/
-
-EXPOSE 80/TCP
 
 USER 1997
 
-WORKDIR /usr/share/zabbix
-
 # ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["bash", "/usr/bin/docker-entrypoint.sh"]
