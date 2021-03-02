@@ -1,49 +1,42 @@
-# https://docs.gitea.io/en-us/install-with-docker/
-version: "2"
-
-networks:
-  gitea:
-    external: false
-
-volumes:
-  mygitea: {}
-  mygitea-mysql: {}
+version: "3.8"
 
 services:
-  server:
-    image: gitea/gitea:1
-    container_name: mygitea
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - DB_TYPE=mysql
-      - DB_HOST=db:3306
-      - DB_NAME=gitea
-      - DB_USER=gitea
-      - DB_PASSWD=gitea
+  gitea:
+    image: gitea/gitea:1.13
+    container_name: gitea
     restart: always
     networks:
-      - gitea
+      - gitea_net
+      - bridge
     volumes:
-      - mygitea:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+      - "gitea_data:/data"
+      - "/etc/localtime:/etc/localtime:ro"
     ports:
       - "3000:3000"
-      - "2222:22"
     depends_on:
       - db
 
   db:
     image: mysql:5.7
-    container_name: mygitea-mysql
+    container_name: gitea_db
+    hostname: gitea_db
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=gitea
-      - MYSQL_USER=gitea
-      - MYSQL_PASSWORD=gitea
-      - MYSQL_DATABASE=gitea
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     networks:
-      - gitea
+      - gitea_net
     volumes:
-      - mygitea-mysql:/var/lib/mysql
+      - "gitea_db:/var/lib/mysql"
+
+networks:
+  gitea_net:
+    name: net_gitea
+
+volumes:
+  gitea_data:
+    name: gitea_data
+  gitea_db:
+    name: gitea_db

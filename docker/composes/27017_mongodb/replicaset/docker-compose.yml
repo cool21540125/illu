@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  app_mongo:
+    image: mongo
+    container_name: mongo
+    hostname: mongo
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    ports:
+      - "27017:27017"
+    volumes:
+      - "mongo_data:/data/db"
+      - "mongo_sharding_configdb:/data/configdb"
+      - "${PWD}/mongod.conf:/etc/mongod.conf"
+    # command: ["mongod", "--config", "/etc/mongod.conf"]
+
+volumes:
+  mongo_data:
+    name: mongo_data
+  mongo_sharding_configdb:
+    name: mongo_sharding_configdb
+
