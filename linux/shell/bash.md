@@ -30,19 +30,22 @@ $ unalias lm
 ```
 
 ```bash
-cat <<EOF >> /root/.bashrc
+cat <<EOF >> ~/.bashrc
 
 ### Docker 懶人指令 ------------
 alias d='docker'
 alias dis='docker images'
-alias di='docker inspect'
 alias dps='docker ps'
 alias dpsa='docker ps -a'
 alias dn='docker network'
 alias dv='docker volume'
 alias dex='docker exec -it'
-alias dip4='docker inspect --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
+alias di='docker inspect'
 alias dc='docker-compose'
+alias dl='docker logs -f'
+alias diip='docker inspect --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
+alias dienv='docker inspect --format="{{.Config.Env}}"'
+
 EOF
 ```
 

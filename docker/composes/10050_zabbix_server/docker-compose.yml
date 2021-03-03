@@ -63,6 +63,7 @@ services:
       com.docker.compose.version: "1.28.2"
       author.email: "cool21540125@gmail.com"
       author.team: "delta-ops Taipei"
+
   zabbix_web:
     # image: zabbix/zabbix-web-nginx-mysql:centos-4.0.27
     image: web
@@ -105,10 +106,3 @@ volumes:
     name: zabbix_db
   zabbix_db_log:
     name: zabbix_db_log
-  # zabbix_db_conf:
-  #   name: zabbix_db_conf
-  #   driver: local
-  #   driver_opts:
-  #     type: "none"
-  #     o: "bind"
-  #     device: "${PWD}/conf.d/"

@@ -25,6 +25,7 @@
 - expression : 運算式
 - fabric : 布, 結構, 構造, 品質, 織品
 - FWIW : for what it's worth (用在 `不知道講出來有沒有用, 但就我所知是這樣` 的情境)
+- gotcha : 陷阱
 - IIUC : if I understood correctly
 - imitate/mimic : 模仿
 - immutable : 不可變的
