@@ -1,29 +1,43 @@
 version: "3.8"
 
 services:
-  app_mongo:
-    image: mongo
-    container_name: mongo
-    hostname: mongo
+  mongo:
+    image: mongo44-bionic
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: mongo
+    hostname: ${HOSTNAME}
     restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
     ports:
       - "27017:27017"
+    environment:
+      - TZ=Asia/Shanghai
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - APP_TOKEN=${APP_TOKEN}
+      - APP_USER=${APP_USER}
+      - APP_PASSWD=${APP_PASSWD}
     volumes:
-      - "mongo_data:/data/db"
-      - "mongo_sharding_configdb:/data/configdb"
-      - "${PWD}/mongod.conf:/etc/mongod.conf"
-    # command: ["mongod", "--config", "/etc/mongod.conf"]
+      - "data_db:/data/db"
+      - "data_configdb:/data/configdb"
+      - "$PWD/mongod.conf:/etc/mongod.conf"
+    networks:
+      - net_mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+
+networks:
+  net_mongo:
+    name: net_mongo
+    driver: bridge
 
 volumes:
-  mongo_data:
+  data_db:
     name: mongo_data
-  mongo_sharding_configdb:
+  data_configdb:
     name: mongo_sharding_configdb
-
