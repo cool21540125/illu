@@ -12,7 +12,7 @@ services:
     ports:
       - "27017:27017"
     environment:
-      - TZ=Asia/Shanghai
+      - TZ=Asia/Taipei
       - ADMIN_USER=${ADMIN_USER}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - APP_TOKEN=${APP_TOKEN}

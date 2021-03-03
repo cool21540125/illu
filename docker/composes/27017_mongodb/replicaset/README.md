@@ -3,34 +3,6 @@
 
 - 2021/03/03
 
-
-```env
-# auth to admin Database for administrator
-# vvvvvvvvvvvvvvvvvvvvvvvvvv
-MONGO_INITDB_ROOT_USERNAME=root
-MONGO_INITDB_ROOT_PASSWORD=1qaz@WSX
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^
-# DON'T USE THEM
-# Bug issue: https://github.com/docker-library/mongo/issues/323
-
-# vvvvvvvvvvvvvvvvvvvvv 
-ADMIN_USER=root
-ADMIN_PASSWORD=1qaz@WSX
-# ^^^^^^^^^^^^^^^^^^^^^
-# Use this instead
-
-#MONGO_INITDB_DATABASE=admin
-
-replSetName=rs0
-
-# APP Token
-APP_TOKEN=123
-
-# App user auth
-APP_USER=tony
-APP_PASSWD=5tgb^YHN
-```
-
 ### ReplicaSet 完成後再來執行
 
 ```js

@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+  mongo01:
+    image: mongo44-bionic
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongo01
+    hostname: mongo01
+    restart: always
+    ports:
+      - "27021:27017"
+    environment:
+      - TZ=Asia/Taipei
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - APP_TOKEN=${APP_TOKEN}
+      - APP_USER=${APP_USER}
+      - APP_PASSWD=${APP_PASSWD}
+    volumes:
+      - "${PWD}/data_db01:/data/db"
+      - "${PWD}/data_configdb01:/data/configdb"
+      - "${PWD}/mongod.conf:/etc/mongod.conf"
+    networks:
+      - net_local_mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+  mongo02:
+    image: mongo44-bionic
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongo02
+    hostname: mongo02
+    restart: always
+    ports:
+      - "27022:27017"
+    environment:
+      - TZ=Asia/Taipei
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - APP_TOKEN=${APP_TOKEN}
+      - APP_USER=${APP_USER}
+      - APP_PASSWD=${APP_PASSWD}
+    volumes:
+      - "${PWD}/data_db02:/data/db"
+      - "${PWD}/data_configdb02:/data/configdb"
+      - "${PWD}/mongod.conf:/etc/mongod.conf"
+    networks:
+      - net_local_mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+  mongo03:
+    image: mongo44-bionic
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mongo03
+    hostname: mongo03
+    restart: always
+    ports:
+      - "27023:27017"
+    environment:
+      - TZ=Asia/Taipei
+      - ADMIN_USER=${ADMIN_USER}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - APP_TOKEN=${APP_TOKEN}
+      - APP_USER=${APP_USER}
+      - APP_PASSWD=${APP_PASSWD}
+    volumes:
+      - "${PWD}/data_db03:/data/db"
+      - "${PWD}/data_configdb03:/data/configdb"
+      - "${PWD}/mongod.conf:/etc/mongod.conf"
+    networks:
+      - net_local_mongo
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["mongod", "--config", "/etc/mongod.conf"]
+
+networks:
+  net_local_mongo:
+    name: net_local_mongo
+    driver: bridge
