@@ -2,5 +2,6 @@
 
 {
      // logging-driver - https://docs.docker.com/config/containers/logging/configure/
-    "log-driver": "syslog"
+    "log-driver": "syslog",
+    "data-root": "/data/docker"
 }

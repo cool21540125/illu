@@ -18,6 +18,7 @@
 - confined : 受限
 - congestion : 擁塞
 - contention : 爭奪, 爭用
+- cow, copy-on-write strategy: 寫時復制策略
 - credential : 憑證
 - cryptographically : 加密
 - elevate : 提升(通常指使用 具有權限 的 使用者)
@@ -53,6 +54,7 @@
 - poller : 輪循器
 - portal : 門戶
 - replica : 即時備援 (即時複製一份到其他節點的概念, HA), 資料備份的另一種可行性作法
+- routing mesh : 路由網路
 - sharding : 分片(把東西拆成幾分的概念吧??)
 - snippets : 片段
 - space bar : 空白鍵
