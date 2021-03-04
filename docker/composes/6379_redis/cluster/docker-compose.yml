@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  redis01:
+    image: redis:6.0
+    container_name: redis01
+    hostname: redis01
+    restart: always
+    ports:
+      - "6379:6379"
+      - "16379:16379"
+    volumes:
+      - "redis_data01:/data"
+      - "./redis01.conf:/etc/redis.conf"
+    networks:
+      - net_redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["redis-server", "/etc/redis.conf"]
+  redis02:
+    image: redis:6.0
+    container_name: redis02
+    hostname: redis02
+    restart: always
+    ports:
+      - "6380:6380"
+      - "16380:16380"
+    volumes:
+      - "redis_data02:/data"
+      - "./redis02.conf:/etc/redis.conf"
+    networks:
+      - net_redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+    command: ["redis-server", "/etc/redis.conf"]
+
+volumes:
+  redis_data01:
+    name: redis_cluster_data01
+  redis_data02:
+    name: redis_cluster_data02
+
+networks:
+  net_redis:
+    name: net_redis_cluster
