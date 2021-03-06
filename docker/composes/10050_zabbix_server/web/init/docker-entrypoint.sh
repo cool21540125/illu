@@ -19,7 +19,7 @@ ZBX_SERVER_HOST=${ZBX_SERVER_HOST:-"zabbix-server"}
 ZBX_SERVER_PORT=${ZBX_SERVER_PORT:-"10051"}
 
 # Default timezone for web interface
-PHP_TZ=${PHP_TZ:-"Europe/Riga"}
+PHP_TZ=${PHP_TZ:-"Asia/Taipei"}
 
 # Default directories
 # User 'zabbix' home directory
@@ -62,7 +62,7 @@ file_env() {
 
 # Check prerequisites for MySQL database
 check_variables() {
-    : ${DB_SERVER_HOST:="mysql-server"}
+    : ${DB_SERVER_HOST:="zabbix_db"}
     : ${DB_SERVER_PORT:="3306"}
     USE_DB_ROOT_USER=false
     CREATE_ZBX_DB_USER=false
@@ -127,24 +127,12 @@ check_db_connect() {
 
 prepare_web_server() {
     NGINX_CONFD_DIR="/etc/nginx/conf.d"
-    NGINX_SSL_CONFIG="/etc/ssl/nginx"
 
     echo "** Adding Zabbix virtual host (HTTP)"
     if [ -f "$ZABBIX_ETC_DIR/nginx.conf" ]; then
         ln -s "$ZABBIX_ETC_DIR/nginx.conf" "$NGINX_CONFD_DIR"
     else
         echo "**** Impossible to enable HTTP virtual host"
-    fi
-
-    if [ -f "$NGINX_SSL_CONFIG/ssl.crt" ] && [ -f "$NGINX_SSL_CONFIG/ssl.key" ] && [ -f "$NGINX_SSL_CONFIG/dhparam.pem" ]; then
-        echo "** Enable SSL support for Nginx"
-        if [ -f "$ZABBIX_ETC_DIR/nginx_ssl.conf" ]; then
-            ln -s "$ZABBIX_ETC_DIR/nginx_ssl.conf" "$NGINX_CONFD_DIR"
-        else
-            echo "**** Impossible to enable HTTPS virtual host"
-        fi
-    else
-        echo "**** Impossible to enable SSL support for Nginx. Certificates are missed."
     fi
 }
 

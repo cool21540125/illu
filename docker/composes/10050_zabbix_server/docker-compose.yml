@@ -3,20 +3,18 @@ version: "3.8"
 services:
   zabbix_db:
     image: mysql:5.7
-    container_name: zdb
+    container_name: zabbix_db
     hostname: db
     restart: always
-    ports:
-      - "3306:3306"
     volumes:
-      - ./mysql/init:/docker-entrypoint-initdb.d
-      - ./mysql/conf.d/:/etc/mysql/conf.d:rw
-      - /etc/localtime:/etc/localtime
+      - ./mysql/init/:/docker-entrypoint-initdb.d/
+      - ./mysql/conf.d/:/etc/mysql/conf.d/:rw
+      - /etc/localtime:/etc/localtime:ro
       - zabbix_db:/var/lib/mysql
       - zabbix_db_log:/var/log/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
@@ -28,20 +26,20 @@ services:
     image: zabbix_server:4.0.27
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: zserver
+      dockerfile: ./server/Dockerfile
+    container_name: zabbix_server
     hostname: server
     restart: always
     ports:
       - "10051:10051"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./zabbix/zabbix:/etc/zabbix:rw
+      - ./server/zabbix:/etc/zabbix:rw
       - zabbix_server_log:/var/log/zabbix
     environment:
-      DB_SERVER_HOST: zabbix_db
-      DB_SERVER_PORT: 3306
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      DB_SERVER_HOST: ${DB_SERVER_HOST}
+      DB_SERVER_PORT: ${DB_SERVER_PORT}
+      MYSQL_DATABASE: ${DB_NAMW}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -65,22 +63,21 @@ services:
       author.team: "delta-ops Taipei"
 
   zabbix_web:
-    # image: zabbix/zabbix-web-nginx-mysql:centos-4.0.27
-    image: web
-    # image: zabbix_web:4.0.27
+    image: zabbix_web:4.0.27
     build:
       context: .
-      dockerfile: web/Dockerfile
-    container_name: zweb
+      dockerfile: ./web/Dockerfile
+    container_name: zabbix_web
     hostname: web
     restart: always
     ports:
       - "8080:8080"
-      - "80:80"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     environment:
       ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
       DB_SERVER_HOST: ${DB_SERVER_HOST}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PHP_TZ: ${PHP_TZ}

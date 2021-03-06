@@ -9,6 +9,7 @@ LABEL org.opencontainers.image.title="Zabbix server (MySQL)" \
       org.opencontainers.image.documentation="https://www.zabbix.com/documentation/${MAJOR_VERSION}/manual/installation/containers" \
       org.opencontainers.image.version="${ZBX_VERSION}" \
       org.opencontainers.image.source="${ZBX_SOURCES}" \
+      info.image.info="Zabbix Server 4.0.27" \
       info.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/server-mysql/centos/Dockerfile" \
       info.author.github="https://github.com/cool21540125/docker-zabbix-server"
 
@@ -134,10 +135,9 @@ RUN set -eux && \
     rm -rf /var/cache/yum /var/lib/yum/yumdb/* /usr/lib/udev/hwdb.d/* && \
     rm -rf /etc/udev/hwdb.bin /root/.pki
 
-COPY ["./zabbix/zabbix/zabbix_server.conf", "/etc/zabbix/zabbix_server.conf"]
+COPY ["./server/zabbix/zabbix_server.conf", "/etc/zabbix/zabbix_server.conf"]
 
-COPY ["./zabbix/init/docker-entrypoint.sh", "/usr/bin/"]
-# ADD https://raw.githubusercontent.com/zabbix/zabbix-docker/4.0.27/server-mysql/centos/docker-entrypoint.sh /usr/bin/
+COPY ["./server/init/docker-entrypoint.sh", "/usr/bin/"]
 
 RUN echo zabbix | passwd --stdin zabbix && \
     yum -y install vim which ping telnet sudo && \

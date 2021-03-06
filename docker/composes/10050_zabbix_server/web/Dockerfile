@@ -1,4 +1,4 @@
-FROM centos:centos7
+FROM centos:7
 
 LABEL org.opencontainers.image.title="Zabbix web-interface (Nginx, MySQL)" \
       org.opencontainers.image.authors="Alexey Pustovalov <alexey.pustovalov@zabbix.com>" \
@@ -6,6 +6,7 @@ LABEL org.opencontainers.image.title="Zabbix web-interface (Nginx, MySQL)" \
       org.opencontainers.image.url="https://zabbix.com/" \
       org.opencontainers.image.description="Zabbix web-interface based on Nginx web server with MySQL database support" \
       org.opencontainers.image.licenses="GPL v2.0" \
+      info.image.info="Zabbix Web 4.0.27" \
       info.image.reference="https://github.com/zabbix/zabbix-docker/blob/4.0.27/web-nginx-mysql/centos/Dockerfile" \
       info.author.github="https://github.com/cool21540125/docker-zabbix-server"
 
@@ -51,6 +52,7 @@ LABEL org.opencontainers.image.documentation="https://www.zabbix.com/documentati
       org.opencontainers.image.source="${ZBX_SOURCES}"
 
 COPY ["web/init/conf/", "/etc/"]
+COPY ["web/init/docker-entrypoint.sh", "/usr/bin/"]
 
 RUN set -eux && \
     yum --quiet makecache && \
@@ -89,19 +91,13 @@ RUN set -eux && \
     rm -rf /var/cache/yum /var/lib/yum/yumdb/* /usr/lib/udev/hwdb.d/* && \
     rm -rf /etc/udev/hwdb.bin /root/.pki
 
-RUN yum -y install vim which ping telnet sudo net-tools
+RUN yum -y install vim which ping telnet sudo net-tools && \
+    chmod a+x /usr/bin/docker-entrypoint.sh
 
-# EXPOSE 8080/TCP 8443/TCP
-EXPOSE 80/TCP 8080/TCP
+EXPOSE 8080/TCP
 
-# WORKDIR /usr/share/zabbix
-WORKDIR /usr/share/zabbix/conf
-
-COPY ["web/init/docker-entrypoint.sh", "/usr/bin/"]
-# COPY ["web/init/docker-entrypoint.sh", "/usr/bin/"]
-# ADD https://raw.githubusercontent.com/zabbix/zabbix-docker/4.0.27/web-nginx-mysql/centos/docker-entrypoint.sh /usr/bin/
+WORKDIR /usr/share/zabbix
 
 USER 1997
 
-# ENTRYPOINT ["docker-entrypoint.sh"]
-ENTRYPOINT ["bash", "/usr/bin/docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
