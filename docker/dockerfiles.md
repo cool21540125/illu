@@ -152,8 +152,8 @@ CMD ["/bin/bash"]
 - src 如果是個 dir, 則會連同底下的東西全部 copy 到 Container (包含 filesystem metadata)
     - dir 不會被 copy, 只有內容會
 - 若 src 為 file, dest 結尾多了個 /, 則會被視為放到 `dest/file`
-- 若 src 指定了多個檔案, 則 dest 必須為 / 結尾
 - 若 src 為 file, dest 沒有 / 結尾, 則會被視為寫入到 `dest` (file)
+- 若 src 指定了多個檔案, 則 dest 必須為 / 結尾
 - 若 dest 路徑不存在, 則整個結構會被建立
 - 關於 COPY, 也有 cache 的問題, 遇到再說
 
@@ -262,6 +262,27 @@ HEALTHCHECK
 
 #### [ARG](https://docs.docker.com/engine/reference/builder/#arg)
 
+- 基本用法: `ARG <name>[=<default value>]`
+- Docker Image 建置階段可用來設置變數的方式, 若用 CLI, 可用 `--build-arg NAME=VALUE` 來代替
+- WARNING: 不要把私密變數在 build time 的時候設置(任何人都可看到 via `docker history`)
+- `ARG` 參數的生效, 從 Dockerfile 裡面宣告後的下一行便存在, 而非在使用 CLI 的時候才存在
+- 
+- 可透過下列方式來動態變換:
+
+```dockerfile
+FROM busybox
+USER ${user:-some_user}
+ARG user
+USER $user
+```
+```bash
+docker build --build-arg user=tony -t demo_arg .
+docker run --rm demo_arg whoami
+```
+
+- `RUN` 可以執行 `ARG` 或 `ENV` instruction 聲明過的變數
+- 若 `ARG` 及 `ENV` 同時宣告一樣的變數, 則 `ENV` 會覆寫 `ARG`, 看底下範例:
+    - ![Env_overwrite_ARG](./img/env_overwrite_arg.png)
 
 
 #### [Shell](https://docs.docker.com/engine/reference/builder/#shell)

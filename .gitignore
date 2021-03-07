@@ -20,4 +20,4 @@ pass_*
 *.sqlite
 data_db/
 keyfile
-
+*.sql.gz
