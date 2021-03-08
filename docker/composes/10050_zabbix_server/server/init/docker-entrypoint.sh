@@ -1,7 +1,5 @@
 #!/bin/bash
-# Ref:
-#     https://github.com/zabbix/zabbix-docker/blob/4.0.27/server-mysql/centos/docker-entrypoint.sh
-# 2021/02/12, TonyChou
+# Ref: https://github.com/zabbix/zabbix-docker/blob/4.0.27/server-mysql/centos/docker-entrypoint.sh
 set -o pipefail
 
 set +e

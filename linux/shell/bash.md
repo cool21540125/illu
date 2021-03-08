@@ -44,7 +44,7 @@ alias di='docker inspect'
 alias dc='docker-compose'
 alias dl='docker logs -f'
 alias diip='docker inspect --format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}"'
-alias dienv='docker inspect --format="{{.Config.Env}}"'
+alias dienv='docker inspect --format="{{json .Config.Env}}"'
 
 EOF
 ```
@@ -118,49 +118,102 @@ $ echo "${name[1]}'s sister is ${name[2]}"
 ```
 
 
-### 變數替換
+### 變數替換 - 「#」 與 「%」
+
 ```sh
-$ pp=${PATH}
-$ echo ${pp}
-/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/student/.local/bin:/home/student/bin
+a="123-456-789"
+echo ${a}
+#123-456-789
 
-$ echo ${pp#/*usr/bin:}
-/usr/local/sbin:/usr/sbin:/home/student/.local/bin:/home/student/bin
+### 移除最短匹配(由前開始)
+echo ${a#*-}
+#456-789
 
-$ echo ${pp#/*usr/sbin:}
-/home/student/.local/bin:/home/student/bin
-# 以上, 從最一開始往右刪除
-# 「#」 最短的 match
-# 「##」 最長的 match
+### 移除最長匹配(由前開始)
+echo ${a##*-}
+#789
 
-# 從最後面往前刪除則使用 「%」
-$ echo ${pp%:*bin}
-/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/student/.local/bin  # 為啥 : 不見了....= =
-# 依理, 「%%」可刪除最長的 match
+### 移除最短匹配(由後開始)
+echo ${a%-*}
+#123-456
 
-##### 練習 :
-$ echo ${HOME}
-/home/student
+### 移除最長匹配(由後開始)
+echo ${a%%-*}
+#123
 
-$ echo ${HOME#/home/}   # 取出 student
-student
+# --------------------------
+### 測試是否包含
+name=tonychou
+test "${name#*-}" = "${name}"
+echo $?
+#0
 
-$ echo ${HOME%/*}       # 取出前面路徑
-/home
+### 測試是否包含
+name=tony-chou
+test "${name#*-}" = "${name}"
+echo $?
+#1
 ```
 
 
 ### 變數取代
+
 ```sh
-$ echo ${HOME/student/smartStudent} # 如果是用 ${HOME//student/smartStudent} , 則會套用所有的 match
-/home/smartStudent
+DEMO='a=1,b=2,c=3'
+echo ${DEMO}
+#a=1,b=2,c=3
 
-# 如果 userName 存在則印出 ; 若不存在則印出 NOTExist
-$ echo ${userName-NOTExist} # 若 userName='', 則會印出 ''
-NOTExist
+echo ${DEMO/a=1,}  # ${xxx/yyy} 裡頭的 /yyy  會把這部分捨去掉
+#b=2,c=3
+echo ${DEMO/b=2,}  # ${xxx/yyy} 裡頭的 /yyy  會把這部分捨去掉
+#a=1,c=3
 
-$ echo ${userName:-NOTExist}    # 會把 不存在 or "" 當成一樣
-NOTExist
+# ------------------------------------------
+NAME=tony
+AGE=30;unset AGE
+echo ${NAME}
+#tony
+
+### 如果存在則印出 ; 若不存在則印出 後者
+echo ${NAME-nobody}
+#tony
+
+echo ${NAME:-nobody}
+#tony
+
+### 會把 不存在 or "" 當成一樣
+echo ${AGE-DoesntKnow}  
+#DoesntKnow
+
+echo ${AGE:-DoesntKnow}
+#DoesntKnow
+```
+
+
+### set 進階用法, docker-entrypoint.sh 常見
+
+- [What does “set --” do in this Dockerfile entrypoint?](https://unix.stackexchange.com/questions/308260/what-does-set-do-in-this-dockerfile-entrypoint)
+
+ex: `set -- redis-server "$@"`
+
+```bash
+### 首先, set 的一些基本特性
+set a b c
+echo $1 $2 $3
+#a b c
+# ↑ set 指令用來設定 位置參數
+```
+
+`set -- xxx "$@"` 裡的 `--` 是一種標準, 用來表示不要把跟隨在 `xxx` 後面的 `"$@"` 當成 option
+
+如範例, 因此將會把 `redis-server` 放到 $1 $2 之前
+
+> The other main difference is that if you are sourcing a script inside of another script, using `set -- $arg1 $arg2` will allow your sourced script to read the arguments, otherwise only Bash supports passing arguments directly to a sourced script (and that can be tricky to notice)
+
+↑ 看起來是, 可讓被 source 的腳本可以讀取參數
+
+```bash
+set -- redis-server "$@"
 ```
 
 
@@ -265,26 +318,20 @@ Tony
 
 快速執行歷史指令
 ```sh
-$ history
-...
-  785  echo ${PATH}     # <--
-  786  declare
-  787  set
-  788  declare | grep anaconda_HOME
-  789  declare -p anaconda_HOME
-...
+history
+#   784  ...
+#   785  echo ${PATH}
+#   786  ...
 
-### 快速執行歷史指令
-$ !785
-echo ${PATH}
-/opt/anaconda3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+### 執行歷史
+!785   
+#echo ${PATH}
+#/opt/anaconda3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 
-$ !hi       # 執行最近一次執行過「hi」開頭的指令
-...
-  808  echo ${HISTSIZE}
-  809  history
-  810  echo ${PATH}
-  811  history
+### 執行歷史(最近一次執行過「echo」開頭的指令)
+!echo
+#echo ${PATH}
+#/opt/anaconda3/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 ```
 
 
@@ -416,3 +463,10 @@ $# taskkill /F /IM ssh.exe
 # 要把 (所有) GitBash 關掉!?
 # 重新開啟 GitBash 即可恢復正常
 ```
+
+
+# 最佳實務
+
+- [Bash best practices](https://gist.github.com/leolorenzoluis/0aad69719267536d0b7a79946edbfcb7)
+
+- ShellScript 最前面永遠使用 `set -eo pipefail`, fail fast and be aware of exit codes

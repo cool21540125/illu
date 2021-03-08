@@ -2,19 +2,8 @@
 
 ```.env
 ### Necessary
-DB_SERVER_HOST=
-DB_NAME=
-MYSQL_USER=
-MYSQL_PASSWORD=
+USER_PASSWORD=
 MYSQL_ROOT_PASSWORD=
-
-# zabbix_web
-PHP_TZ=Asia/Taipei
-
-# zabbix_server
-ZBX_SERVER_HOST=
-# ZBX_SERVER_PORT=
-# DB_SERVER_PORT=
 
 # zabbix_web title
 ZBX_SERVER_NAME=
@@ -22,4 +11,13 @@ ZBX_SERVER_NAME=
 # ElasticSearch
 # ZBX_HISTORYSTORAGEURL=
 # ZBX_HISTORYSTORAGETYPES=
+```
+
+
+```bash
+docker run -d \
+    --name zabbix_agent \
+    -e ZBX_HOSTNAME="demo agent" \
+    -e ZBX_SERVER_HOST="zabbix_server" \
+    zabbix/zabbix-agent:centos-4.0.27
 ```

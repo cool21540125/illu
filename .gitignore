@@ -21,3 +21,4 @@ pass_*
 data_db/
 keyfile
 *.sql.gz
+*.tar.gz

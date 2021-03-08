@@ -7,16 +7,18 @@ services:
     hostname: db
     restart: always
     volumes:
-      - ./mysql/init/:/docker-entrypoint-initdb.d/
-      - ./mysql/conf.d/:/etc/mysql/conf.d/:rw
-      - /etc/localtime:/etc/localtime:ro
-      - zabbix_db:/var/lib/mysql
-      - zabbix_db_log:/var/log/mysql
+      - "./mysql/init/:/docker-entrypoint-initdb.d/"
+      - "./mysql/conf.d/:/etc/mysql/conf.d/:rw"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "zabbix_db:/var/lib/mysql"
+      - "zabbix_db_log:/var/log/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: ${USER_PASSWORD}
+    ports:
+      - "3306:3306"
     networks:
       zabbix_net:
         # ipv4_address: 172.30.0.10
@@ -25,23 +27,24 @@ services:
   zabbix_server:
     image: zabbix_server:4.0.27
     build:
-      context: .
-      dockerfile: ./server/Dockerfile
+      context: ./server
+      dockerfile: Dockerfile
     container_name: zabbix_server
     hostname: server
     restart: always
     ports:
+      # - "10050:10050"
       - "10051:10051"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./server/zabbix:/etc/zabbix:rw
-      - zabbix_server_log:/var/log/zabbix
+      - "/etc/localtime:/etc/localtime:ro"
+      - "./server/zabbix:/etc/zabbix:rw"
+      - "zabbix_server_log:/var/log/zabbix"
     environment:
-      DB_SERVER_HOST: ${DB_SERVER_HOST}
-      DB_SERVER_PORT: ${DB_SERVER_PORT}
-      MYSQL_DATABASE: ${DB_NAMW}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      DB_SERVER_HOST: zabbix_db
+      DB_SERVER_PORT: 3306
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: ${USER_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     env_file:
       - .env_srv
@@ -59,32 +62,51 @@ services:
     labels:
       com.docker.version: "20.10.2"
       com.docker.compose.version: "1.28.2"
-      author.email: "cool21540125@gmail.com"
-      author.team: "delta-ops Taipei"
 
   zabbix_web:
     image: zabbix_web:4.0.27
     build:
-      context: .
-      dockerfile: ./web/Dockerfile
+      context: ./web
+      dockerfile: Dockerfile
     container_name: zabbix_web
     hostname: web
     restart: always
     ports:
       - "8080:8080"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      - "/etc/localtime:/etc/localtime:ro"
     environment:
-      ZBX_SERVER_HOST: ${ZBX_SERVER_HOST}
-      DB_SERVER_HOST: ${DB_SERVER_HOST}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      PHP_TZ: ${PHP_TZ}
+      ZBX_SERVER_HOST: zabbix_server
+      DB_SERVER_HOST: zabbix_db
+      MYSQL_DATABASE: zabbix
+      MYSQL_USER: zabbix
+      MYSQL_PASSWORD: ${USER_PASSWORD}
+      PHP_TZ: Asia/Taipei
+      ZBX_SERVER_NAME: ${ZBX_SERVER_NAME}
     networks:
       - zabbix_net
     depends_on: 
       - zabbix_server
+
+  # zabbix_agent:
+  #   image: zabbix_agent:4.0.27
+  #   build:
+  #     context: ./agent
+  #     dockerfile: Dockerfile
+  #   container_name: zabbix_agent
+  #   hostname: demo_agent
+  #   restart: always
+  #   ports:
+  #     - "10050:10050"
+  #   volumes:
+  #     - "/etc/localtime:/etc/localtime:ro"
+  #     - "./agent/conf.d/:/etc/zabbix/zabbix_agentd.d/:rw"
+  #     - "./agent/agent_bin/:/etc/zabbix/agent_bin/:rw"
+  #   environment: 
+  #     ZBX_SERVER_HOST: zabbix_server
+  #     ZBX_PASSIVESERVERS: zabbix_server
+  #     ZBX_ACTIVESERVERS: zabbix_server:10051
+  #     ZBX_TIMEOUT: 4
 
 networks:
   zabbix_net:
