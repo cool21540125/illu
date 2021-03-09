@@ -1,3 +1,12 @@
+# [Enable Access Control](https://docs.mongodb.com/v4.4/tutorial/enable-authentication/)
+
+
+
+
+----------------------------
+
+底下為舊筆記
+
 # MongoDB 權限機制
 - 2018/05/21
 - MongoDB v3.4、v3.6

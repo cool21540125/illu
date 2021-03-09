@@ -1,4 +1,4 @@
-[Log Messages](https://docs.mongodb.com/manual/reference/log-messages/)
+[Log Messages](https://docs.mongodb.com/v4.4/reference/log-messages/)
 
 MongoDB 維護的 log events 包括了: incoming connections, commands run, and issues encountered
 

@@ -60,6 +60,7 @@
 - space bar : 空白鍵
 - sponsor : 發起人
 - starting from scratch : 從零開始
+- strike a balance : 沖帳
 - stub : 存根
 - throughput : 吞吐量
 - tilde : 波浪號

@@ -1,4 +1,4 @@
-# [User Management Methods](https://docs.mongodb.com/manual/reference/method/js-user-management/)
+# [User Management Methods](https://docs.mongodb.com/v4.4/reference/method/js-user-management/)
 
 
 ## db.getUsers()

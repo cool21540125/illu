@@ -1,0 +1,1 @@
+[Diagnostic Commands](https://docs.mongodb.com/v4.4/reference/command/nav-diagnostic/)
