@@ -1,7 +1,9 @@
 // Linux 的話放在 /etc/docker/daemon.json
-
 {
-     // logging-driver - https://docs.docker.com/config/containers/logging/configure/
+    // logging-driver - https://docs.docker.com/config/containers/logging/configure/
     "log-driver": "syslog",
-    "data-root": "/data/docker"
+    "data-root": "/data/docker",
+    "features": {
+        "buildkit": true
+    }
 }

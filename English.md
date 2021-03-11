@@ -5,6 +5,7 @@
 
 - ad-hoc(ad hoc) : 特設, 專案的, 臨時的, 特定目的的
 - alphanumeric : 標點符號
+- artificially : 人為地
 - attributes (headers)
 - authentication : 認證
 - auto-positioning : 自動定位
@@ -25,8 +26,10 @@
 - enumerable : 可列舉的
 - expression : 運算式
 - fabric : 布, 結構, 構造, 品質, 織品
+- failure-prone : 容易失敗
 - FWIW : for what it's worth (用在 `不知道講出來有沒有用, 但就我所知是這樣` 的情境)
 - gotcha : 陷阱
+- hassle : 麻煩
 - IIUC : if I understood correctly
 - imitate/mimic : 模仿
 - immutable : 不可變的
@@ -43,6 +46,7 @@
 - on the fly : 動態產生
 - opaque : 含糊的, 不透明的
 - Operation not permitted : 不具有此指另作用的檔案 的權限
+- orchestrate : 編排
 - oval : 橢圓形
 - overlap : 交疊
 - passphrase : 密語; 嚴格來講, 此非密碼 (Not a password)
@@ -68,8 +72,11 @@
 - under the hood : 在引擎蓋底下(有點封裝的概念, 複雜的細節人家幫你包好了)
 - unmarshal: 解組
 - validate : 驗證
+- vast : 極大的
 - wildcard characters : 萬用字元 (「*」啦)
+- whichever : 任何
 - wireframe : 線框
+- workaround : 解決方法
 - workhorse : 主力
 
 
