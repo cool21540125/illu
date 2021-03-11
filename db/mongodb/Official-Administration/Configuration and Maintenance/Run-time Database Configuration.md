@@ -69,3 +69,12 @@ processManagement:
 
 ## Diagnostic Configurations
 
+- `operationProfiling.mode`: 設定 Profiler level, *default 不啟用*, 此時不會去分析查詢
+- `operationProfiling.slowOpThresholdMs`: 設定 slow query 的門檻值, *default 100 毫秒*
+- 4.0.6+ 以後, Secondary ReplicaSet members, log oplog 所需的時間比 slow operation threshold 的時間還要長.
+   - 這些 slow oplog messages 都被 log 在 secondaries 的 REPL component 底下的 diagnostic log
+      - 格式為: `op: <oplog entry> took <num> ms`
+- slow oplog 僅依賴於 threshold, 不依賴於 log level 以及 profiling level 以及 slow operation sample rate.
+   - profiler 並不會捕捉 slow oplog entries
+- `systemLog.verbosity` 用來列出更詳細的 loggings
+   - 3.0+, 使用 `systemLog.component.<name>.verbosity`, 用來 log 詳細 log 程度
