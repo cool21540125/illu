@@ -108,10 +108,12 @@ SEO    | Search Engine Optimization                  | FrontEnd        |
 SLA    | Service Level Agreement                     | 服務層級協定     | 
 SPOF   | Single Point Of Failure                     | 單點失效         |
 SSG    | Static Site Generator                       | FrontEnd        | 前端框架產生器, ex: Hugo, Hexo, MkDocs
-SSL   | Secure Sockets Layer                         | 資安            |
+SSL    | Secure Sockets Layer                        | 資安            |
 SSO    | Single Sign-On                              | 集中驗證         | 單點登錄
 TDD    | Test-Driven-Development                     | DevOps          |
-TLS   | Transport Layer Security                     | 資安            |
+THP    | Transparent Huge Pages                      | 透明大頁面       | 作業系統記憶體的東西
+TLB    | Translation Lookaside Buffer                | 轉換後備緩衝區   | 
+TLS    | Transport Layer Security                    | 資安            |
 VPC    | Virtual Private Cloud                       | Cloud           |
 VPN    | Virtual Private Network                     | 虛擬私有網路    | servers間點對點加密溝通 (軟體翻牆的其中一種方式)
 WAL    | Write-ahead logging                         | 預寫式日誌      | RDBMS 為了維持 原子性 & 持久性, 將所有修改提交前都先寫入 log
