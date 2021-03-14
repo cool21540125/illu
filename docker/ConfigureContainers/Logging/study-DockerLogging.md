@@ -52,12 +52,51 @@ Docker Logging 策略大致上分成下列幾種方式:
 - Pros: 遇到再說
 - Cons: 較難
 
-# Docker Container Logs
 
-分成 2 類: `daemon logs` 及 `container logs`
+# Get Started with Docker Container Logs
 
-## Docker Container Logs
+Docker Container Logs 分成 2 類: `daemon logs` 及 `container logs`
 
 
-## Docker Daemon Logs
+## What Are Docker Container Logs?
+
+- Container 內部發送到 `STDOUT` & `STDERR` 的訊息都會被 logging driver 捕獲
+    - 追蹤 log: `docker logs -f Container_Name` 
+    - 觀察 CPU & Memory: `docker stats --no-stream` 
+    - 觀察 running processes: `docker top Container_Name`
+    - 觀察 Docker events: `docker events`
+    - 觀察 Storage Usage: `docker system df`
+- 開發階段, 將容器內的 Log 輸出到 `STDOUT` & `STDERR` 很方便除錯, 但若生產環境, 建議集中蒐集 Logs
+
+### What Is a Logging Driver?
+
+Container 預設啟用 `json-file` log driver
+
+使用 CLI 的話, 指令如下:
+
+```bash
+docker run -d \
+    --log-driver syslog
+    --log-opt syslog-address=udp://syslog-server:514 \
+    alpine \
+    COMMANDS
+```
+
+
+### How to Configure the Docker Logging Driver?
+
+
+
+
+### Where Are Docker Logs Stored By Default?
+### Where Are Delivery Modes?
+### Direct/Blocking
+### Non-blocking
+### Logging Driver Options
+### Use the json-file Log Driver With a Log Shipper Container
+### How to Work With Docker Container Logs Using the docker logs Command?
+### How to Work with Docker Container Logs Using a Log Shipper?
+
+
+# 2. What About Docker Daemon Logs?
 

@@ -21,3 +21,15 @@ echo -e "\033[32m [INFO]: hi \033[0m"
 
 * -r : 讀取權限
 * -f : 檔案存在
+
+
+# 
+
+```bash
+# 來自 https://github.com/docker-library/mongo/blob/be84ebdc31c9761833412215d3d2f60538ee9f5a/4.4/docker-entrypoint.sh
+if [ "${1:0:1}" = '-' ]; then
+	set -- mongod "$@"
+fi
+
+
+```
